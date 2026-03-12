@@ -9,6 +9,7 @@ import Pagination from '@/components/Pagination.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import DeleteButton from '@/components/DeleteButton.vue'
 import AppButton from "@/components/AppButton.vue";
+import AppInput from "@/components/AppInput.vue";
 
 export interface Expense {
     id: number;
@@ -81,7 +82,11 @@ const breadcrumbItems: BreadcrumbItem[] = [
             <!-- Início Formulário de Pesquisa -->
              <form @submit.prevent="search" class="form-search">
 
-                <input type="text" v-model="filters.notes" class="form-input" placeholder="Digite algo referete ao comprovante">
+                 <AppInput
+                     v-model="filters.notes"
+                     placeholder="Digite algo referente ao comprovante"
+                     :icon="Search"
+                 />
 
                 <div class="flex gap-1">
                     <AppButton
