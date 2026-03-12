@@ -9,13 +9,18 @@ import {
 import { urlIsActive } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { CalendarCheck2, HomeIcon } from 'lucide-vue-next';
+import {CalendarCheck2, CircleDollarSignIcon, HomeIcon} from 'lucide-vue-next';
 
 const items: NavItem[] = [
     {
         title: 'Dashboard',
         href: '/dashboard',
         icon: HomeIcon
+    },
+    {
+        title: 'Despesas',
+        href: '/expenses',
+        icon: CircleDollarSignIcon
     },
     {
         title: 'Tarefas',
