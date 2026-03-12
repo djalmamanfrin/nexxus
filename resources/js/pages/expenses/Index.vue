@@ -54,15 +54,8 @@ const breadcrumbItems: BreadcrumbItem[] = [
 <template>
     <!-- Usa o layout padrão e passa os breadcrumbs para exibição -->
     <AppLayout :breadcrumbs="breadcrumbItems">
-
-        <!-- Define o título da página para o <head> -->
-
         <Head title="Despesas" />
-
-        <!-- Container principal da página -->
         <div class="content-box">
-
-            <!-- Título da seção -->
             <div class="content-box-header">
                 <h3 class="content-box-title">Despesas</h3>
                 <div class="content-box-btn">
@@ -76,11 +69,9 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 </div>
             </div>
 
-            <!-- Apresentar a mensagem de sucesso ou erro -->
             <FlashMessage />
 
-            <!-- Início Formulário de Pesquisa -->
-             <form @submit.prevent="search" class="form-search">
+             <form @submit.prevent="search" class="flex gap-2">
 
                  <AppInput
                      v-model="filters.notes"
@@ -88,7 +79,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                      :icon="Search"
                  />
 
-                <div class="flex gap-1">
+                <div class="flex gap-2">
                     <AppButton
                         type="submit"
                         label="Pesquisar"
@@ -105,20 +96,13 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
              </form>
 
-            <!-- Container da tabela com bordas e sombra -->
             <div class="table-container">
-
-                <!-- Tabela de Despesas -->
                 <table class="table">
                     <thead>
                         <tr class="table-header">
-                            <!-- Cabeçalhos da tabela -->
-                            <th class="table-row-header">
-                                ID</th>
-                            <th class="table-row-header">
-                                Anotações</th>
-                            <th class="table-row-header">
-                                Ações</th>
+                            <th class="table-row-header">ID</th>
+                            <th class="table-row-header">Anotações</th>
+                            <th class="table-row-header">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
