@@ -8,6 +8,7 @@ import { CirclePlus, Eye, Pencil, Search, Trash } from 'lucide-vue-next';
 import Pagination from '@/components/Pagination.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import DeleteButton from '@/components/DeleteButton.vue'
+import AppButton from "@/components/AppButton.vue";
 
 export interface Expense {
     id: number;
@@ -80,20 +81,21 @@ const breadcrumbItems: BreadcrumbItem[] = [
             <!-- Início Formulário de Pesquisa -->
              <form @submit.prevent="search" class="form-search">
 
-                <input type="text" v-model="filters.name" class="form-input" placeholder="Digite o nome da tarefa">
-                <textarea type="text" v-model="filters.notes" class="form-input" placeholder="Anotações"></textarea>
+                <input type="text" v-model="filters.notes" class="form-input" placeholder="Digite algo referete ao comprovante">
 
                 <div class="flex gap-1">
+                    <AppButton
+                        type="submit"
+                        label="Pesquisar"
+                        :icon="Search"
+                    />
 
-                    <button type="submit" class="btn-primary align-icon-btn">
-                        <Search class="w-4 h-4"/>
-                        <span>Pesquisar</span>
-                    </button>
-
-                    <button type="button" @click="clearFilters" class="btn-warning align-icon-btn">
-                        <Trash class="w-4 h-4"/>
-                        <span>Limpar</span>
-                    </button>
+                    <AppButton
+                        label="Limpar"
+                        variant="warning"
+                        :icon="Trash"
+                        @click="clearFilters"
+                    />
                 </div>
 
              </form>
