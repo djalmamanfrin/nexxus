@@ -60,12 +60,12 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 <h3 class="content-box-title">Despesas</h3>
                 <div class="content-box-btn">
 
-                    <Link href="/expenses/create"
-                        class="bg-green-500 text-white text-sm px-2 py-1 rounded hover:bg-green-600 transition-colors cursor-pointer flex items-center space-x-1">
-                    <CirclePlus class="w-4 h-4" />
-                    <span>Cadastrar</span>
-                    </Link>
-
+                    <AppButton
+                        href="/expenses/create"
+                        label="Nova Despesa"
+                        :icon="CirclePlus"
+                        variant="success"
+                    />
                 </div>
             </div>
 
@@ -84,7 +84,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
                 <div class="hidden lg:block"></div>
 
-                <div class="col-span-4 md:col-span-2 lg:col-span-1 flex gap-2">
+                <div class="col-span-4 md:col-span-2 lg:col-span-1 flex items-center gap-2">
                     <AppButton
                         type="submit"
                         label="Pesquisar"

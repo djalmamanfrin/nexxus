@@ -1,5 +1,7 @@
 <script setup>
 
+import { Link } from '@inertiajs/vue3'
+
 const props = defineProps({
     type: {
         type: String,
@@ -9,6 +11,7 @@ const props = defineProps({
         type: String,
         required: true
     },
+    href: String,
     variant: {
         type: String,
         default: 'primary'
@@ -30,23 +33,43 @@ const props = defineProps({
 </script>
 
 <template>
-    <button
-        :type="type"
+    <Link
+        v-if="href"
+        :href="href"
         :class="[
-            'flex items-center justify-center gap-2 px-4',
+            'btn flex items-center justify-center gap-2 px-4 py-2',
             `btn-${variant}`,
             { 'w-full': fullWidth }
         ]"
     >
-
         <component
             v-if="icon && iconPosition === 'left'"
             :is="icon"
             class="w-4 h-4"
         />
+            <span>{{ label }}</span>
+        <component
+            v-if="icon && iconPosition === 'right'"
+            :is="icon"
+            class="w-4 h-4"
+        />
+    </Link>
 
-        <span>{{ label }}</span>
-
+    <button
+        v-else
+        :type="type"
+        :class="[
+            'flex items-center justify-center gap-2 px-4 py-2',
+            `btn-${variant}`,
+            { 'w-full': fullWidth }
+        ]"
+    >
+        <component
+            v-if="icon && iconPosition === 'left'"
+            :is="icon"
+            class="w-4 h-4"
+        />
+            <span>{{ label }}</span>
         <component
             v-if="icon && iconPosition === 'right'"
             :is="icon"
