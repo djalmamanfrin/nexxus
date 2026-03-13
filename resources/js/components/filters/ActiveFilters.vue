@@ -31,7 +31,7 @@ const values = {
                     {{ labels[key] ?? key }}:
                 </span>
                  <span class="font-weight-semibold tracking-wide">
-                    {{ values[key][value] ?? value }}
+                    {{ values[key]?.[value] ?? value }}
                 </span>
             </span>
         </template>
