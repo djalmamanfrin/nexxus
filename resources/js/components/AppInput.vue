@@ -36,7 +36,7 @@ const emit = defineEmits(['update:modelValue'])
             @input="emit('update:modelValue', $event.target.value)"
             :placeholder="placeholder"
             :class="[
-                'w-full h-10 form-input',
+                'w-full form-input',
                 icon ? 'pl-10' : 'pl-3'
             ]"
         />

@@ -33,7 +33,7 @@ const props = defineProps({
     <button
         :type="type"
         :class="[
-            'flex items-center justify-center gap-2 h-10 px-4',
+            'flex items-center justify-center gap-2 px-4',
             `btn-${variant}`,
             { 'w-full': fullWidth }
         ]"
