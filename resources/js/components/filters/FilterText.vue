@@ -48,25 +48,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-1">
-        <label
-            v-if="label"
-            class="text-xs font-medium text-gray-600"
-        >
-            {{ label }}
-        </label>
-        <div class="relative">
-            <component
-                v-if="icon"
-                :is="icon"
-                class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-            />
-            <AppInput
-                v-model="localValue"
-                :placeholder="placeholder"
-                :width="width"
-                :class="icon ? 'pl-10' : ''"
-            />
-        </div>
-    </div>
+    <AppInput
+        :label="label"
+        v-model="localValue"
+        :placeholder="placeholder"
+        :icon="icon"
+        :width="width"
+    />
 </template>
