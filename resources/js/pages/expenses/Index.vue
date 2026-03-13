@@ -80,8 +80,8 @@ const breadcrumbItems: BreadcrumbItem[] = [
                           { label: 'Pendente', value: 2 }
                         ]"
                     />
-                    <FilterDate name="paid_at" />
-                    <FilterDate name="created_to" />
+                    <FilterDate label="Pago em" name="paid_at" />
+                    <FilterDate  label="Criado em" name="created_to" />
                 </AppFilterBar>
              </form>
 

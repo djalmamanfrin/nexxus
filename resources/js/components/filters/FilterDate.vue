@@ -1,11 +1,12 @@
 <script setup>
 import { inject, ref } from 'vue'
-import AppInput from "@/components/base/AppInput.vue";
+import AppDate from "@/components/base/AppDate.vue";
 
 const filters = inject('filters')
 const inputRef = ref(null)
 
 const props = defineProps({
+    label: String,
     name: String,
     width: String,
 })
@@ -16,11 +17,9 @@ function openPicker() {
 </script>
 
 <template>
-    <AppInput
-        ref="inputRef"
-        type="date"
+    <AppDate
         v-model="filters[name]"
-        :class="['form-input cursor-pointer', width]"
+        :label="label"
         @click="openPicker"
     />
 </template>
