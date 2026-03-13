@@ -25,15 +25,15 @@ const props = defineProps<{
         links: { url: string | null; label: string; active: boolean }[];
     };
     status?: string;
-    notes?: string;
-    created_by?: string;
+    search?: string;
+    paid_at?: string;
     created_to?: string;
 }>();
 
 const filters = reactive({
-    notes: props.notes || '',
+    search_by: props.search || '',
     status: props.status || '',
-    created_by: props.created_by || '',
+    paid_at: props.paid_at || '',
     created_to: props.created_to || '',
 });
 
@@ -73,20 +73,19 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     @change="search"
                 >
                     <FilterText
-                        name="notes"
+                        name="search_by"
                         placeholder="Digite algo referente ao comprovante"
-                        width="w-96"
                         :icon="Search"
                     />
                     <FilterSelect
                         name="status"
                         width="w-56"
                         :options="[
-                          { label: 'Pago', value: 'paid' },
-                          { label: 'Pendente', value: 'pending' }
+                          { label: 'Pago', value: 1 },
+                          { label: 'Pendente', value: 2 }
                         ]"
                     />
-                    <FilterDate name="created_by" />
+                    <FilterDate name="paid_at" />
                     <FilterDate name="created_to" />
                 </AppFilterBar>
              </form>

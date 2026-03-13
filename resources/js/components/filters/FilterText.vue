@@ -17,7 +17,7 @@ const props = defineProps({
         default: null
     },
     width: {
-        default: 'w-64'
+        default: 'w-96'
     }
 })
 
