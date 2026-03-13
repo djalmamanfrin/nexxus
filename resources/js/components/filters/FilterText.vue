@@ -7,6 +7,7 @@ import AppInput from "@/components/AppInput.vue";
 const filters = inject('filters')
 
 const props = defineProps({
+    label: String,
     name: String,
     placeholder: String,
     debounce: {
@@ -43,16 +44,29 @@ watch(
 </script>
 
 <template>
-    <div class="relative">
-        <component
-            v-if="icon"
-            :is="icon"
-            class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-        />
-        <AppInput
-            v-model="localValue"
-            :placeholder="placeholder"
-            :class="['form-input', width, icon ? 'pl-10' : 'pl-3']"
-        />
+    <div class="flex flex-col gap-1" :class="width">
+
+        <label
+            v-if="label"
+            class="text-xs font-medium text-gray-600"
+        >
+            {{ label }}
+        </label>
+
+
+        <div class="relative">
+            <component
+                v-if="icon"
+                :is="icon"
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+            />
+            <AppInput
+                v-model="localValue"
+                :placeholder="placeholder"
+                :width="width"
+                :class="['form-input', icon ? 'pl-10' : 'pl-3']"
+            />
+        </div>
+
     </div>
 </template>

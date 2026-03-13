@@ -66,8 +66,9 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     @clear="clear"
                 >
                     <FilterText
+                        label="Digite algo referente ao comprovante"
                         name="search_by"
-                        placeholder="Digite algo referente ao comprovante"
+                        placeholder="Ex: cpf, cnpj ou qualquer texto no comprovante"
                         :icon="Search"
                     />
                     <FilterSelect

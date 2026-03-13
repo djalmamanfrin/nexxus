@@ -1,4 +1,6 @@
 <script setup>
+import { formatDateShort} from "@/lib/date.js";
+
 const props = defineProps({
     filters: Object
 })
@@ -30,8 +32,11 @@ const values = {
                 <span class="text-gray-500">
                     {{ labels[key] ?? key }}:
                 </span>
-                 <span class="font-weight-semibold tracking-wide">
-                    {{ values[key]?.[value] ?? value }}
+                 <span class="font-semibold tracking-wide">
+                     {{
+                         values[key]?.[value] ??
+                         (key.includes('_at') ? formatDateShort(value) : value)
+                     }}
                 </span>
             </span>
         </template>
