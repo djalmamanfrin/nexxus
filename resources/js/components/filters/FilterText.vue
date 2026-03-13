@@ -1,7 +1,7 @@
 <script setup>
 
 import { debounce } from 'lodash'
-import { inject, ref, watch } from 'vue'
+import { inject, ref, watch, onUnmounted } from 'vue'
 import AppInput from "@/components/AppInput.vue";
 
 const filters = inject('filters')
@@ -41,19 +41,20 @@ watch(
     }
 )
 
+onUnmounted(() => {
+    updateFilter.cancel()
+})
+
 </script>
 
 <template>
-    <div class="flex flex-col gap-1" :class="width">
-
+    <div class="flex flex-col gap-1">
         <label
             v-if="label"
             class="text-xs font-medium text-gray-600"
         >
             {{ label }}
         </label>
-
-
         <div class="relative">
             <component
                 v-if="icon"
@@ -64,9 +65,8 @@ watch(
                 v-model="localValue"
                 :placeholder="placeholder"
                 :width="width"
-                :class="['form-input', icon ? 'pl-10' : 'pl-3']"
+                :class="icon ? 'pl-10' : ''"
             />
         </div>
-
     </div>
 </template>
