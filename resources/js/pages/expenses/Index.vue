@@ -71,19 +71,25 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
             <FlashMessage />
 
-             <form @submit.prevent="search" class="flex gap-2">
+            <form
+                @submit.prevent="search"
+                class="grid grid-cols-4 gap-2"
+            >
+                <AppInput
+                    v-model="filters.notes"
+                    placeholder="Digite algo referente ao comprovante"
+                    :icon="Search"
+                    class="col-span-4 md:col-span-2"
+                />
 
-                 <AppInput
-                     v-model="filters.notes"
-                     placeholder="Digite algo referente ao comprovante"
-                     :icon="Search"
-                 />
+                <div class="hidden lg:block"></div>
 
-                <div class="flex gap-2">
+                <div class="col-span-4 md:col-span-2 lg:col-span-1 flex gap-2">
                     <AppButton
                         type="submit"
                         label="Pesquisar"
                         :icon="Search"
+                        class="flex-1"
                     />
 
                     <AppButton
@@ -91,10 +97,12 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         variant="warning"
                         :icon="Trash"
                         @click="clearFilters"
+                        class="flex-1"
                     />
                 </div>
-
              </form>
+
+            <div class="m-4"></div>
 
             <div class="table-container">
                 <table class="table">
