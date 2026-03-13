@@ -4,21 +4,21 @@ import { XIcon } from 'lucide-vue-next';
 import ActiveFilters from './ActiveFilters.vue'
 
 const props = defineProps({
-    modelValue: Object
+    filters: Object
 })
 
 const emit = defineEmits([
-    'update:modelValue',
+    'update:filters',
     'change',
     'clear'
 ])
 
-const filters = reactive({ ...props.modelValue })
+const filters = props.filters
 
 provide('filters', filters)
 
 watch(filters, () => {
-    emit('update:modelValue', filters)
+    emit('update:filters', filters)
     emit('change', filters)
 }, { deep: true })
 

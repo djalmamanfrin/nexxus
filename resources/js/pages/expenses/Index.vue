@@ -2,18 +2,17 @@
 
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
-import { reactive } from 'vue';
 import { type BreadcrumbItem } from '@/types';
 import {CirclePlus, Eye, Pencil, Search, Trash} from 'lucide-vue-next';
 import Pagination from '@/components/Pagination.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import DeleteButton from '@/components/DeleteButton.vue'
 import AppButton from "@/components/AppButton.vue";
-import debounce from 'lodash/debounce'
 import FilterDate from "@/components/filters/FilterDate.vue";
 import FilterSelect from "@/components/filters/FilterSelect.vue";
 import FilterText from "@/components/filters/FilterText.vue";
 import AppFilterBar from "@/components/filters/AppFilterBar.vue";
+import {useFilters} from "@/composables/useFilters";
 
 export interface Expense {
     id: number;
@@ -25,24 +24,17 @@ const props = defineProps<{
         links: { url: string | null; label: string; active: boolean }[];
     };
     status?: string;
-    search?: string;
+    search_by?: string;
     paid_at?: string;
     created_to?: string;
 }>();
 
-const filters = reactive({
-    search_by: props.search || '',
+const { filters, search, clear } = useFilters({
+    search_by: props.search_by || '',
     status: props.status || '',
     paid_at: props.paid_at || '',
     created_to: props.created_to || '',
-});
-
-const search = debounce(() => {
-    router.get('/expenses', filters, {
-        preserveState: true,
-        preserveScroll: true,
-    })
-}, 400)
+}, '/expenses')
 
 /* Define os breadcrumbs que serão exibidos no layout */
 const breadcrumbItems: BreadcrumbItem[] = [
@@ -69,8 +61,9 @@ const breadcrumbItems: BreadcrumbItem[] = [
             <FlashMessage />
             <form @submit.prevent="search" >
                 <AppFilterBar
-                    v-model="filters"
+                    v-model:filters="filters"
                     @change="search"
+                    @clear="clear"
                 >
                     <FilterText
                         name="search_by"
