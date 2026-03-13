@@ -40,13 +40,15 @@ const hasActiveFilters = computed(() => {
 
 <template>
     <div class="space-y-3">
-        <div class="flex items-center gap-3 flex-wrap">
+        <div class="flex gap-3 flex-wrap">
             <slot />
-            <XIcon
-                v-if="hasActiveFilters"
-                class="w-4 h-4 self-center cursor-pointer text-sm text-gray-500 hover:text-gray-800 shrink-0"
-                @click="clearFilters"
-            />
+            <div class="flex items-center pt-5">
+                <XIcon
+                    v-if="hasActiveFilters"
+                    class="w-4 h-4 cursor-pointer text-gray-500 hover:text-gray-800"
+                    @click="clearFilters"
+                />
+            </div>
         </div>
         <ActiveFilters
             v-if="hasActiveFilters"
