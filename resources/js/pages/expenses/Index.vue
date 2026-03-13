@@ -4,12 +4,13 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
 import { reactive } from 'vue';
 import { type BreadcrumbItem } from '@/types';
-import { CirclePlus, Eye, Pencil, Search, Trash } from 'lucide-vue-next';
+import {CirclePlus, Eye, Pencil, Search, Trash} from 'lucide-vue-next';
 import Pagination from '@/components/Pagination.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import DeleteButton from '@/components/DeleteButton.vue'
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
+import debounce from 'lodash/debounce'
 
 export interface Expense {
     id: number;
@@ -31,18 +32,12 @@ const filters = reactive({
     notes: props.notes || '',
 });
 
-const search = () => {
+const search = debounce(() => {
     router.get('/expenses', filters, {
         preserveState: true,
         preserveScroll: true,
     })
-}
-
-/* Função para limpar */
-const clearFilters = () => {
-    filters.notes = ''
-    router.get('expenses')
-}
+}, 400)
 
 /* Define os breadcrumbs que serão exibidos no layout */
 const breadcrumbItems: BreadcrumbItem[] = [
@@ -80,26 +75,25 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     placeholder="Digite algo referente ao comprovante"
                     :icon="Search"
                     class="col-span-4 md:col-span-2"
+                    @search="search"
                 />
 
-                <div class="hidden lg:block"></div>
+<!--                <div class="col-span-4 md:col-span-2 lg:col-span-1 flex items-center gap-2">-->
+<!--                    <AppButton-->
+<!--                        type="submit"-->
+<!--                        label="Pesquisar"-->
+<!--                        :icon="Search"-->
+<!--                        class="flex-1"-->
+<!--                    />-->
 
-                <div class="col-span-4 md:col-span-2 lg:col-span-1 flex items-center gap-2">
-                    <AppButton
-                        type="submit"
-                        label="Pesquisar"
-                        :icon="Search"
-                        class="flex-1"
-                    />
-
-                    <AppButton
-                        label="Limpar"
-                        variant="warning"
-                        :icon="Trash"
-                        @click="clearFilters"
-                        class="flex-1"
-                    />
-                </div>
+<!--                    <AppButton-->
+<!--                        label="Limpar"-->
+<!--                        variant="warning"-->
+<!--                        :icon="Trash"-->
+<!--                        @click="clearFilters"-->
+<!--                        class="flex-1"-->
+<!--                    />-->
+<!--                </div>-->
              </form>
 
             <div class="m-4"></div>
