@@ -72,6 +72,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         :icon="Search"
                     />
                     <FilterSelect
+                        label="Status"
                         name="status"
                         width="w-56"
                         :options="[
