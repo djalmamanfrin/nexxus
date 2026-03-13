@@ -4,7 +4,7 @@ const props = defineProps({
     modelValue: String,
     placeholder: String,
     width: {
-        default: 'w-64'
+        default: 'w-40'
     }
 })
 

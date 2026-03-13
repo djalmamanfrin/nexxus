@@ -9,27 +9,32 @@ import Pagination from '@/components/Pagination.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import DeleteButton from '@/components/DeleteButton.vue'
 import AppButton from "@/components/AppButton.vue";
-import AppInput from "@/components/AppInput.vue";
 import debounce from 'lodash/debounce'
+import FilterDate from "@/components/filters/FilterDate.vue";
+import FilterSelect from "@/components/filters/FilterSelect.vue";
+import FilterText from "@/components/filters/FilterText.vue";
+import AppFilterBar from "@/components/filters/AppFilterBar.vue";
 
 export interface Expense {
     id: number;
     notes: string;
 }
-
-/* Recebe os dados da controller via props usando Inertia */
 const props = defineProps<{
     expenses: {
         data: Expense[];
         links: { url: string | null; label: string; active: boolean }[];
     };
-    name?: string;
+    status?: string;
     notes?: string;
+    created_by?: string;
+    created_to?: string;
 }>();
 
-/* Campos de pesquisa */
 const filters = reactive({
     notes: props.notes || '',
+    status: props.status || '',
+    created_by: props.created_by || '',
+    created_to: props.created_to || '',
 });
 
 const search = debounce(() => {
@@ -47,14 +52,12 @@ const breadcrumbItems: BreadcrumbItem[] = [
 </script>
 
 <template>
-    <!-- Usa o layout padrão e passa os breadcrumbs para exibição -->
     <AppLayout :breadcrumbs="breadcrumbItems">
         <Head title="Despesas" />
         <div class="content-box">
             <div class="content-box-header">
                 <h3 class="content-box-title">Despesas</h3>
                 <div class="content-box-btn">
-
                     <AppButton
                         href="/expenses/create"
                         label="Nova Despesa"
@@ -63,40 +66,32 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     />
                 </div>
             </div>
-
             <FlashMessage />
-
-            <form
-                @submit.prevent="search"
-                class="grid grid-cols-4 gap-2"
-            >
-                <AppInput
-                    v-model="filters.notes"
-                    placeholder="Digite algo referente ao comprovante"
-                    :icon="Search"
-                    class="col-span-4 md:col-span-2"
-                    @search="search"
-                />
-
-<!--                <div class="col-span-4 md:col-span-2 lg:col-span-1 flex items-center gap-2">-->
-<!--                    <AppButton-->
-<!--                        type="submit"-->
-<!--                        label="Pesquisar"-->
-<!--                        :icon="Search"-->
-<!--                        class="flex-1"-->
-<!--                    />-->
-
-<!--                    <AppButton-->
-<!--                        label="Limpar"-->
-<!--                        variant="warning"-->
-<!--                        :icon="Trash"-->
-<!--                        @click="clearFilters"-->
-<!--                        class="flex-1"-->
-<!--                    />-->
-<!--                </div>-->
+            <form @submit.prevent="search" >
+                <AppFilterBar
+                    v-model="filters"
+                    @change="search"
+                >
+                    <FilterText
+                        name="notes"
+                        placeholder="Digite algo referente ao comprovante"
+                        width="w-96"
+                        :icon="Search"
+                    />
+                    <FilterSelect
+                        name="status"
+                        width="w-56"
+                        :options="[
+                          { label: 'Pago', value: 'paid' },
+                          { label: 'Pendente', value: 'pending' }
+                        ]"
+                    />
+                    <FilterDate name="created_by" />
+                    <FilterDate name="created_to" />
+                </AppFilterBar>
              </form>
 
-            <div class="m-4"></div>
+            <div class="my-4"></div>
 
             <div class="table-container">
                 <table class="table">
@@ -108,41 +103,32 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Itera sobre os Despesas recebidos das props -->
                         <tr v-for="expense in props.expenses.data" :key="expense.id" class="table-body">
-                            <!-- Colunas da tabela -->
                             <td class="table-row-body ">
                                 {{ expense.id }}</td>
                             <td class="table-row-body ">
                                 {{ expense.notes }}</td>
                             <td class="table-actions">
                                 <div class="table-actions-align">
-
                                     <Link :href="`/expenses/${expense.id}`" class="btn-primary align-icon-btn">
-                                    <Eye class="w-4 h-4" />
-                                    <span>Visualizar</span>
+                                        <Eye class="w-4 h-4" />
+                                        <span>Visualizar</span>
                                     </Link>
 
                                     <Link :href="`/expenses/${expense.id}/edit`" class="btn-warning align-icon-btn">
-                                    <Pencil class="w-4 h-4" />
-                                    <span>Editar</span>
+                                        <Pencil class="w-4 h-4" />
+                                        <span>Editar</span>
                                     </Link>
 
-                                    <!-- Botão de apagar -->
-                                    <!-- Usa o componente genérico -->
                                     <DeleteButton :url="`/expenses/${expense.id}`"
                                         title="Deseja realmente apagar esta tarefa?" />
-
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-
                 <Pagination :links="props.expenses.links" />
-
             </div>
         </div>
-
     </AppLayout>
 </template>
