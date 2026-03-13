@@ -1,6 +1,6 @@
 <script setup>
 import { inject } from 'vue'
-import AppSelect from "@/components/AppSelect.vue";
+import AppSelect from "@/components/base/AppSelect.vue";
 
 const filters = inject('filters')
 

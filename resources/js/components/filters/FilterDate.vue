@@ -1,6 +1,6 @@
 <script setup>
 import { inject, ref } from 'vue'
-import AppInput from "@/components/AppInput.vue";
+import AppInput from "@/components/base/AppInput.vue";
 
 const filters = inject('filters')
 const inputRef = ref(null)

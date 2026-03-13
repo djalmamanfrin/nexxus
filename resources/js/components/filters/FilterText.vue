@@ -2,7 +2,7 @@
 
 import { debounce } from 'lodash'
 import { inject, ref, watch, onUnmounted } from 'vue'
-import AppInput from "@/components/AppInput.vue";
+import AppInput from "@/components/base/AppInput.vue";
 
 const filters = inject('filters')
 
