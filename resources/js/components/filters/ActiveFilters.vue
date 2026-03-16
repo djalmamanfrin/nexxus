@@ -1,8 +1,13 @@
 <script setup>
 import { formatDateShort} from "@/lib/date.js";
+import {computed} from "vue";
 
 const props = defineProps({
     filters: Object
+})
+
+const activeFiltersCount = computed(() => {
+    return Object.values(props.filters).filter(value => value !== null && value !== '' && value !== undefined).length
 })
 
 const labels = {
@@ -21,7 +26,15 @@ const values = {
 
 <template>
     <div class="flex flex-wrap gap-2">
-        <template
+        <span
+            v-if="activeFiltersCount > 0"
+            class="px-2 py-1 text-xs bg-gray-200 rounded"
+        >
+            <span class="text-gray-500">
+                Os resultados:
+            </span>
+        </span>
+        <div
             v-for="(value, key) in filters"
             :key="key"
         >
@@ -39,6 +52,6 @@ const values = {
                      }}
                 </span>
             </span>
-        </template>
+        </div>
     </div>
 </template>
