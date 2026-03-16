@@ -1,11 +1,16 @@
-<script setup>
-const props = defineProps({
-    label: String,
-    modelValue: [String, Number],
-    options: Array,
-    width: {
-        default: 'w-40'
-    }
+<script setup lang="ts">
+
+import { SelectOption } from '@/types/select'
+
+interface Props {
+    label?: string
+    modelValue?: string | number
+    options: SelectOption[]
+    width?: string
+}
+
+withDefaults(defineProps<Props>(), {
+    width: 'w-40'
 })
 
 const emit = defineEmits(['update:modelValue'])

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
 import {CirclePlus, Eye, Pencil, Search, Trash} from 'lucide-vue-next';
 import Pagination from '@/components/Pagination.vue';
@@ -12,7 +12,8 @@ import FilterDate from "@/components/filters/FilterDate.vue";
 import FilterSelect from "@/components/filters/FilterSelect.vue";
 import FilterText from "@/components/filters/FilterText.vue";
 import AppFilterBar from "@/components/filters/AppFilterBar.vue";
-import {useFilters} from "@/composables/useFilters";
+import { useFilters } from "@/composables/useFilters";
+import { SelectOption } from "@/types/select";
 
 export interface Expense {
     id: number;
@@ -23,6 +24,7 @@ const props = defineProps<{
         data: Expense[];
         links: { url: string | null; label: string; active: boolean }[];
     };
+    statuses: SelectOption[];
     status?: string;
     search_by?: string;
     paid_at?: string;
@@ -75,10 +77,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         label="Status"
                         name="status"
                         width="w-56"
-                        :options="[
-                          { label: 'Pago', value: 1 },
-                          { label: 'Pendente', value: 2 }
-                        ]"
+                        :options="statuses"
                     />
                     <FilterDate  label="Criado em" name="created_to" />
                 </AppFilterBar>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Expenses;
 
 use App\Http\Controllers\Controller;
 use App\Models\Expense;
+use App\Models\PaymentStatus;
 use App\Models\Task;
 use Carbon\Carbon;
 use Exception;
@@ -21,6 +22,7 @@ class ExpenseController extends Controller
 
         return Inertia::render('expenses/Index', [
             'expenses' => $expenses,
+            'statuses' => PaymentStatus::select('id as value', 'name as label')->get(),
             'search_by' => $request->search_by,
             'status' => $request->status,
             'paid_at' => $request->paid_at,
