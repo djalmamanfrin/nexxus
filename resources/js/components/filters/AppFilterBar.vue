@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, provide, watch, computed } from 'vue'
+import { provide, watch, computed } from 'vue'
 import { XIcon } from 'lucide-vue-next';
 import ActiveFilters from './ActiveFilters.vue'
 
@@ -30,10 +30,9 @@ function clearFilters() {
     emit('clear')
 }
 
-/* 👇 verifica se existe algum filtro ativo */
 const hasActiveFilters = computed(() => {
     return Object.values(filters).some(value => {
-        return value !== null && value !== ''
+        return value !== null && value !== '' && value !== undefined
     })
 })
 </script>
