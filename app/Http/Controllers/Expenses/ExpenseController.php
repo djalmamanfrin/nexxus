@@ -15,26 +15,31 @@ class ExpenseController extends Controller
     public function index(Request $request)
     {
         $expenses = Expense::when(
-            $request->filled('name'),
-            fn($query) => $query->whereLike('name', '%' . $request->name . '%')
+            $request->filled('notes'),
+            fn($query) => $query->whereLike('notes', '%' . $request->notes . '%')
         )
         ->when(
-            $request->filled('started_at'),
-            fn($query) => $query->where('started_at', '>=', Carbon::parse($request->started_at))
+            $request->filled('status'),
+            fn($query) => $query->where('status', '<=', Carbon::parse($request->status))
         )
         ->when(
-            $request->filled('finished_at'),
-            fn($query) => $query->where('finished_at', '<=', Carbon::parse($request->finished_at))
+            $request->filled('paid_at'),
+            fn($query) => $query->where('paid_at', '>=', Carbon::parse($request->paid_at))
         )
-        ->orderBy('started_at', 'ASC')
+        ->when(
+            $request->filled('created_at'),
+            fn($query) => $query->where('created_at', '<=', Carbon::parse($request->created_at))
+        )
+        ->orderBy('created_at', 'ASC')
         ->paginate(10)
         ->withQueryString();
 
-        // Enviar os dados diretamente para a view
         return Inertia::render('expenses/Index', [
             'expenses' => $expenses,
-            'name' => $request->name,
-            'description' => $request->description,
+            'search_by' => $request->search_by,
+            'status' => $request->status,
+            'paid_at' => $request->paid_at,
+            'created_to' => $request->created_to,
         ]);
     }
 
