@@ -14,22 +14,21 @@ return new class extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->uuid()->unique()->index();
+
             $table->foreignId('payment_status_id')
                 ->default(1)
-                ->constrained('payment_statuses');
+                ->constrained('payment_statuses')
+                ->cascadeOnDelete();
 
             $table->foreignId('payee_id')
-                ->nullable()
-                ->constrained()
-                ->nullOnDelete();
+                ->constrained('payees')
+                ->cascadeOnDelete();
 
             $table->foreignId('cost_center_id')
-                ->nullable()
-                ->constrained()
-                ->nullOnDelete();
+                ->constrained('cost_centers')
+                ->cascadeOnDelete();
 
             $table->foreignId('expense_category_id')
-                ->nullable()
                 ->constrained('expense_categories')
                 ->nullOnDelete();
 
@@ -39,6 +38,7 @@ return new class extends Migration
             $table->date('competence_date')->nullable()->index(); // vencimento
             $table->string('description')->nullable();
             $table->timestamps();
+            $table->index('created_at');
         });
     }
 
