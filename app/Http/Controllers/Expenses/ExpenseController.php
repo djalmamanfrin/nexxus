@@ -14,25 +14,10 @@ class ExpenseController extends Controller
 {
     public function index(Request $request)
     {
-        $expenses = Expense::when(
-            $request->filled('notes'),
-            fn($query) => $query->whereLike('notes', '%' . $request->notes . '%')
-        )
-        ->when(
-            $request->filled('status'),
-            fn($query) => $query->where('status', '<=', Carbon::parse($request->status))
-        )
-        ->when(
-            $request->filled('paid_at'),
-            fn($query) => $query->where('paid_at', '>=', Carbon::parse($request->paid_at))
-        )
-        ->when(
-            $request->filled('created_at'),
-            fn($query) => $query->where('created_at', '<=', Carbon::parse($request->created_at))
-        )
-        ->orderBy('created_at', 'ASC')
-        ->paginate(10)
-        ->withQueryString();
+        $expenses = Expense::filter($request->all())
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('expenses/Index', [
             'expenses' => $expenses,

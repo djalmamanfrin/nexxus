@@ -46,4 +46,26 @@ class Expense extends Model
     {
         return $this->hasMany(Payment::class);
     }
+
+    public function scopeFilter($query, $filters): void
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('description', 'like', "%$search%")
+                    ->orWhere('reference', 'like', "%$search%");
+            });
+        });
+
+        $query->when($filters['status'] ?? null, function ($query, $status) {
+            $query->where('payment_status_id', $status);
+        });
+
+        $query->when($filters['due_from'] ?? null, function ($query, $date) {
+            $query->whereDate('due_at', '>=', $date);
+        });
+
+        $query->when($filters['due_to'] ?? null, function ($query, $date) {
+            $query->whereDate('due_at', '<=', $date);
+        });
+    }
 }
