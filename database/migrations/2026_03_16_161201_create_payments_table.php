@@ -17,12 +17,14 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->foreignId('expense_id')
+                ->nullable()
                 ->constrained('expenses')
-                ->cascadeOnDelete();
+                ->nullOnDelete();
 
             $table->foreignId('bank_account_id')
+                ->nullable()
                 ->constrained('bank_accounts')
-                ->cascadeOnDelete();
+                ->nullOnDelete();
 
             $table->decimal('amount', 12, 2);
             $table->string('payment_method'); // pix | ted | boleto | cash

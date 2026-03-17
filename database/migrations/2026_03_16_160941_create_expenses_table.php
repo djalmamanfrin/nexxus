@@ -15,11 +15,6 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique()->index();
 
-            $table->foreignId('payment_status_id')
-                ->default(1)
-                ->constrained('payment_statuses')
-                ->cascadeOnDelete();
-
             $table->foreignId('payee_id')
                 ->constrained('payees')
                 ->cascadeOnDelete();
@@ -29,8 +24,9 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->foreignId('expense_category_id')
+                ->default(1)
                 ->constrained('expense_categories')
-                ->nullOnDelete();
+                ->cascadeOnDelete();
 
             $table->string('reference')->nullable();
             $table->decimal('amount', 12, 2);
