@@ -50,7 +50,6 @@ class Expense extends Model
         'uuid',
         'reference',
         'amount',
-        'payment_status_id',
         'payee_id',
         'cost_center_id',
         'expense_category_id',

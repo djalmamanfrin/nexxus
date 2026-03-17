@@ -20,11 +20,7 @@ class ExpenseController extends Controller
 
         return Inertia::render('expenses/Index', [
             'expenses' => $expenses,
-            'statuses' => PaymentStatus::select('id as value', 'name as label')->get(),
             'search_by' => $request->search_by,
-            'status' => $request->status,
-            'paid_at' => $request->paid_at,
-            'created_to' => $request->created_to,
         ]);
     }
 

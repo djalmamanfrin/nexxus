@@ -16,18 +16,19 @@ import { SelectOption } from '@/types/select';
 
 export interface Expense {
     id: number;
-    notes: string;
+    reference: string;
+    amount: string;
+    cost_center_id: string;
+    due_at: string;
+    description: string;
+    created_at: string;
 }
 const props = defineProps<{
     expenses: {
         data: Expense[];
         links: { url: string | null; label: string; active: boolean }[];
     };
-    statuses: SelectOption[];
-    status?: string;
     search_by?: string;
-    paid_at?: string;
-    created_to?: string;
 }>();
 
 const { filters, search, clear } = useFilters(
@@ -72,13 +73,6 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Despesas', href: '' }];
                         placeholder="Ex: cpf, cnpj ou qualquer texto no comprovante"
                         :icon="Search"
                     />
-                    <FilterSelect
-                        label="Status"
-                        name="status"
-                        width="w-56"
-                        :options="statuses"
-                    />
-                    <FilterDate label="Criado em" name="created_to" />
                 </AppFilterBar>
             </form>
 
@@ -89,7 +83,12 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Despesas', href: '' }];
                     <thead>
                         <tr class="table-header">
                             <th class="table-row-header">ID</th>
-                            <th class="table-row-header">Anotações</th>
+                            <th class="table-row-header">Referencia</th>
+                            <th class="table-row-header">Valor</th>
+                            <th class="table-row-header">C. de Custo</th>
+                            <th class="table-row-header">Vencimento</th>
+                            <th class="table-row-header">Descrição</th>
+                            <th class="table-row-header">Criado em</th>
                             <th class="table-row-header">Ações</th>
                         </tr>
                     </thead>
@@ -103,7 +102,22 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Despesas', href: '' }];
                                 {{ expense.id }}
                             </td>
                             <td class="table-row-body">
+                                {{ expense.reference }}
+                            </td>
+                            <td class="table-row-body">
                                 {{ expense.notes }}
+                            </td>
+                            <td class="table-row-body">
+                                {{ expense.amount }}
+                            </td>
+                            <td class="table-row-body">
+                                {{ expense.cost_center_id }}
+                            </td>
+                            <td class="table-row-body">
+                                {{ expense.due_at }}
+                            </td>
+                            <td class="table-row-body">
+                                {{ expense.description }}
                             </td>
                             <td class="table-actions">
                                 <div class="table-actions-align">
