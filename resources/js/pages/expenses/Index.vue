@@ -1,19 +1,18 @@
 <script setup lang="ts">
-
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
-import {CirclePlus, Eye, Pencil, Search, Trash} from 'lucide-vue-next';
+import { CirclePlus, Eye, Pencil, Search } from 'lucide-vue-next';
 import Pagination from '@/components/Pagination.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
-import DeleteButton from '@/components/DeleteButton.vue'
-import AppButton from "@/components/AppButton.vue";
-import FilterDate from "@/components/filters/FilterDate.vue";
-import FilterSelect from "@/components/filters/FilterSelect.vue";
-import FilterText from "@/components/filters/FilterText.vue";
-import AppFilterBar from "@/components/filters/AppFilterBar.vue";
-import { useFilters } from "@/composables/useFilters";
-import { SelectOption } from "@/types/select";
+import DeleteButton from '@/components/DeleteButton.vue';
+import AppButton from '@/components/AppButton.vue';
+import FilterDate from '@/components/filters/FilterDate.vue';
+import FilterSelect from '@/components/filters/FilterSelect.vue';
+import FilterText from '@/components/filters/FilterText.vue';
+import AppFilterBar from '@/components/filters/AppFilterBar.vue';
+import { useFilters } from '@/composables/useFilters';
+import { SelectOption } from '@/types/select';
 
 export interface Expense {
     id: number;
@@ -31,18 +30,18 @@ const props = defineProps<{
     created_to?: string;
 }>();
 
-const { filters, search, clear } = useFilters({
-    search_by: props.search_by || '',
-    status: props.status || '',
-    paid_at: props.paid_at || '',
-    created_to: props.created_to || '',
-}, '/expenses')
+const { filters, search, clear } = useFilters(
+    {
+        search_by: props.search_by || '',
+        status: props.status || '',
+        paid_at: props.paid_at || '',
+        created_to: props.created_to || '',
+    },
+    '/expenses',
+);
 
 /* Define os breadcrumbs que serão exibidos no layout */
-const breadcrumbItems: BreadcrumbItem[] = [
-    { title: 'Despesas', href: '' },
-];
-
+const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Despesas', href: '' }];
 </script>
 
 <template>
@@ -61,7 +60,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 </div>
             </div>
             <FlashMessage />
-            <form @submit.prevent="search" >
+            <form @submit.prevent="search">
                 <AppFilterBar
                     v-model:filters="filters"
                     @change="search"
@@ -79,9 +78,9 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         width="w-56"
                         :options="statuses"
                     />
-                    <FilterDate  label="Criado em" name="created_to" />
+                    <FilterDate label="Criado em" name="created_to" />
                 </AppFilterBar>
-             </form>
+            </form>
 
             <div class="my-4"></div>
 
@@ -95,25 +94,39 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="expense in props.expenses.data" :key="expense.id" class="table-body">
-                            <td class="table-row-body ">
-                                {{ expense.id }}</td>
-                            <td class="table-row-body ">
-                                {{ expense.notes }}</td>
+                        <tr
+                            v-for="expense in props.expenses.data"
+                            :key="expense.id"
+                            class="table-body"
+                        >
+                            <td class="table-row-body">
+                                {{ expense.id }}
+                            </td>
+                            <td class="table-row-body">
+                                {{ expense.notes }}
+                            </td>
                             <td class="table-actions">
                                 <div class="table-actions-align">
-                                    <Link :href="`/expenses/${expense.id}`" class="btn-primary align-icon-btn">
-                                        <Eye class="w-4 h-4" />
+                                    <Link
+                                        :href="`/expenses/${expense.id}`"
+                                        class="btn-primary align-icon-btn"
+                                    >
+                                        <Eye class="h-4 w-4" />
                                         <span>Visualizar</span>
                                     </Link>
 
-                                    <Link :href="`/expenses/${expense.id}/edit`" class="btn-warning align-icon-btn">
-                                        <Pencil class="w-4 h-4" />
+                                    <Link
+                                        :href="`/expenses/${expense.id}/edit`"
+                                        class="btn-warning align-icon-btn"
+                                    >
+                                        <Pencil class="h-4 w-4" />
                                         <span>Editar</span>
                                     </Link>
 
-                                    <DeleteButton :url="`/expenses/${expense.id}`"
-                                        title="Deseja realmente apagar esta tarefa?" />
+                                    <DeleteButton
+                                        :url="`/expenses/${expense.id}`"
+                                        title="Deseja realmente apagar esta tarefa?"
+                                    />
                                 </div>
                             </td>
                         </tr>
