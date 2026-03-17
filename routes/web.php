@@ -28,7 +28,7 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
         Route::get('/{expense}', [ExpenseController::class, 'show'])->name('expenses.show');
         Route::get('/{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
         Route::put('/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
-        Route::delete('/{task}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
+        Route::delete('/{expense}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
     });
 
     // Tarefas
