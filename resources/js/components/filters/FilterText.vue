@@ -1,50 +1,56 @@
 <script setup>
+import { debounce } from 'lodash';
+import { inject, ref, watch, onUnmounted, onMounted } from 'vue';
+import AppInput from '@/components/base/AppInput.vue';
 
-import { debounce } from 'lodash'
-import { inject, ref, watch, onUnmounted } from 'vue'
-import AppInput from "@/components/base/AppInput.vue";
-
-const filters = inject('filters')
+const filters = inject('filters');
+const registerFilter = inject('registerFilter');
 
 const props = defineProps({
     label: String,
     name: String,
     placeholder: String,
     debounce: {
-        default: 400
+        default: 400,
     },
     icon: {
         type: Object,
-        default: null
+        default: null,
     },
     width: {
-        default: 'w-96'
-    }
-})
+        default: 'w-96',
+    },
+});
 
-const localValue = ref(filters[props.name] || '')
+const localValue = ref(filters[props.name] || '');
 
 const updateFilter = debounce((value) => {
-    filters[props.name] = value
-}, props.debounce)
+    filters[props.name] = value;
+}, props.debounce);
 
 watch(localValue, (value) => {
-    updateFilter(value)
-})
+    updateFilter(value);
+});
 
 watch(
     () => filters[props.name],
     (value) => {
         if (value !== localValue.value) {
-            localValue.value = value
+            localValue.value = value;
         }
-    }
-)
+    },
+);
+
+onMounted(() => {
+    registerFilter?.(props.name, {
+        label: 'deve conter',
+        type: 'text',
+    });
+});
 
 onUnmounted(() => {
-    updateFilter.cancel()
-})
-
+    updateFilter.cancel();
+});
 </script>
 
 <template>

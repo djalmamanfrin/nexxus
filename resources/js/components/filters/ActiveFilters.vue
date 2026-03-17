@@ -1,49 +1,55 @@
-<script setup>
-import { formatDateShort} from "@/lib/date.js";
+<script setup lang="ts">
+import { inject } from 'vue';
 
 const props = defineProps({
-    filters: Object
-})
+    labels: Object,
+    filters: Object,
+});
 
-const labels = {
-    search_by: 'Deve conter',
-    status: 'Com status',
-    paid_at: 'Pago em',
-    created_at: 'Criado até'
+const filtersMeta = inject('filtersMeta', {});
+
+function getLabel(key) {
+    return filtersMeta[key]?.label || key;
 }
-const values = {
-    status: {
-        1: 'Pago',
-        2: 'Pendente',
-    },
+
+function getValueLabel(key, value) {
+    const meta = filtersMeta[key];
+
+    if (!meta) return normalize(value);
+
+    // 🔥 prioridade: format
+    if (meta.format) {
+        return normalize(meta.format(value));
+    }
+
+    // traduz select
+    if (meta.type === 'select' && meta.options) {
+        const found = meta.options.find((opt) => opt.value == value);
+        return normalize(found ? found.label : value);
+    }
+
+    return normalize(value);
+}
+
+function normalize(value) {
+    if (typeof value === 'string') {
+        return value.toLowerCase();
+    }
+
+    return value;
 }
 </script>
 
 <template>
     <div class="flex flex-wrap gap-2">
-        <span
-            class="px-2 py-1 text-xs bg-gray-200 rounded"
-        >
-            <span class="text-gray-500">
-                Os resultados:
-            </span>
+        <span class="rounded bg-gray-200 px-2 py-1 text-xs">
+            <span class="text-gray-500"> Os resultados: </span>
         </span>
-        <div
-            v-for="(value, key) in filters"
-            :key="key"
-        >
-            <span
-              v-if="value"
-              class="px-2 py-1 text-xs bg-gray-200 rounded"
-            >
-                <span class="text-gray-500">
-                    {{ labels[key] ?? key }}:
-                </span>
-                 <span class="font-semibold tracking-wide">
-                     {{
-                         values[key]?.[value] ??
-                         (key.includes('_at') ? formatDateShort(value) : value)
-                     }}
+        <div v-for="(value, key) in filters" :key="key">
+            <span v-if="value" class="rounded bg-gray-200 px-2 py-1 text-xs">
+                <span class="text-gray-500"> {{ getLabel(key) }}: </span>
+                <span class="font-semibold tracking-wide">
+                    {{ getValueLabel(key, value) }}
                 </span>
             </span>
         </div>
