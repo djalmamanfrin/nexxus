@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Expenses\ExpenseController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\Tasks\TaskController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,16 +20,11 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    // Despesas
-    Route::prefix('expenses')->group(function () {
-        Route::get('/', [ExpenseController::class, 'index'])->name('expense.index');
-        Route::get('/create', [ExpenseController::class, 'create'])->name('expense.create');
-        Route::post('/', [ExpenseController::class, 'store'])->name('expense.store');
-        Route::get('/{expense}', [ExpenseController::class, 'show'])->name('expenses.show');
-        Route::get('/{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
-        Route::put('/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
-        Route::delete('/{expense}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
-    });
+    Route::resource('payments', ExpenseController::class)
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+
+    Route::resource('expenses', ExpenseController::class)
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
     // Tarefas
     Route::prefix('tasks')->group(function () {
