@@ -13,10 +13,7 @@ const props = defineProps({
     debounce: {
         default: 400,
     },
-    icon: {
-        type: Object,
-        default: null,
-    },
+    icon: Function,
     width: {
         default: 'w-96',
     },

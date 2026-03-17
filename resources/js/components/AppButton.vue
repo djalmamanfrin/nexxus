@@ -16,10 +16,7 @@ const props = defineProps({
         type: String,
         default: 'primary'
     },
-    icon: {
-        type: Object,
-        default: null
-    },
+    icon: Function,
     iconPosition: {
         type: String,
         default: 'left'

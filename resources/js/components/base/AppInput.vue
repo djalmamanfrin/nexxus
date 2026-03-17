@@ -4,10 +4,7 @@ const props = defineProps({
     label: String,
     modelValue: String,
     placeholder: String,
-    icon: {
-        type: Object,
-        default: null
-    },
+    icon: Function,
     width: {
         default: 'w-40'
     }
