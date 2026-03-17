@@ -6,6 +6,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -23,5 +25,46 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->report(function (\Throwable $e) {
+            Log::error('Exception captured', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'user_id' => auth()->id(),
+                'url' => request()->fullUrl(),
+            ]);
+
+            if (app()->bound('sentry')) {
+                app('sentry')->captureException($e);
+            }
+        });
+
+        // 🔸 422
+        $exceptions->render(function (ValidationException $e) {
+            return back()->withErrors($e->errors())->with('flash', [
+                'type' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        });
+
+        // 🔸 HTTP (404, 403...)
+        $exceptions->render(function (HttpException $e) {
+            $message = match ($e->getStatusCode()) {
+                403 => 'Você não tem permissão para isso.',
+                404 => 'Recurso não encontrado.',
+                default => 'Erro na requisição.',
+            };
+
+            return back()->with('flash', [
+                'type' => 'error',
+                'message' => $message
+            ]);
+        });
+
+        $exceptions->render(function () {
+            return back()->with('flash', [
+                'type' => 'error',
+                'message' => 'Erro interno. Tente novamente.'
+            ]);
+        });
     })->create();
