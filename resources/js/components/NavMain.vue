@@ -9,25 +9,35 @@ import {
 import { urlIsActive } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import {CalendarCheck2, CircleDollarSignIcon, HomeIcon} from 'lucide-vue-next';
+import {
+    CalendarCheck2,
+    CircleDollarSignIcon,
+    HomeIcon,
+    DollarSign,
+} from 'lucide-vue-next';
 
 const items: NavItem[] = [
     {
         title: 'Dashboard',
         href: '/dashboard',
-        icon: HomeIcon
+        icon: HomeIcon,
+    },
+    {
+        title: 'Pagamentos',
+        href: '/payments',
+        icon: DollarSign,
     },
     {
         title: 'Despesas',
         href: '/expenses',
-        icon: CircleDollarSignIcon
+        icon: CircleDollarSignIcon,
     },
     {
         title: 'Tarefas',
         href: '/tasks',
-        icon: CalendarCheck2
-    }
-]
+        icon: CalendarCheck2,
+    },
+];
 
 defineProps<{
     items: NavItem[];
