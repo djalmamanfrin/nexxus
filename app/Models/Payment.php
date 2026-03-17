@@ -85,17 +85,17 @@ class Payment extends Model
 
     public function scopeFilter($query, $filters): void
     {
-        $query->when($filters['search'] ?? null, function ($query, $search) {
+        $query->when($filters['search_by'] ?? null, function ($query, $search) {
             $query->where(function ($q) use ($search) {
                 $q->where('transaction_id', 'like', "%$search%")
                     ->orWhere('end_to_end_id', 'like', "%$search%");
             })
 
                 // campos do bank_account
-                ->orWhereHas('bank_account', function ($q) use ($search) {
+                ->orWhereHas('bankAccount', function ($q) use ($search) {
                     $q->where('name', 'like', "%$search%")
                         ->orWhere('account_number', 'like', "%$search%")
-                        ->orWhere('$document', 'like', "%$search%");
+                        ->orWhere('document', 'like', "%$search%");
                 });
         });
 

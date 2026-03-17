@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Tasks\TaskController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,7 +21,7 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::resource('payments', ExpenseController::class)
+    Route::resource('payments', PaymentController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
     Route::resource('expenses', ExpenseController::class)
