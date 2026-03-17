@@ -83,7 +83,7 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                         width="w-56"
                         :options="statuses"
                     />
-                    <FilterDate label="Criado em" name="created_to" />
+<!--                    <FilterDate label="Criado em" name="created_to" />-->
                 </AppFilterBar>
             </form>
 

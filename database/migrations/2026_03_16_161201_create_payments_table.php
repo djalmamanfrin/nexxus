@@ -9,7 +9,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid')->unique()->index();
+            $table->uuid()->unique()->index();
 
             $table->foreignId('payment_status_id')
                 ->default(1)
