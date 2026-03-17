@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Expenses;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Expense;
 use App\Models\PaymentStatus;
 use App\Models\Task;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
