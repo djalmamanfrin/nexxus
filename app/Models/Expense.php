@@ -91,6 +91,13 @@ class Expense extends Model
             $query->where(function ($q) use ($search) {
                 $q->where('description', 'like', "%$search%")
                     ->orWhere('reference', 'like', "%$search%");
+            })
+
+            // campos do payee
+            ->orWhereHas('payee', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('document', 'like', "%$search%")
+                    ->orWhere('pix_key', 'like', "%$search%");
             });
         });
 
