@@ -16,6 +16,10 @@ import { SelectOption } from '@/types/select';
 
 export interface Payment {
     id: number;
+    bank_account_id: string;
+    expense_id: string;
+    status: string;
+    amount: string;
     paid_at: string;
     created_at: string;
 }
@@ -90,7 +94,12 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                     <thead>
                         <tr class="table-header">
                             <th class="table-row-header">ID</th>
-                            <th class="table-row-header">Anotações</th>
+                            <th class="table-row-header">Conta</th>
+                            <th class="table-row-header">Despesa</th>
+                            <th class="table-row-header">Status</th>
+                            <th class="table-row-header">Valor</th>
+                            <th class="table-row-header">Pago em</th>
+                            <th class="table-row-header">Criado em</th>
                             <th class="table-row-header">Ações</th>
                         </tr>
                     </thead>
@@ -104,7 +113,22 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                                 {{ payment.id }}
                             </td>
                             <td class="table-row-body">
-                                {{ payment.notes }}
+                                {{ payment.bank_account_id }}
+                            </td>
+                            <td class="table-row-body">
+                                {{ payment.expense_id }}
+                            </td>
+                            <td class="table-row-body">
+                                {{ payment.status }}
+                            </td>
+                            <td class="table-row-body">
+                                {{ payment.amount }}
+                            </td>
+                            <td class="table-row-body">
+                                {{ payment.paid_at }}
+                            </td>
+                            <td class="table-row-body">
+                                {{ payment.created_at }}
                             </td>
                             <td class="table-actions">
                                 <div class="table-actions-align">
