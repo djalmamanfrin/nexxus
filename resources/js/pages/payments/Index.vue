@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
-import { CirclePlus, Eye, Pencil, Search } from 'lucide-vue-next';
+import { Eye, Pencil, Search } from 'lucide-vue-next';
 import Pagination from '@/components/Pagination.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import DeleteButton from '@/components/DeleteButton.vue';
-import AppButton from '@/components/AppButton.vue';
 import FilterSelect from '@/components/filters/FilterSelect.vue';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
@@ -46,7 +44,6 @@ const { filters, search, clear } = useFilters(
 
 /* Define os breadcrumbs que serão exibidos no layout */
 const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
-const open = ref(false);
 </script>
 
 <template>
@@ -56,17 +53,8 @@ const open = ref(false);
             <div class="content-box-header">
                 <h3 class="content-box-title">Pagamentos</h3>
                 <div class="content-box-btn">
-                    <AppButton
-                        @click="open=true"
-                        label="Novo Pagamento"
-                        :icon="CirclePlus"
-                        variant="success"
-                    />
+                    <Create/>
                 </div>
-                <Create
-                    v-model:open="open"
-                    :options="paymentTypes"
-                />
             </div>
             <FlashMessage />
             <form @submit.prevent="search">
