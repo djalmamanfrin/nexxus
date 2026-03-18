@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
@@ -7,12 +8,12 @@ import Pagination from '@/components/Pagination.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import DeleteButton from '@/components/DeleteButton.vue';
 import AppButton from '@/components/AppButton.vue';
-import FilterDate from '@/components/filters/FilterDate.vue';
 import FilterSelect from '@/components/filters/FilterSelect.vue';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
+import Create from '@/pages/payments/Create.vue';
 
 export interface Payment {
     id: number;
@@ -29,24 +30,23 @@ const props = defineProps<{
         links: { url: string | null; label: string; active: boolean }[];
     };
     statuses: SelectOption[];
+    paymentTypes: SelectOption[];
     status?: string;
     search_by?: string;
     paid_at?: string;
-    created_to?: string;
+    created_at?: string;
 }>();
 
 const { filters, search, clear } = useFilters(
     {
         search_by: props.search_by || '',
-        status: props.status || '',
-        paid_at: props.paid_at || '',
-        created_at: props.created_at || '',
     },
     '/payments',
 );
 
 /* Define os breadcrumbs que serão exibidos no layout */
 const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
+const open = ref(false);
 </script>
 
 <template>
@@ -57,12 +57,16 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                 <h3 class="content-box-title">Pagamentos</h3>
                 <div class="content-box-btn">
                     <AppButton
-                        href="/payments/create"
+                        @click="open = true"
                         label="Nova Despesa"
                         :icon="CirclePlus"
                         variant="success"
                     />
                 </div>
+                <Create
+                    v-model:open="open"
+                    :options="paymentTypes"
+                />
             </div>
             <FlashMessage />
             <form @submit.prevent="search">
@@ -83,7 +87,6 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                         width="w-56"
                         :options="statuses"
                     />
-<!--                    <FilterDate label="Criado em" name="created_to" />-->
                 </AppFilterBar>
             </form>
 
