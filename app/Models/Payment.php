@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasUlid;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * @property int $id
@@ -85,12 +84,9 @@ class Payment extends Model
         return $this->belongsTo(PaymentType::class, 'payment_type_id');
     }
 
-    public function attachments(): BelongsToMany
+    public function attachments(): MorphMany
     {
-        return $this->belongsToMany(
-            Attachment::class,
-            'payment_attachments'
-        );
+        return $this->morphMany(Attachment::class, 'attachable');
     }
 
     public function scopeFilter($query, $filters): void
