@@ -58,9 +58,6 @@ provide('filtersMeta', filtersMeta);
                 />
             </div>
         </div>
-        <ActiveFilters
-            v-if="hasActiveFilters"
-            :filters="filters"
-        />
+        <ActiveFilters v-if="hasActiveFilters" :filters="filters" />
     </div>
 </template>

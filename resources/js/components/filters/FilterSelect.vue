@@ -23,6 +23,7 @@ onMounted(() => {
 
 <template>
     <AppSelect
+        class="min-w-[180px] md:max-w-[250px] flex-[1]"
         v-model="filters[name]"
         :label="label"
         :options="options"

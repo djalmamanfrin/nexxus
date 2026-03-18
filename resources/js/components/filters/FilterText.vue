@@ -52,6 +52,7 @@ onUnmounted(() => {
 
 <template>
     <AppInput
+        class="min-w-[280px] md:max-w-[500px] md:flex-[2]"
         :label="label"
         v-model="localValue"
         :placeholder="placeholder"
