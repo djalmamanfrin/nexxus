@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -30,7 +31,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Work extends Model
 {
-    use HasUlids;
+    use HasUlid;
 
     protected $fillable = [
         'name',

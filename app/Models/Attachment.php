@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Attachment extends Model
 {
-    use HasUlids;
+    use HasUlid;
 
     protected $fillable = [
         'disk',
