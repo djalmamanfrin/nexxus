@@ -11,7 +11,7 @@ import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
 import Create from '@/pages/payments/Create.vue';
-import { formatRelative } from '@/lib/date';
+import { formatDate, formatDateTime, formatRelative } from '@/lib/date';
 import AppImagePreview from '@/components/base/AppImagePreview.vue';
 
 export interface Payment {
@@ -125,7 +125,7 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                                 {{ payment.paid_at ?? 'N/A' }}
                             </td>
                             <td class="table-row-body">
-                                {{ formatRelative(payment.created_at) }}
+                                {{ formatDateTime(payment.created_at) }}
                             </td>
                             <td class="table-actions">
                                 <div class="table-actions-align gap-2">
