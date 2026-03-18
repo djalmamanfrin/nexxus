@@ -2,22 +2,23 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
-import { Eye, Pencil, Search } from 'lucide-vue-next';
+import { Eye, Pencil, Search, Trash } from 'lucide-vue-next';
 import Pagination from '@/components/Pagination.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
-import DeleteButton from '@/components/DeleteButton.vue';
 import FilterSelect from '@/components/filters/FilterSelect.vue';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
 import Create from '@/pages/payments/Create.vue';
+import { formatRelative } from '@/lib/date';
 
 export interface Payment {
     id: number;
-    bank_account_id: string;
     expense_id: string;
-    status: string;
+    bank_account_id: string;
+    payment_status_id: string;
+    payment_type_id: string;
     amount: string;
     paid_at: string;
     created_at: string;
@@ -29,10 +30,6 @@ const props = defineProps<{
     };
     statuses: SelectOption[];
     paymentTypes: SelectOption[];
-    status?: string;
-    search_by?: string;
-    paid_at?: string;
-    created_at?: string;
 }>();
 
 const { filters, search, clear } = useFilters(
@@ -41,6 +38,10 @@ const { filters, search, clear } = useFilters(
     },
     '/payments',
 );
+
+function getStatusLabel(id: string | number) {
+    return props.statuses.find((s) => s.value == id)?.label ?? '-';
+}
 
 /* Define os breadcrumbs que serão exibidos no layout */
 const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
@@ -53,7 +54,7 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
             <div class="content-box-header">
                 <h3 class="content-box-title">Pagamentos</h3>
                 <div class="content-box-btn">
-                    <Create/>
+                    <Create />
                 </div>
             </div>
             <FlashMessage />
@@ -104,45 +105,45 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                                 {{ payment.id }}
                             </td>
                             <td class="table-row-body">
-                                {{ payment.bank_account_id }}
+                                {{ payment.bank_account_id ?? 'N/A' }}
                             </td>
                             <td class="table-row-body">
-                                {{ payment.expense_id }}
+                                {{ payment.expense_id ?? 'N/A' }}
                             </td>
                             <td class="table-row-body">
-                                {{ payment.status }}
+                                {{ getStatusLabel(payment.payment_status_id) }}
                             </td>
                             <td class="table-row-body">
                                 {{ payment.amount }}
                             </td>
                             <td class="table-row-body">
-                                {{ payment.paid_at }}
+                                {{ payment.paid_at ?? 'N/A' }}
                             </td>
                             <td class="table-row-body">
-                                {{ payment.created_at }}
+                                {{ formatRelative(payment.created_at) }}
                             </td>
                             <td class="table-actions">
-                                <div class="table-actions-align">
+                                <div class="table-actions-align gap-2">
                                     <Link
                                         :href="`/payments/${payment.id}`"
-                                        class="btn-primary align-icon-btn"
+                                        class="cursor-pointer"
                                     >
                                         <Eye class="h-4 w-4" />
-                                        <span>Visualizar</span>
                                     </Link>
 
                                     <Link
                                         :href="`/payments/${payment.id}/edit`"
-                                        class="btn-warning align-icon-btn"
+                                        class="cursor-pointer"
                                     >
                                         <Pencil class="h-4 w-4" />
-                                        <span>Editar</span>
                                     </Link>
 
-                                    <DeleteButton
-                                        :url="`/payments/${payment.id}`"
-                                        title="Deseja realmente apagar este pagamento?"
-                                    />
+                                    <Link
+                                        :href="`/payments/${payment.id}`"
+                                        class="cursor-pointer"
+                                    >
+                                        <Trash class="h-4 w-4" />
+                                    </Link>
                                 </div>
                             </td>
                         </tr>
