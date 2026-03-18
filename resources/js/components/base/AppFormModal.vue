@@ -10,6 +10,7 @@ import {
 defineProps({
     open: Boolean,
     title: String,
+    description: String,
 });
 
 const emit = defineEmits(['update:open']);
@@ -17,13 +18,11 @@ const emit = defineEmits(['update:open']);
 
 <template>
     <Dialog :open="open" @update:open="(val) => emit('update:open', val)">
-        <DialogContent class="w-full max-w-lg md:max-w-2xl lg:max-w-4xl">
+        <DialogContent class="w-auto w-full max-w-[90vw]">
             <DialogHeader>
                 <DialogTitle>{{ title }}</DialogTitle>
+                <DialogDescription> {{description}} </DialogDescription>
             </DialogHeader>
-            <DialogDescription>
-                Preencha os dados abaixo para inserir um novo pagamento
-            </DialogDescription>
 
             <slot />
         </DialogContent>
