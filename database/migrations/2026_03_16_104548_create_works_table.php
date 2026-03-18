@@ -9,7 +9,7 @@ return new class extends Migration
     {
         Schema::create('works', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique()->index();
+            $table->ulid()->unique()->index();
             $table->string('name');
             $table->string('code')->nullable();
             $table->boolean('active')->default(true);

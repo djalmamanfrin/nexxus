@@ -9,7 +9,7 @@ return new class extends Migration
     {
         Schema::create('attachments', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique()->index();
+            $table->ulid()->unique()->index();
             $table->string('hash', 64)->index();
             $table->morphs('attachable');
             $table->string('file_path');

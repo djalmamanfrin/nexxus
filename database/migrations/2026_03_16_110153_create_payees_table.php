@@ -9,7 +9,7 @@ return new class extends Migration
     {
         Schema::create('payees', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique()->index();
+            $table->ulid()->unique()->index();
             $table->string('name');
             $table->string('document'); // CPF ou CNPJ
             $table->string('document_type')->nullable(); // cpf | cnpj

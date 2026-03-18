@@ -9,7 +9,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique()->index();
+            $table->ulid()->unique()->index();
 
             $table->foreignId('expense_id')
                 ->nullable()
@@ -31,7 +31,7 @@ return new class extends Migration
                 ->constrained('payment_types')
                 ->cascadeOnDelete();
 
-            $table->decimal('amount', 12, 2);
+            $table->decimal('amount', 12, 2)->default(0);
             $table->string('transaction_id')->nullable();
             $table->string('end_to_end_id')->nullable();
             $table->timestamp('paid_at')->nullable(); // pagamento

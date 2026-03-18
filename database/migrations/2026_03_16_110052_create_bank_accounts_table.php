@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('bank_accounts', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique()->index();
+            $table->ulid()->unique()->index();
 
             $table->foreignId('bank_id')
                 ->constrained()
