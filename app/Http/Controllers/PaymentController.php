@@ -15,7 +15,9 @@ class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        $payments = Payment::filter($request->all())
+        $payments = Payment::query()
+            ->with('attachments')
+            ->filter($request->all())
             ->latest()
             ->paginate(10)
             ->withQueryString();

@@ -50,6 +50,10 @@ class Attachment extends Model
         'hash'
     ];
 
+    protected $appends = ['url'];
+
+    protected $hidden = ['file_path'];
+
     public function payments(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -60,6 +64,10 @@ class Attachment extends Model
 
     public function getUrlAttribute(): string
     {
-        return Storage::url($this->path);
+//        return Storage::disk('s3')->temporaryUrl(
+//            $this->file_path,
+//            now()->addMinutes(5) // expira em 5 minutos
+//        );
+        return Storage::url($this->file_path);
     }
 }

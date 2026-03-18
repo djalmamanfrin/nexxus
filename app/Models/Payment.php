@@ -96,6 +96,9 @@ class Payment extends Model
                 $q->where('transaction_id', 'like', "%$search%")
                     ->orWhere('end_to_end_id', 'like', "%$search%");
             })
+                ->orWhereHas('attachments', function ($q) use ($search) {
+                    $q->where('original_name', 'like', "%$search%");
+                })
 
                 // campos do bank_account
                 ->orWhereHas('bankAccount', function ($q) use ($search) {

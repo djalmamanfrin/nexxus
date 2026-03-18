@@ -12,6 +12,7 @@ import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
 import Create from '@/pages/payments/Create.vue';
 import { formatRelative } from '@/lib/date';
+import AppImagePreview from '@/components/base/AppImagePreview.vue';
 
 export interface Payment {
     id: number;
@@ -85,7 +86,7 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                 <table class="table">
                     <thead>
                         <tr class="table-header">
-                            <th class="table-row-header">ID</th>
+                            <th class="table-row-header">Imagem</th>
                             <th class="table-row-header">Conta</th>
                             <th class="table-row-header">Despesa</th>
                             <th class="table-row-header">Status</th>
@@ -102,7 +103,11 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                             class="table-body"
                         >
                             <td class="table-row-body">
-                                {{ payment.id }}
+                                <AppImagePreview
+                                    v-if="payment.attachments.length > 0"
+                                    :file="payment.attachments[0]"
+                                />
+                                <span v-else>-</span>
                             </td>
                             <td class="table-row-body">
                                 {{ payment.bank_account_id ?? 'N/A' }}
