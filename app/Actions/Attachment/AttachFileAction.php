@@ -2,17 +2,33 @@
 
 namespace App\Actions\Attachment;
 
+use App\Models\Attachment;
+use Illuminate\Http\UploadedFile;
+use RuntimeException;
+
 class AttachFileAction
 {
-    public function execute($model, $file, string $folder = 'attachments')
+    public function execute($model, UploadedFile $file, string $folder = 'attachments')
     {
-        $path = $file->store($folder, 'public');
+        $hash = hash_file('sha256', $file->getRealPath());
+        $attachment = Attachment::where('hash', $hash)->first();
 
-        return $model->attachments()->create([
-            'path' => $path,
-            'filename' => $file->getClientOriginalName(),
-            'mime_type' => $file->getMimeType(),
-            'size' => $file->getSize(),
-        ]);
+        if (!$attachment) {
+            $disk = config('filesystems.default')
+                ?? throw new RuntimeException('Nenhum disco de arquivos configurado!');
+
+            $path = $file->store($folder, $disk);
+            $attachment = Attachment::create([
+                'original_name' => $file->getClientOriginalName(),
+                'file_path' => $path,
+                'mime_type' => $file->getMimeType(),
+                'size' => $file->getSize(),
+                'hash' => $hash,
+            ]);
+        }
+
+        // Vincular ao model (polimórfico)
+        $model->attachments()->syncWithoutDetaching([$attachment->id]);
+        return $attachment;
     }
 }

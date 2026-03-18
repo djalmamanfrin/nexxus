@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Storage;
 
 /**
  * @property int $id
@@ -55,5 +56,10 @@ class Attachment extends Model
             Payment::class,
             'payment_attachments'
         );
+    }
+
+    public function getUrlAttribute(): string
+    {
+        return Storage::url($this->path);
     }
 }
