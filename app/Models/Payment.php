@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment filter($filters)
+ * @property-read \App\Models\PaymentType|null $type
  * @mixin \Eloquent
  */
 class Payment extends Model
@@ -73,6 +74,11 @@ class Payment extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(PaymentStatus::class, 'payment_status_id');
+    }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(PaymentType::class, 'payment_type_id');
     }
 
     public function attachments(): BelongsToMany

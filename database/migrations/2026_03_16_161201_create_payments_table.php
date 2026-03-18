@@ -11,11 +11,6 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique()->index();
 
-            $table->foreignId('payment_status_id')
-                ->default(1)
-                ->constrained('payment_statuses')
-                ->cascadeOnDelete();
-
             $table->foreignId('expense_id')
                 ->nullable()
                 ->constrained('expenses')
@@ -26,8 +21,17 @@ return new class extends Migration
                 ->constrained('bank_accounts')
                 ->nullOnDelete();
 
+            $table->foreignId('payment_status_id')
+                ->default(1)
+                ->constrained('payment_statuses')
+                ->cascadeOnDelete();
+
+            $table->foreignId('payment_type_id')
+                ->default(1)
+                ->constrained('payment_types')
+                ->cascadeOnDelete();
+
             $table->decimal('amount', 12, 2);
-            $table->string('payment_method'); // pix | ted | boleto | cash
             $table->string('transaction_id')->nullable();
             $table->string('end_to_end_id')->nullable();
             $table->timestamp('paid_at')->nullable(); // pagamento
