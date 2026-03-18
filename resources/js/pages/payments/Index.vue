@@ -57,8 +57,8 @@ const open = ref(false);
                 <h3 class="content-box-title">Pagamentos</h3>
                 <div class="content-box-btn">
                     <AppButton
-                        @click="open = true"
-                        label="Nova Despesa"
+                        @click="open=true"
+                        label="Novo Pagamento"
                         :icon="CirclePlus"
                         variant="success"
                     />
