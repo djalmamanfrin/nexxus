@@ -11,8 +11,8 @@ class WorkSeeder extends Seeder
     public function run(): void
     {
         Work::insert([
-            ['uuid' => Str::uuid(), 'name' => 'Construção Residencial Alpha'],
-            ['uuid' => Str::uuid(), 'name' => 'Reforma Comercial Beta'],
+            ['ulid' => Str::ulid(), 'name' => 'Construção Residencial Alpha'],
+            ['ulid' => Str::ulid(), 'name' => 'Reforma Comercial Beta'],
         ]);
     }
 }

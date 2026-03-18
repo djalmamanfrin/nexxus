@@ -11,7 +11,7 @@ class AttachmentSeeder extends Seeder
     public function run(): void
     {
         Attachment::create([
-            'uuid' => Str::uuid(),
+            'ulid' => Str::ulid(),
             'disk' => 'public',
             'file_path' => 'attachments/example.pdf',
             'original_name' => 'example.pdf',
