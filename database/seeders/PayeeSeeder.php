@@ -12,13 +12,13 @@ class PayeeSeeder extends Seeder
     {
         Payee::insert([
             [
-                'uuid' => Str::uuid(),
+                'ulid' => Str::ulid(),
                 'name' => 'Fornecedor de Materiais Ltda',
                 'document' => '12345678000190',
                 'document_type' => 'cnpj'
             ],
             [
-                'uuid' => Str::uuid(),
+                'ulid' => Str::ulid(),
                 'name' => 'João da Silva',
                 'document' => '12345678900',
                 'document_type' => 'cpf'
