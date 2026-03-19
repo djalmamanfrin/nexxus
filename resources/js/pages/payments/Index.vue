@@ -11,8 +11,9 @@ import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
 import Create from '@/pages/payments/Create.vue';
-import { formatDate, formatDateTime, formatRelative } from '@/lib/date';
+import { formatDateTime } from '@/lib/date';
 import AppImagePreview from '@/components/base/AppImagePreview.vue';
+import AppTable from '@/components/base/AppTable.vue';
 
 export interface Payment {
     id: number;
@@ -82,80 +83,50 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
 
             <div class="my-4"></div>
 
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr class="table-header">
-                            <th class="table-row-header">Imagem</th>
-                            <th class="table-row-header">Conta</th>
-                            <th class="table-row-header">Despesa</th>
-                            <th class="table-row-header">Status</th>
-                            <th class="table-row-header">Valor</th>
-                            <th class="table-row-header">Pago em</th>
-                            <th class="table-row-header">Criado em</th>
-                            <th class="table-row-header">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="payment in props.payments.data"
-                            :key="payment.id"
-                            class="table-body"
-                        >
-                            <td class="table-row-body">
-                                <AppImagePreview
-                                    v-if="payment.attachments.length > 0"
-                                    :file="payment.attachments[0]"
-                                />
-                                <span v-else>-</span>
-                            </td>
-                            <td class="table-row-body">
-                                {{ payment.bank_account_id ?? 'N/A' }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ payment.expense_id ?? 'N/A' }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ getStatusLabel(payment.payment_status_id) }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ payment.amount }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ payment.paid_at ?? 'N/A' }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ formatDateTime(payment.created_at) }}
-                            </td>
-                            <td class="table-actions">
-                                <div class="table-actions-align gap-2">
-                                    <Link
-                                        :href="`/payments/${payment.id}`"
-                                        class="cursor-pointer"
-                                    >
-                                        <Eye class="h-4 w-4" />
-                                    </Link>
+            <AppTable
+                :columns="[
+                    { key: 'attachments', label: 'Imagem' },
+                    { key: 'amount', label: 'Valor', type: 'money' },
+                    {
+                        key: 'payment_status_id',
+                        label: 'Status',
+                        type: 'payment_status',
+                    },
+                    { key: 'created_at', label: 'Criado em', type: 'datetime' },
+                ]"
+                :items="props.payments"
+            >
+                <!-- UI COMPLEXA → SLOT -->
+                <template #cell-attachments="{ item }">
+                    <AppImagePreview
+                        v-if="item.attachments?.length"
+                        :file="item.attachments[0]"
+                    />
+                    <span v-else>-</span>
+                </template>
 
-                                    <Link
-                                        :href="`/payments/${payment.id}/edit`"
-                                        class="cursor-pointer"
-                                    >
-                                        <Pencil class="h-4 w-4" />
-                                    </Link>
+                <!-- STATUS COM BADGE -->
+                <template #cell-payment_status_id="{ item }">
+                    <span
+                        class="rounded bg-green-100 px-2 py-1 text-xs text-green-800"
+                    >
+                        {{ getStatusLabel(item.payment_status_id) }}
+                    </span>
+                </template>
 
-                                    <Link
-                                        :href="`/payments/${payment.id}`"
-                                        class="cursor-pointer"
-                                    >
-                                        <Trash class="h-4 w-4" />
-                                    </Link>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <Pagination :links="props.payments.links" />
-            </div>
+                <!-- AÇÕES -->
+                <template #actions="{ item }">
+                    <Link :href="`/payments/${item.id}`">
+                        <Eye class="h-4 w-4" />
+                    </Link>
+                    <Link :href="`/payments/${item.id}/edit`">
+                        <Pencil class="h-4 w-4" />
+                    </Link>
+                    <Link :href="`/payments/${item.id}`">
+                        <Trash class="h-4 w-4" />
+                    </Link>
+                </template>
+            </AppTable>
         </div>
     </AppLayout>
 </template>
