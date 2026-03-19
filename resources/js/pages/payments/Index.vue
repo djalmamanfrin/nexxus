@@ -116,10 +116,10 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                     <!--                    <Link :href="`/payments/${item.id}`">-->
                     <!--                        <Eye class="h-4 w-4" />-->
                     <!--                    </Link>-->
-                    <Link :href="`/payments/${item.id}/edit`">
+                    <Link title="Editar pagamento" :href="`/payments/${item.id}/edit`">
                         <Pencil class="h-4 w-4" />
                     </Link>
-                    <Link :href="`/payments/${item.id}`">
+                    <Link title="Excluir pagamento" :href="`/payments/${item.id}`">
                         <Trash class="h-4 w-4" />
                     </Link>
                 </template>
