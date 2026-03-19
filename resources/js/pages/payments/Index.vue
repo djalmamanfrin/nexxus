@@ -3,7 +3,6 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
 import { Eye, Pencil, Search, Trash } from 'lucide-vue-next';
-import Pagination from '@/components/Pagination.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import FilterSelect from '@/components/filters/FilterSelect.vue';
 import FilterText from '@/components/filters/FilterText.vue';
@@ -11,7 +10,6 @@ import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
 import Create from '@/pages/payments/Create.vue';
-import { formatDateTime } from '@/lib/date';
 import AppImagePreview from '@/components/base/AppImagePreview.vue';
 import AppTable from '@/components/base/AppTable.vue';
 
@@ -31,7 +29,6 @@ const props = defineProps<{
         links: { url: string | null; label: string; active: boolean }[];
     };
     statuses: SelectOption[];
-    paymentTypes: SelectOption[];
 }>();
 
 const { filters, search, clear } = useFilters(
@@ -85,7 +82,7 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
 
             <AppTable
                 :columns="[
-                    { key: 'attachments', label: 'Imagem' },
+                    { key: 'attachments', label: 'Imagem', align: 'left' },
                     { key: 'amount', label: 'Valor', type: 'money' },
                     {
                         key: 'payment_status_id',
@@ -116,9 +113,9 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
 
                 <!-- AÇÕES -->
                 <template #actions="{ item }">
-                    <Link :href="`/payments/${item.id}`">
-                        <Eye class="h-4 w-4" />
-                    </Link>
+                    <!--                    <Link :href="`/payments/${item.id}`">-->
+                    <!--                        <Eye class="h-4 w-4" />-->
+                    <!--                    </Link>-->
                     <Link :href="`/payments/${item.id}/edit`">
                         <Pencil class="h-4 w-4" />
                     </Link>

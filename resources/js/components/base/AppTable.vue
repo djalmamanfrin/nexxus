@@ -37,26 +37,20 @@ const formatValue = (item, column) => {
         case 'boolean':
             return value ? 'Sim' : 'Não';
 
-        case 'payment_status':
-            // Aqui só texto (sem UI)
-            return getPaymentStatusLabel(value);
-
         default:
             return value ?? '-';
     }
 };
 
-// =======================
-// DOMÍNIO (STATUS)
-// =======================
-const getPaymentStatusLabel = (value) => {
-    const map = {
-        1: 'Pendente',
-        2: 'Pago',
-        3: 'Cancelado',
-    };
-
-    return map[value] ?? '-';
+const getAlignClass = (align) => {
+    switch (align) {
+        case 'left':
+            return 'text-left';
+        case 'right':
+            return 'text-right';
+        default:
+            return 'text-center';
+    }
 };
 </script>
 
@@ -69,11 +63,14 @@ const getPaymentStatusLabel = (value) => {
                         v-for="column in columns"
                         :key="column.key"
                         class="table-row-header"
+                        :class="getAlignClass(column.align)"
                     >
                         {{ column.label }}
                     </th>
 
-                    <th v-if="hasActions" class="table-row-header">Ações</th>
+                    <th v-if="hasActions" class="table-row-header text-center">
+                        Ações
+                    </th>
                 </tr>
             </thead>
 
@@ -87,6 +84,7 @@ const getPaymentStatusLabel = (value) => {
                         v-for="column in columns"
                         :key="column.key"
                         class="table-row-body"
+                        :class="getAlignClass(column.align)"
                     >
                         <!-- SLOT TEM PRIORIDADE -->
                         <slot :name="`cell-${column.key}`" :item="item">
