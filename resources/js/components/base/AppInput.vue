@@ -25,6 +25,7 @@ const emit = defineEmits(['update:modelValue']);
                 class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
             />
             <input
+                v-bind="$attrs"
                 :value="modelValue"
                 @input="emit('update:modelValue', $event.target.value)"
                 :placeholder="placeholder"
