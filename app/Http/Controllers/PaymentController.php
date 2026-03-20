@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class PaymentController extends Controller
 {
@@ -45,5 +46,12 @@ class PaymentController extends Controller
         });
 
         return back()->with('success', 'Pagamento criado!');
+    }
+
+    public function edit(Payment $payment): Response
+    {
+        return Inertia::render('payments/Edit', [
+            'payment' => $payment->with('attachments')->first()
+        ]);
     }
 }
