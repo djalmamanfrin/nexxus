@@ -97,13 +97,6 @@ const handleCreated = (item) => {
                     <div
                         class="order-1 flex max-h-[80vh] flex-col gap-3 lg:order-2 lg:col-span-3"
                     >
-                        <input
-                            type="file"
-                            accept="image/*"
-                            @change="handleFileChange"
-                            class="form-input"
-                        />
-
                         <div
                             class="flex-1 overflow-auto rounded-lg bg-gray-50 p-3"
                         >
@@ -122,8 +115,16 @@ const handleCreated = (item) => {
 
                     <!-- form -->
                     <div
-                        class="order-2 h-full overflow-auto pr-2 lg:order-2 lg:col-span-3"
+                        class="order-2 col-span-1 h-full overflow-auto md:col-span-5 lg:order-2 lg:col-span-3"
                     >
+                        <div class="mb-8">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                @change="handleFileChange"
+                                class="form-input"
+                            />
+                        </div>
                         <form @submit.prevent="submit" class="space-y-4">
                             <div class="grid grid-cols-1 gap-4">
                                 <div>
