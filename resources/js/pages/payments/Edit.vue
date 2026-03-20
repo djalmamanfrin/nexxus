@@ -123,10 +123,10 @@ const handleStatusCreated = (newStatus) => {
 
                     <!-- form -->
                     <div
-                        class="order-2 h-full overflow-auto pr-2 lg:order-1 lg:col-span-7 px-8"
+                        class="order-2 h-full overflow-auto pr-2 lg:order-2 lg:col-span-3"
                     >
                         <form @submit.prevent="submit" class="space-y-4">
-                            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div class="grid grid-cols-1 gap-4">
                                 <div>
                                     <label class="form-label">Conta</label>
                                     <input
