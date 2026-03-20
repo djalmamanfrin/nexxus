@@ -51,7 +51,8 @@ class PaymentController extends Controller
     public function edit(Payment $payment): Response
     {
         return Inertia::render('payments/Edit', [
-            'payment' => $payment->with('attachments')->first()
+            'payment' => $payment->with('attachments')->first(),
+            'statuses' => PaymentStatus::select('id as value', 'name as label')->get(),
         ]);
     }
 }
