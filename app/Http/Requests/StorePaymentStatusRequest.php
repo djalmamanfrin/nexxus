@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -10,14 +12,14 @@ class StorePaymentStatusRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     protected function prepareForValidation(): void
     {
         if ($this->name) {
             $this->merge([
-                'code' => Str::slug($this->name),
+                'slug' => Str::slug($this->name),
             ]);
         }
     }
@@ -37,11 +39,21 @@ class StorePaymentStatusRequest extends FormRequest
                 },
             ],
 
-            'code' => [
+            'slug' => [
                 'required',
                 'string',
                 Rule::unique('payment_statuses', 'code'),
             ],
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'message' => 'Erro de validação',
+                'errors' => $validator->errors(),
+            ], 422)
+        );
     }
 }

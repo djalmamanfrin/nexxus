@@ -31,7 +31,7 @@ class PaymentStatus extends Model
 {
     protected $fillable = [
         'name',
-        'code',
+        'slug',
         'color',
         'sort_order',
         'active'
