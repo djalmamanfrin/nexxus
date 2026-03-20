@@ -42,7 +42,7 @@ class StorePaymentStatusRequest extends FormRequest
             'slug' => [
                 'required',
                 'string',
-                Rule::unique('payment_statuses', 'code'),
+                Rule::unique('payment_statuses', 'slug'),
             ],
         ];
     }

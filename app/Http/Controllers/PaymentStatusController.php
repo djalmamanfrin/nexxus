@@ -12,6 +12,6 @@ class PaymentStatusController extends Controller
     public function store(StorePaymentStatusRequest $request): JsonResponse
     {
         $paymentStatus = PaymentStatus::create($request->validated());
-        return response()->json($paymentStatus->only('id', 'name', 'code'), Response::HTTP_CREATED);
+        return response()->json($paymentStatus->only('id', 'name', 'slug'), Response::HTTP_CREATED);
     }
 }
