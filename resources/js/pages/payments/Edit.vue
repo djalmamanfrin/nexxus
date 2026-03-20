@@ -123,7 +123,7 @@ const handleStatusCreated = (newStatus) => {
 
                     <!-- form -->
                     <div
-                        class="order-2 h-full overflow-auto pr-2 lg:order-1 lg:col-span-7"
+                        class="order-2 h-full overflow-auto pr-2 lg:order-1 lg:col-span-7 px-8"
                     >
                         <form @submit.prevent="submit" class="space-y-4">
                             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
