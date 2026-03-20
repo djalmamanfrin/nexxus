@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Link, Head, useForm } from '@inertiajs/vue3';
+import { Link, Head, useForm, router } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
 import { Save, ArrowLeft } from 'lucide-vue-next';
 import FlashMessage from '@/components/FlashMessage.vue';
+import AppSelect from '@/components/base/AppSelect.vue';
+import { SelectOption } from '@/types/select';
+import Create from '@/pages/payments/status/Create.vue';
 
 interface Payment {
     id: number;
@@ -19,6 +22,7 @@ interface Payment {
 
 const props = defineProps<{
     payment: Payment;
+    statuses: SelectOption[];
 }>();
 
 const breadcrumbItems: BreadcrumbItem[] = [
@@ -47,6 +51,10 @@ const handleFileChange = (e: Event) => {
 
     form.file = file;
     previewUrl.value = URL.createObjectURL(file);
+};
+
+const handleStatusCreated = () => {
+    router.reload({ only: ['statuses'] });
 };
 </script>
 
@@ -84,9 +92,9 @@ const handleFileChange = (e: Event) => {
             <!-- CONTEÚDO PRINCIPAL -->
             <div class="flex-1 overflow-hidden">
                 <div class="grid h-full grid-cols-1 gap-6 lg:grid-cols-10">
-                    <!-- 📷 IMAGEM -->
+                    <!-- imagem -->
                     <div
-                        class="order-1 flex  max-h-[80vh] flex-col gap-3 lg:order-2 lg:col-span-3"
+                        class="order-1 flex max-h-[80vh] flex-col gap-3 lg:order-2 lg:col-span-3"
                     >
                         <input
                             type="file"
@@ -102,7 +110,8 @@ const handleFileChange = (e: Event) => {
                                 v-if="previewUrl || payment.attachments?.length"
                                 :src="previewUrl || payment.attachments[0].url"
                                 class="w-full object-contain"
-                             alt=""/>
+                                alt=""
+                            />
 
                             <span v-else class="text-gray-400">
                                 Nenhuma imagem selecionada
@@ -110,7 +119,7 @@ const handleFileChange = (e: Event) => {
                         </div>
                     </div>
 
-                    <!-- 📝 FORM -->
+                    <!-- form -->
                     <div
                         class="order-2 h-full overflow-auto pr-2 lg:order-1 lg:col-span-7"
                     >
@@ -133,16 +142,15 @@ const handleFileChange = (e: Event) => {
                                 </div>
 
                                 <div>
-                                    <label class="form-label">Status</label>
-                                    <select
-                                        v-model="form.payment_status_id"
-                                        class="form-input"
-                                    >
-                                        <option value="">Selecione</option>
-                                        <option value="1">Pendente</option>
-                                        <option value="2">Pago</option>
-                                        <option value="3">Cancelado</option>
-                                    </select>
+                                    <AppSelect
+                                        label="Status"
+                                        name="status"
+                                        width="w-56"
+                                        :options="statuses"
+                                        showCreate
+                                        :createComponent="Create"
+                                        @created="handleStatusCreated"
+                                    />
                                 </div>
 
                                 <div>
