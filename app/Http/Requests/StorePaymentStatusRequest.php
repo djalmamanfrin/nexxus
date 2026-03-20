@@ -37,12 +37,12 @@ class StorePaymentStatusRequest extends FormRequest
                         $fail('O status deve ter no máximo 3 palavras.');
                     }
                 },
+                Rule::unique('payment_statuses', 'slug')
             ],
 
             'slug' => [
                 'required',
                 'string',
-                Rule::unique('payment_statuses', 'slug'),
             ],
         ];
     }
@@ -55,5 +55,18 @@ class StorePaymentStatusRequest extends FormRequest
                 'errors' => $validator->errors(),
             ], 422)
         );
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'O status é obrigatório.',
+            'name.string' => 'O status deve ser uma string.',
+            'name.min' => 'O status deve ter pelo menos 3 caracteres.',
+            'name.max' => 'O status deve ter no máximo 30 caracteres.',
+            'name.unique' => 'O status já está em uso.',
+            'slug.required' => 'O slug do status é obrigatório.',
+            'slug.string' => 'O slug do status deve ser uma string.',
+        ];
     }
 }
