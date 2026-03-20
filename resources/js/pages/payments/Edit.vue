@@ -7,7 +7,7 @@ import { Save, ArrowLeft } from 'lucide-vue-next';
 import FlashMessage from '@/components/FlashMessage.vue';
 import AppSelect from '@/components/base/AppSelect.vue';
 import { SelectOption } from '@/types/select';
-import Create from '@/pages/payments/status/Create.vue';
+import CreateStatus from '@/pages/payments/CreateStatus.vue';
 
 interface Payment {
     id: number;
@@ -152,7 +152,7 @@ const handleStatusCreated = (newStatus) => {
                                         width="w-56"
                                         showCreate
                                         :options="statuses"
-                                        :createComponent="Create"
+                                        :createComponent="CreateStatus"
                                     />
                                 </div>
 
