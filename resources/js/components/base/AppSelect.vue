@@ -40,7 +40,7 @@ const handleCreated = (item) => {
 <template>
     <div class="flex w-full flex-col" :class="width">
         <div class="flex items-center justify-between">
-            <label v-if="label" class="text-xs font-medium text-gray-600">
+            <label v-if="label" class="text-sm font-medium text-gray-600">
                 {{ label }}
             </label>
 
