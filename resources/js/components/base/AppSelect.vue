@@ -33,7 +33,7 @@ const closeModal = () => {
 
 const handleCreated = (item) => {
     closeModal();
-    emit('created');
+    emit('created', item);
 };
 </script>
 

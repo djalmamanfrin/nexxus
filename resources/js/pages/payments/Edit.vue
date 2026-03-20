@@ -53,8 +53,10 @@ const handleFileChange = (e: Event) => {
     previewUrl.value = URL.createObjectURL(file);
 };
 
-const handleStatusCreated = () => {
+const handleStatusCreated = (newStatus) => {
+    console.log('Novo status criado:', newStatus);
     router.reload({ only: ['statuses'] });
+    form.payment_status_id = newStatus.value;
 };
 </script>
 
@@ -143,13 +145,14 @@ const handleStatusCreated = () => {
 
                                 <div>
                                     <AppSelect
+                                        v-model="form.payment_status_id"
+                                        @created="handleStatusCreated"
                                         label="Status"
                                         name="status"
                                         width="w-56"
-                                        :options="statuses"
                                         showCreate
+                                        :options="statuses"
                                         :createComponent="Create"
-                                        @created="handleStatusCreated"
                                     />
                                 </div>
 

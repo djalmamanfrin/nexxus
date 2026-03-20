@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import api from '@/lib/axios';
-import { ref, watch } from 'vue';
+import { watch } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { Loader2, Save } from 'lucide-vue-next';
 import AppButton from '@/components/AppButton.vue';
@@ -22,7 +22,10 @@ const submit = async () => {
     try {
         const response = await api.post('/payment-status', form.data());
         if (response.status === 201) {
-            emit('created');
+            emit('created', {
+                value: response.data.id,
+                label: response.data.name
+            });
             emit('cancel');
         } else {
             console.warn('Status inesperado:', response.status);
