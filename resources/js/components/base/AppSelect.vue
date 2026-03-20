@@ -31,18 +31,9 @@ const closeModal = () => {
     showModal.value = false;
 };
 
-const handleCreated = (newItem: any) => {
-    emit('created', newItem);
+const handleCreated = (item) => {
     closeModal();
-};
-
-const handleNewStatus = (item) => {
-    statusOptions.push({
-        value: item.id,
-        label: item.name,
-    });
-
-    form.payment_status_id = item.id;
+    emit('created');
 };
 </script>
 
@@ -56,7 +47,6 @@ const handleNewStatus = (item) => {
             <AppButton
                 v-if="showCreate"
                 @click="openModal"
-                @created="handleNewStatus"
                 label="Criar"
                 :icon="Plus"
                 variant="link"
