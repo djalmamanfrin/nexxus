@@ -1,8 +1,9 @@
 <script setup>
 import Pagination from '@/components/Pagination.vue';
-import { useSlots } from 'vue';
 import { formatDate, formatDateTime } from '@/lib/date.ts';
 import { formatMoney } from '@/lib/money.ts';
+import { Pencil, Trash } from 'lucide-vue-next';
+import AppButton from '@/components/AppButton.vue';
 
 const props = defineProps({
     columns: {
@@ -14,9 +15,6 @@ const props = defineProps({
         required: true,
     },
 });
-
-const slots = useSlots();
-const hasActions = !!slots.actions;
 
 // =======================
 // FORMATADORES (SÓ TEXTO)
@@ -67,10 +65,7 @@ const getAlignClass = (align) => {
                     >
                         {{ column.label }}
                     </th>
-
-                    <th v-if="hasActions" class="table-row-header text-center">
-                        Ações
-                    </th>
+                    <th class="table-row-header text-center">Ações</th>
                 </tr>
             </thead>
 
@@ -86,21 +81,25 @@ const getAlignClass = (align) => {
                         class="table-row-body"
                         :class="getAlignClass(column.align)"
                     >
-                        <!-- SLOT TEM PRIORIDADE -->
                         <slot :name="`cell-${column.key}`" :item="item">
                             {{ formatValue(item, column) }}
                         </slot>
                     </td>
-
-                    <!-- AÇÕES FIXAS -->
-                    <td v-if="hasActions" class="table-actions">
-                        <div class="table-actions-align gap-2">
-                            <slot name="actions" :item="item" />
-                        </div>
+                    <td class="table-actions table-actions-align">
+                        <AppButton
+                            title="Editar pagamento"
+                            variant="link"
+                            :href="`/payments/${item.id}/edit`"
+                            :icon="Pencil"
+                        />
+                        <AppButton
+                            title="Excluir pagamento"
+                            variant="link"
+                            :href="`/payments/${item.id}`"
+                            :icon="Trash"
+                        />
                     </td>
                 </tr>
-
-                <!-- EMPTY STATE -->
                 <tr v-if="!items.data?.length">
                     <td
                         :colspan="columns.length + (hasActions ? 1 : 0)"

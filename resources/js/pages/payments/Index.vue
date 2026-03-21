@@ -110,19 +110,6 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                         {{ getStatusLabel(item.payment_status_id) }}
                     </span>
                 </template>
-
-                <!-- AÇÕES -->
-                <template #actions="{ item }">
-                    <!--                    <Link :href="`/payments/${item.id}`">-->
-                    <!--                        <Eye class="h-4 w-4" />-->
-                    <!--                    </Link>-->
-                    <Link title="Editar pagamento" :href="`/payments/${item.id}/edit`">
-                        <Pencil class="h-4 w-4" />
-                    </Link>
-                    <Link title="Excluir pagamento" :href="`/payments/${item.id}`">
-                        <Trash class="h-4 w-4" />
-                    </Link>
-                </template>
             </AppTable>
         </div>
     </AppLayout>
