@@ -56,7 +56,7 @@ const props = defineProps({
         v-else
         :type="type"
         :class="[
-            'flex cursor-pointer items-center justify-center gap-2 px-4 py-2',
+            'flex cursor-pointer items-center justify-center gap-2  py-2',
             `btn-${variant}`,
             { 'w-full': fullWidth }
         ]"
