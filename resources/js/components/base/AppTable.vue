@@ -1,9 +1,11 @@
 <script setup>
+import { ref } from 'vue';
 import Pagination from '@/components/Pagination.vue';
 import { formatDate, formatDateTime } from '@/lib/date.ts';
 import { formatMoney } from '@/lib/money.ts';
 import { Pencil, Trash } from 'lucide-vue-next';
 import AppButton from '@/components/AppButton.vue';
+import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
 
 const props = defineProps({
     columns: {
@@ -50,6 +52,14 @@ const getAlignClass = (align) => {
             return 'text-center';
     }
 };
+
+const open = ref(false);
+const selectedItem = ref(null);
+
+const handleView = (item) => {
+    selectedItem.value = item;
+    open.value = true;
+};
 </script>
 
 <template>
@@ -68,7 +78,6 @@ const getAlignClass = (align) => {
                     <th class="table-row-header text-center">Ações</th>
                 </tr>
             </thead>
-
             <tbody>
                 <tr
                     v-for="item in items.data"
@@ -87,9 +96,9 @@ const getAlignClass = (align) => {
                     </td>
                     <td class="table-actions table-actions-align">
                         <AppButton
+                            @click="handleView(item)"
                             title="Editar pagamento"
                             variant="link"
-                            :href="`/payments/${item.id}/edit`"
                             :icon="Pencil"
                         />
                         <AppButton
@@ -114,4 +123,13 @@ const getAlignClass = (align) => {
         <!-- PAGINAÇÃO FIXA -->
         <Pagination v-if="items.links" :links="items.links" />
     </div>
+    <SidebarDrawer :open="open" @close="open = false">
+        <template #title>
+            Editar Item
+        </template>
+
+        <div v-if="selectedItem">
+            {{ selectedItem.id }}
+        </div>
+    </SidebarDrawer>
 </template>
