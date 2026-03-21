@@ -34,7 +34,7 @@ const props = defineProps({
         v-if="href"
         :href="href"
         :class="[
-            'btn flex items-center justify-center gap-2 px-4 py-2',
+            'btn flex items-center justify-center gap-2 py-2',
             `btn-${variant}`,
             { 'w-full': fullWidth }
         ]"
