@@ -25,8 +25,8 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
     Route::resource('payments', PaymentController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
-    Route::resource('payment-status', PaymentStatusController::class)
-        ->only(['store']);
+    Route::resource('payment-statuses', PaymentStatusController::class)
+        ->only(['index', 'store']);
 
     Route::resource('expenses', ExpenseController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
