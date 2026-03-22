@@ -73,7 +73,6 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                         label="Status"
                         name="status"
                         width="w-56"
-                        :options="statuses"
                     />
                 </AppFilterBar>
             </form>
