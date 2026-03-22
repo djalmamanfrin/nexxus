@@ -32,11 +32,19 @@
             >
                 <!-- Header -->
                 <div class="flex items-center justify-between border-b p-4">
-                    <h2 class="font-semibold text-lg">
+                    <h2 class="flex items-center justify-between font-semibold text-lg">
+                        <AppButton
+                            :icon="ArrowLeft"
+                            variant="link"
+                        />
                         <slot name="title" />
                     </h2>
 
-                    <button @click="close">✕</button>
+                    <AppButton
+                        label="Salvar"
+                        :icon="Save"
+                        variant="success"
+                    />
                 </div>
 
                 <!-- Content -->
@@ -51,6 +59,8 @@
 
 <script setup>
 import { ref, provide, watch } from 'vue'
+import { ArrowLeft, Save } from 'lucide-vue-next';
+import AppButton from '@/components/AppButton.vue';
 
 const props = defineProps({
     open: Boolean

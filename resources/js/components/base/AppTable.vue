@@ -6,7 +6,6 @@ import { formatMoney } from '@/lib/money.ts';
 import { Pencil, Trash } from 'lucide-vue-next';
 import AppButton from '@/components/AppButton.vue';
 import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
-import { SidebarHeader } from '@/components/ui/sidebar/index.ts';
 import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
 import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
 import SidebarDrawerPanel from '@/components/ui/sidebar/SidebarDrawerPanel.vue';
@@ -135,7 +134,11 @@ const handleView = (item) => {
             <SidebarDrawerTab name="info" label="Informações" />
         </SidebarDrawerTabs>
 
-        <SidebarDrawerPanel name="arquivo"> Aqui vai o arquivo </SidebarDrawerPanel>
-        <SidebarDrawerPanel name="info"> Aqui vai as informações </SidebarDrawerPanel>
+        <SidebarDrawerPanel name="arquivo">
+            Aqui vai o arquivo
+        </SidebarDrawerPanel>
+        <SidebarDrawerPanel name="info">
+            Aqui vai as informações
+        </SidebarDrawerPanel>
     </SidebarDrawer>
 </template>
