@@ -99,7 +99,6 @@ const closeModal = () => {
     showModal.value = false;
 };
 
-/* 🔥 fetch automático */
 const fetchOptions = async () => {
     if (!props.url) return;
 
@@ -117,21 +116,13 @@ const fetchOptions = async () => {
     }
 };
 
-/* lifecycle */
 onMounted(fetchOptions);
-
 watch(() => props.url, fetchOptions);
 
-/* 🔥 create integrado */
 const handleCreated = (item: SelectOption) => {
     closeModal();
-
-    // adiciona automaticamente na lista
     options.value.push(item);
-
-    // já seleciona
     emit('update:modelValue', item.value);
-
     emit('created', item);
 };
 </script>
