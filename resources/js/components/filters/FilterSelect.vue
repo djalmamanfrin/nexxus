@@ -23,10 +23,10 @@ onMounted(() => {
 
 <template>
     <AppSelect
-        class="min-w-[180px] md:max-w-[250px] flex-[1]"
+        class="min-w-[180px] flex-[1] md:max-w-[250px]"
         v-model="filters[name]"
+        url="/payment-statuses"
         :label="label"
-        :options="options"
         :width="width"
     />
 </template>
