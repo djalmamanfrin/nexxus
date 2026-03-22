@@ -28,7 +28,7 @@
         >
             <div
                 v-if="open"
-                class="relative h-full w-full max-w-2xl bg-white shadow-2xl ml-auto origin-right"
+                class="relative h-full w-full max-w-2xl bg-white dark:bg-gray-950 shadow-2xl ml-auto"
             >
                 <!-- Header -->
                 <div class="flex items-center justify-between border-b p-4">
@@ -50,6 +50,8 @@
 </template>
 
 <script setup>
+import { ref, provide, watch } from 'vue'
+
 const props = defineProps({
     open: Boolean
 })
@@ -57,4 +59,21 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 
 const close = () => emit('close')
+
+/* 👇 estado interno das tabs */
+const activeTab = ref(null)
+
+const setTab = (tab) => {
+    activeTab.value = tab
+}
+
+/* reset ao abrir */
+watch(() => props.open, (val) => {
+    if (val) activeTab.value = null
+})
+
+provide('drawerTabs', {
+    activeTab,
+    setTab
+})
 </script>

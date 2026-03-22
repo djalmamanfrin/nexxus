@@ -6,6 +6,10 @@ import { formatMoney } from '@/lib/money.ts';
 import { Pencil, Trash } from 'lucide-vue-next';
 import AppButton from '@/components/AppButton.vue';
 import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
+import { SidebarHeader } from '@/components/ui/sidebar/index.ts';
+import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
+import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
+import SidebarDrawerPanel from '@/components/ui/sidebar/SidebarDrawerPanel.vue';
 
 const props = defineProps({
     columns: {
@@ -124,12 +128,14 @@ const handleView = (item) => {
         <Pagination v-if="items.links" :links="items.links" />
     </div>
     <SidebarDrawer :open="open" @close="open = false">
-        <template #title>
-            Editar Item
-        </template>
+        <template #title> Comprovante de Pagamento </template>
 
-        <div v-if="selectedItem">
-            {{ selectedItem.id }}
-        </div>
+        <SidebarDrawerTabs>
+            <SidebarDrawerTab name="arquivo" label="Arquivo" />
+            <SidebarDrawerTab name="info" label="Informações" />
+        </SidebarDrawerTabs>
+
+        <SidebarDrawerPanel name="arquivo"> Aqui vai o arquivo </SidebarDrawerPanel>
+        <SidebarDrawerPanel name="info"> Aqui vai as informações </SidebarDrawerPanel>
     </SidebarDrawer>
 </template>
