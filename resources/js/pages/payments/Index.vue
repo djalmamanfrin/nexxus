@@ -29,11 +29,14 @@ const props = defineProps<{
         links: { url: string | null; label: string; active: boolean }[];
     };
     statuses: SelectOption[];
+    search_by?: string;
+    status?: string | number | null;
 }>();
 
 const { filters, search, clear } = useFilters(
     {
         search_by: props.search_by || '',
+        status: props.status ? Number(props.status) : null,
     },
     '/payments',
 );
@@ -70,6 +73,8 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                         :icon="Search"
                     />
                     <FilterSelect
+                        :options="statuses"
+                        :selectedValue="filters.status"
                         label="Status"
                         name="status"
                         width="w-56"
