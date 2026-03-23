@@ -12,13 +12,9 @@ const open = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
 
 const form = useForm<{
-    amount: string | number;
-    payment_type: string;
     attachment: File | null;
     attachmentPreview: string | null;
 }>({
-    amount: '',
-    payment_type: '',
     attachment: null,
     attachmentPreview: null,
 });
