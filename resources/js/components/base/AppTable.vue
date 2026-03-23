@@ -114,7 +114,7 @@ const handleView = (item) => {
                 </tr>
                 <tr v-if="!items.data?.length">
                     <td
-                        :colspan="columns.length + (hasActions ? 1 : 0)"
+                        :colspan="columns.length"
                         class="py-4 text-center text-gray-500"
                     >
                         Nenhum registro encontrado
