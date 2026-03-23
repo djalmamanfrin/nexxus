@@ -30,7 +30,7 @@ const emit = defineEmits(['update:modelValue']);
                 @input="emit('update:modelValue', $event.target.value)"
                 :placeholder="placeholder"
                 :class="icon ? 'pl-10' : ''"
-                class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                class="dark:bg-gray-950 rounded-md w-full border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
             />
         </div>
     </div>
