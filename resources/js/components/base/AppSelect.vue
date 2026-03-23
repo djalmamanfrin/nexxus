@@ -55,7 +55,7 @@
         >
             <component
                 :is="createComponent"
-                @created="handleSelected"
+                @created="handleCreated"
                 @cancel="closeModal"
             />
         </AppFormModal>
@@ -119,10 +119,10 @@ const fetchOptions = async () => {
 onMounted(fetchOptions);
 watch(() => props.url, fetchOptions);
 
-const handleSelected = (item: SelectOption) => {
+const handleCreated = (item: SelectOption) => {
     closeModal();
     options.value.push(item);
     emit('update:modelValue', item.value);
-    emit('selected', item);
+    emit('created', item);
 };
 </script>
