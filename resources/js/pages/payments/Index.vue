@@ -36,7 +36,7 @@ const props = defineProps<{
 const { filters, search, clear } = useFilters(
     {
         search_by: props.search_by || '',
-        status: props.status ? Number(props.status) : null,
+        status: props.status || null,
     },
     '/payments',
 );
@@ -74,7 +74,7 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                     />
                     <FilterSelect
                         :options="statuses"
-                        :selectedValue="filters.status"
+                        :selectedValue="status"
                         label="Status"
                         name="status"
                         width="w-56"
