@@ -22,7 +22,7 @@
         <!-- Select -->
         <select
             :value="modelValue"
-            @change="emit('update:modelValue', Number($event.target.value))"
+            @change="onChange($event.target.value)"
             class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 dark:bg-gray-950"
         >
             <option value="">Selecione</option>
@@ -83,7 +83,7 @@ const props = withDefaults(defineProps<Props>(), {
     showCreate: false,
 });
 
-const emit = defineEmits(['update:modelValue', 'created']);
+const emit = defineEmits(['update:modelValue', 'created', 'selected']);
 
 const options = ref<SelectOption[]>([]);
 const loading = ref(false);
@@ -118,6 +118,15 @@ const fetchOptions = async () => {
 
 onMounted(fetchOptions);
 watch(() => props.url, fetchOptions);
+
+const onChange = (value: string) => {
+    const selectedItem = options.value.find(
+        (option) => String(option.value) === value,
+    );
+
+    emit('update:modelValue', value);
+    emit('selected', selectedItem);
+};
 
 const handleCreated = (item: SelectOption) => {
     closeModal();
