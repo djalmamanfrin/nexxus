@@ -42,6 +42,7 @@
                     </h2>
 
                     <AppButton
+                        @click="save"
                         label="Salvar"
                         :icon="Save"
                         variant="success"
@@ -67,8 +68,9 @@ const props = defineProps({
     open: Boolean
 })
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['save', 'close'])
 
+const save = () => emit('save')
 const close = () => emit('close')
 
 /* 👇 estado interno das tabs */
