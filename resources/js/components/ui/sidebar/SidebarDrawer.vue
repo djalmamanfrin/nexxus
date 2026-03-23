@@ -34,6 +34,7 @@
                 <div class="flex items-center justify-between border-b p-4">
                     <h2 class="flex items-center justify-between font-semibold text-lg">
                         <AppButton
+                            @click="close"
                             :icon="ArrowLeft"
                             variant="link"
                         />
