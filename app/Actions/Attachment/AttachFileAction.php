@@ -13,6 +13,9 @@ class AttachFileAction
         $hash = hash_file('sha256', $file->getRealPath());
         $attachment = Attachment::where('hash', $hash)->first();
         if ($attachment) {
+            if (!$model->attachments()->where('id', $attachment->id)->exists()) {
+                $model->attachments()->save($attachment);
+            }
             return $attachment;
         }
 
