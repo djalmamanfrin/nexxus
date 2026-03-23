@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { useForm } from '@inertiajs/vue3';
 import Pagination from '@/components/Pagination.vue';
 import { formatDate, formatDateTime } from '@/lib/date.ts';
 import { formatMoney } from '@/lib/money.ts';
@@ -65,6 +66,47 @@ const handleView = (item) => {
     selectedItem.value = item;
     open.value = true;
 };
+
+const form = useForm({
+    expense_id: '',
+    bank_account_id: '',
+    payment_status_id: '',
+    payment_type_id: '',
+    amount: '',
+    paid_at: '',
+    attachment: null,
+});
+const handleSave = () => {
+    if (!selectedItem.value?.id) return;
+    if (!form.isDirty) {
+        console.log('Nada foi alterado');
+        return;
+    }
+
+    form
+        .transform((data) => ({
+            ...data,
+            _method: 'put',
+        }))
+        .post(`/payments/${selectedItem.value?.id}`, {
+            forceFormData: true,
+
+            onStart: () => {
+                console.log('Iniciando save...');
+            },
+            onSuccess: () => {
+                console.log('Salvo com sucesso');
+                open.value = false;
+                form.attachment = null;
+            },
+            onError: (errors) => {
+                console.error('Erro ao salvar:', errors);
+            },
+            onFinish: () => {
+                console.log('Finalizou requisição');
+            },
+        });
+};
 </script>
 
 <template>
@@ -128,7 +170,7 @@ const handleView = (item) => {
         <!-- PAGINAÇÃO FIXA -->
         <Pagination v-if="items.links" :links="items.links" />
     </div>
-    <SidebarDrawer :open="open" @close="open = false">
+    <SidebarDrawer :open="open" @close="open = false" @save="handleSave">
         <template #title> Comprovante de Pagamento </template>
 
         <SidebarDrawerTabs>
@@ -137,10 +179,10 @@ const handleView = (item) => {
         </SidebarDrawerTabs>
 
         <SidebarDrawerPanel name="arquivo">
-            <EditFields :payment="selectedItem"/>
+            <EditFields :payment="selectedItem" :form="form" />
         </SidebarDrawerPanel>
         <SidebarDrawerPanel name="info">
-            <EditFile :payment="selectedItem"/>
+            <EditFile :payment="selectedItem" :form="form" />
         </SidebarDrawerPanel>
     </SidebarDrawer>
 </template>
