@@ -1,24 +1,33 @@
-<script setup>
+<script setup lang="ts">
 import { inject, ref, onMounted } from 'vue';
 import AppSelect from '@/components/base/AppSelect.vue';
+import { SelectOption } from '@/types/select';
 
 const filters = inject('filters');
 const registerFilter = inject('registerFilter');
 
-const props = defineProps({
-    label: String,
-    name: String,
-    selectedValue: Number,
-    options: Array,
-    width: String,
-});
+const props = defineProps<{
+    label?: string;
+    name: string;
+    selectedValue?: string | null;
+    options: SelectOption[];
+    width?: string;
+}>();
 
 onMounted(() => {
+    if (props.selectedValue == null || !props.options?.length) return;
+
+    const selected = props.options.find(
+        (option) => option.value === Number(props.selectedValue),
+    );
+
+    if (!selected) return;
+
     registerFilter?.(props.name, {
         label: 'com status',
         type: 'select',
-        value: props.selectedValue,
-        display: props.options.find((option) => option.value === props.selectedValue)?.label,
+        value: selected.value,
+        display: selected.label,
     });
 });
 
