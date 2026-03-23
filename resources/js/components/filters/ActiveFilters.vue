@@ -23,9 +23,8 @@ function getValueLabel(key, value) {
     }
 
     // traduz select
-    if (meta.type === 'select' && meta.options) {
-        const found = meta.options.find((opt) => opt.value == value);
-        return normalize(found ? found.label : value);
+    if (meta.type === 'select') {
+        return normalize(meta.display ? meta.display : value);
     }
 
     return normalize(value);
