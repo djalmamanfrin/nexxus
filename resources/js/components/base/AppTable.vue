@@ -9,6 +9,8 @@ import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
 import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
 import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
 import SidebarDrawerPanel from '@/components/ui/sidebar/SidebarDrawerPanel.vue';
+import EditFields from '@/pages/payments/EditFields.vue';
+import EditFile from '@/pages/payments/EditFile.vue';
 
 const props = defineProps({
     columns: {
@@ -135,10 +137,10 @@ const handleView = (item) => {
         </SidebarDrawerTabs>
 
         <SidebarDrawerPanel name="arquivo">
-            Aqui vai o arquivo
+            <EditFields :payment="selectedItem"/>
         </SidebarDrawerPanel>
         <SidebarDrawerPanel name="info">
-            Aqui vai as informações
+            <EditFile :payment="selectedItem"/>
         </SidebarDrawerPanel>
     </SidebarDrawer>
 </template>

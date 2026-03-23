@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { Link, Head, useForm, router } from '@inertiajs/vue3';
-import { type BreadcrumbItem } from '@/types';
-import { Save, ArrowLeft } from 'lucide-vue-next';
-import FlashMessage from '@/components/FlashMessage.vue';
-import AppSelect from '@/components/base/AppSelect.vue';
-import { SelectOption } from '@/types/select';
-import CreateStatus from '@/pages/payments/CreateStatus.vue';
+import { useForm, router } from '@inertiajs/vue3';
 
 interface Payment {
     id: number;
@@ -22,13 +15,7 @@ interface Payment {
 
 const props = defineProps<{
     payment: Payment;
-    statuses: SelectOption[];
 }>();
-
-const breadcrumbItems: BreadcrumbItem[] = [
-    { title: 'Pagamentos', href: '/payments' },
-    { title: 'Editar Pagamento', href: '' },
-];
 
 const form = useForm({
     expense_id: props.payment.expense_id ?? '',
@@ -60,131 +47,36 @@ const handleCreated = (item) => {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Editar Pagamento" />
+    <div
+        class="order-1 flex max-h-[80vh] flex-col gap-3 lg:order-2 lg:col-span-3"
+    >
+        <div
+            class="flex-1 overflow-auto rounded-lg bg-gray-50 p-3"
+        >
+            <img
+                v-if="previewUrl || payment.attachments?.length"
+                :src="previewUrl || payment.attachments[0].url"
+                class="w-full object-contain"
+                alt=""
+            />
 
-        <div class="content-box flex h-full flex-col overflow-hidden">
-            <!-- HEADER -->
-            <div class="content-box-header flex items-center justify-between">
-                <h3 class="content-box-title">Editar Pagamento</h3>
-
-                <div class="flex gap-2">
-                    <Link href="/payments" class="btn-warning align-icon-btn">
-                        <ArrowLeft class="h-4 w-4" />
-                        <span>Voltar</span>
-                    </Link>
-
-                    <button
-                        type="button"
-                        @click="submit"
-                        class="btn-success align-icon-btn"
-                        :disabled="form.processing"
-                    >
-                        <Save class="h-4 w-4" />
-                        <span>
-                            {{ form.processing ? 'Salvando...' : 'Salvar' }}
-                        </span>
-                    </button>
-                </div>
-            </div>
-
-            <FlashMessage />
-
-            <!-- CONTEÚDO PRINCIPAL -->
-            <div class="flex-1 overflow-hidden">
-                <div class="grid h-full grid-cols-1 gap-6 lg:grid-cols-10">
-                    <!-- imagem -->
-                    <div
-                        class="order-1 flex max-h-[80vh] flex-col gap-3 lg:order-2 lg:col-span-3"
-                    >
-                        <div
-                            class="flex-1 overflow-auto rounded-lg bg-gray-50 p-3"
-                        >
-                            <img
-                                v-if="previewUrl || payment.attachments?.length"
-                                :src="previewUrl || payment.attachments[0].url"
-                                class="w-full object-contain"
-                                alt=""
-                            />
-
-                            <span v-else class="text-gray-400">
-                                Nenhuma imagem selecionada
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- form -->
-                    <div
-                        class="order-2 col-span-1 h-full overflow-auto md:col-span-5 lg:order-2 lg:col-span-3"
-                    >
-                        <div class="mb-8">
-                            <input
-                                type="file"
-                                accept="image/*"
-                                @change="handleFileChange"
-                                class="form-input"
-                            />
-                        </div>
-                        <form @submit.prevent="submit" class="space-y-4">
-                            <div class="grid grid-cols-1 gap-4">
-                                <div>
-                                    <label class="form-label">Conta</label>
-                                    <input
-                                        v-model="form.bank_account_id"
-                                        class="form-input"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label class="form-label">Despesa</label>
-                                    <input
-                                        v-model="form.expense_id"
-                                        class="form-input"
-                                    />
-                                </div>
-
-                                <div>
-                                    <AppSelect
-                                        v-model="form.payment_status_id"
-                                        @created="handleCreated"
-                                        label="Status"
-                                        name="status"
-                                        width="w-56"
-                                        showCreate
-                                        :options="statuses"
-                                        :createComponent="CreateStatus"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label class="form-label">Tipo</label>
-                                    <input
-                                        v-model="form.payment_type_id"
-                                        class="form-input"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label class="form-label">Valor</label>
-                                    <input
-                                        v-model="form.amount"
-                                        class="form-input"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label class="form-label">Pago em</label>
-                                    <input
-                                        v-model="form.paid_at"
-                                        type="datetime-local"
-                                        class="form-input"
-                                    />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <span v-else class="text-gray-400">
+                Nenhuma imagem selecionada
+            </span>
         </div>
-    </AppLayout>
+    </div>
+
+    <!-- form -->
+    <div
+        class="order-2 col-span-1 h-full overflow-auto md:col-span-5 lg:order-2 lg:col-span-3"
+    >
+        <div class="mb-8">
+            <input
+                type="file"
+                accept="image/*"
+                @change="handleFileChange"
+                class="form-input"
+            />
+        </div>
+    </div>
 </template>
