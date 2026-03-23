@@ -5,10 +5,7 @@ import { CirclePlus, Upload, RefreshCw, Loader2 } from 'lucide-vue-next';
 import AppFormModal from '@/components/base/AppFormModal.vue';
 import AppButton from '@/components/AppButton.vue';
 
-// 🎯 controla modal INTERNAMENTE
 const open = ref(false);
-
-// 🎯 ref do input
 const fileInput = ref<HTMLInputElement | null>(null);
 
 const form = useForm<{
@@ -19,7 +16,6 @@ const form = useForm<{
     attachmentPreview: null,
 });
 
-// 🚀 botão principal agora abre DIRETO o seletor
 function openFileSelector() {
     fileInput.value?.click();
 }
@@ -39,7 +35,6 @@ function submit() {
     });
 }
 
-// 🎯 aqui acontece a mágica
 function handleFile(e: Event) {
     const target = e.target as HTMLInputElement;
 
@@ -59,11 +54,9 @@ function handleFile(e: Event) {
     form.attachment = file;
     form.attachmentPreview = URL.createObjectURL(file);
 
-    // 🔥 abre modal SOMENTE depois de selecionar
     open.value = true;
 }
 
-// 🧹 cleanup
 onUnmounted(() => {
     if (form.attachmentPreview) {
         URL.revokeObjectURL(form.attachmentPreview);
