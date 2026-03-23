@@ -8,15 +8,17 @@ const registerFilter = inject('registerFilter');
 const props = defineProps({
     label: String,
     name: String,
+    selectedValue: Number,
     options: Array,
     width: String,
 });
-// verificar necessidade de onMounted depois
+
 onMounted(() => {
     registerFilter?.(props.name, {
         label: 'com status',
         type: 'select',
-        options: props.options,
+        value: props.selectedValue,
+        display: props.options.find((option) => option.value === props.selectedValue)?.label,
     });
 });
 
