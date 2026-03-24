@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Attachment\AttachFileAction;
+use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Payment;
 use App\Models\PaymentStatus;
 use Illuminate\Http\RedirectResponse;
@@ -50,30 +51,28 @@ class PaymentController extends Controller
     /**
      * @throws Throwable
      */
-    public function update(Request $request, Payment $payment, AttachFileAction $attachFile): RedirectResponse
+    public function update(UpdatePaymentRequest $request, Payment $payment): RedirectResponse
     {
-        $validated = $request->validate([
-            'expense_id' => ['nullable', 'integer'],
-            'bank_account_id' => ['nullable', 'integer'],
-            'payment_status_id' => ['nullable', 'integer'],
-            'payment_type_id' => ['nullable', 'integer'],
-            'amount' => ['nullable', 'numeric'],
-            'paid_at' => ['nullable', 'date'],
-            'attachment' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp'],
-        ]);
-
-        DB::transaction(function () use ($validated, $request, $payment, $attachFile) {
-            $payment->update($validated);
-            if ($request->hasFile('attachment')) {
-                $payment->attachments()->delete();
-                $attachFile->execute(
-                    $payment,
-                    $request->file('attachment'),
-                    'payments'
-                );
-            }
-        });
+        $validated = $request->validated();
+        $payment->update($validated);
 
         return back()->with('success', 'Atualizado com sucesso');
+    }
+
+    public function uploadAttachment(Request $request, Payment $payment, AttachFileAction $attachFile)
+    {
+        $request->validate([
+            'attachment' => ['required', 'file', 'mimes:jpg,jpeg,png,webp'],
+        ]);
+
+        $payment->attachments()->delete();
+
+        $attachFile->execute(
+            $payment,
+            $request->file('attachment'),
+            'payments'
+        );
+
+        return back()->with('success', 'Arquivo atualizado');
     }
 }

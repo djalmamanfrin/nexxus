@@ -67,43 +67,65 @@ const handleView = (item) => {
     open.value = true;
 };
 
-const form = useForm({
+const dataForm = useForm({
     expense_id: '',
     bank_account_id: '',
     payment_status_id: '',
     payment_type_id: '',
     amount: '',
     paid_at: '',
+});
+
+const fileForm = useForm({
     attachment: null,
 });
 const handleSave = () => {
     if (!selectedItem.value?.id) return;
-    if (!form.isDirty) {
-        console.log('Nada foi alterado');
-        return;
+    const paymentId = selectedItem.value.id;
+
+    console.log('Iniciando save...');
+
+    if (dataForm.isDirty) {
+        dataForm.patch(`/payments/${paymentId}`, {
+            preserveState: true,
+            onStart: () => {
+                console.log('Iniciando save...');
+            },
+            onSuccess: () => {
+                console.log('Salvo com sucesso');
+            },
+            onError: (errors) => {
+                console.error('Erro ao salvar:', errors);
+            },
+            onFinish: () => {
+                console.log('Finalizou requisição');
+            },
+        });
     }
 
-    form.transform((data) => ({
-        ...data,
-        _method: 'put',
-        amount: data.amount ? Number(data.amount) / 100 : 0,
-    })).post(`/payments/${selectedItem.value?.id}`, {
-        forceFormData: true,
-        onStart: () => {
-            console.log('Iniciando save...');
-        },
-        onSuccess: () => {
-            console.log('Salvo com sucesso');
-            open.value = false;
-            form.attachment = null;
-        },
-        onError: (errors) => {
-            console.error('Erro ao salvar:', errors);
-        },
-        onFinish: () => {
-            console.log('Finalizou requisição');
-        },
-    });
+    if (fileForm.isDirty) {
+        fileForm.post(`/payments/${paymentId}/attachments`, {
+            forceFormData: true,
+            preserveState: true,
+            onStart: () => {
+                console.log('Iniciando save...');
+            },
+            onSuccess: () => {
+                console.log('Salvo com sucesso');
+                fileForm.attachment = null;
+            },
+            onError: (errors) => {
+                console.error('Erro ao salvar:', errors);
+            },
+            onFinish: () => {
+                console.log('Finalizou requisição');
+            },
+        });
+    }
+
+    open.value = false;
+    dataForm.reset();
+    fileForm.reset();
 };
 </script>
 
@@ -172,15 +194,15 @@ const handleSave = () => {
         <template #title> Comprovante de Pagamento </template>
 
         <SidebarDrawerTabs>
-            <SidebarDrawerTab name="arquivo" label="Arquivo" />
             <SidebarDrawerTab name="info" label="Informações" />
+            <SidebarDrawerTab name="arquivo" label="Arquivo" />
         </SidebarDrawerTabs>
 
-        <SidebarDrawerPanel name="arquivo">
-            <EditFields :payment="selectedItem" :form="form" />
-        </SidebarDrawerPanel>
         <SidebarDrawerPanel name="info">
-            <EditFile :payment="selectedItem" :form="form" />
+            <EditFields :payment="selectedItem" :form="dataForm" />
+        </SidebarDrawerPanel>
+        <SidebarDrawerPanel name="arquivo">
+            <EditFile :payment="selectedItem" :form="fileForm" />
         </SidebarDrawerPanel>
     </SidebarDrawer>
 </template>
