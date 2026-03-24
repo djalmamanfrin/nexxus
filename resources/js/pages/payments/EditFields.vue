@@ -3,6 +3,7 @@ import { watch } from 'vue';
 import { router } from '@inertiajs/vue3';
 import AppSelect from '@/components/base/AppSelect.vue';
 import CreateStatus from '@/pages/payments/CreateStatus.vue';
+import AppInput from '@/components/base/AppInput.vue';
 
 interface Payment {
     id: number;
@@ -88,19 +89,13 @@ const handleCreated = (item) => {
                 <input v-model="form.payment_type_id" class="form-input" />
             </div>
 
-            <div>
-                <label class="form-label">Valor</label>
-                <input v-model="form.amount" class="form-input" />
-            </div>
+            <AppInput v-model="form.amount" label="Valor" mask="currency" />
 
-            <div>
-                <label class="form-label">Pago em</label>
-                <input
-                    v-model="form.paid_at"
-                    type="datetime-local"
-                    class="form-input"
-                />
-            </div>
+            <AppInput
+                v-model="form.paid_at"
+                label="Pago em"
+                type="datetime-local"
+            />
         </div>
     </div>
 </template>
