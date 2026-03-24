@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { formatDateTimeLocal, parseDateTimeLocal } from '@/lib/date.ts';
 
 const props = defineProps({
@@ -18,6 +18,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue']);
+const internalValue = ref('');
 const formatCurrency = (value) => {
     const numbers = String(value).replace(/\D/g, '');
     const amount = Number(numbers) / 100;
@@ -32,10 +33,26 @@ const parseCurrency = (value) => {
     return value.replace(/\D/g, '');
 };
 
+watch(
+    () => props.modelValue,
+    (value) => {
+        if (props.mask === 'currency') {
+            if (!value) {
+                internalValue.value = '';
+                return;
+            }
+
+            const numeric = Number(value);
+            internalValue.value = String(Math.round(numeric * 100));
+        }
+    },
+    { immediate: true },
+);
+
 const displayValue = computed(() => {
     if (props.mask === 'currency') {
-        if (!props.modelValue) return '';
-        return formatCurrency(props.modelValue);
+        if (!internalValue.value) return '';
+        return formatCurrency(internalValue.value);
     }
 
     if (props.type === 'datetime-local') {
@@ -50,7 +67,10 @@ const handleInput = (e) => {
 
     if (props.mask === 'currency') {
         const parsed = parseCurrency(raw);
-        emit('update:modelValue', parsed);
+        const decimal = parsed ? Number(parsed) / 100 : null;
+
+        internalValue.value = parsed;
+        emit('update:modelValue', decimal);
         return;
     }
 
