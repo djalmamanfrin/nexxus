@@ -1,20 +1,71 @@
 <script setup>
+import { ref, computed } from 'vue';
+
 const props = defineProps({
     label: String,
-    modelValue: String,
+    modelValue: [String, Number],
     placeholder: String,
     icon: Function,
+    mask: String,
+    type: {
+        type: String,
+        default: 'text',
+    },
     width: {
         default: 'w-40',
     },
 });
 
 const emit = defineEmits(['update:modelValue']);
+const formatCurrency = (value) => {
+    const numbers = String(value).replace(/\D/g, '');
+    const amount = Number(numbers) / 100;
+
+    return amount.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+    });
+};
+
+const parseCurrency = (value) => {
+    return value.replace(/\D/g, '');
+};
+
+const displayValue = computed(() => {
+    if (props.mask === 'currency') {
+        if (!props.modelValue) return '';
+        return formatCurrency(props.modelValue);
+    }
+
+    return props.modelValue;
+});
+
+const handleInput = (e) => {
+    const raw = e.target.value;
+
+    if (props.mask === 'currency') {
+        const parsed = parseCurrency(raw);
+        emit('update:modelValue', parsed);
+        return;
+    }
+
+    emit('update:modelValue', raw);
+};
+
+const inputRef = ref(null);
+const handleClick = () => {
+    if (props.type === 'datetime-local' || props.type === 'date') {
+        inputRef.value?.showPicker?.();
+    }
+};
 </script>
 
 <template>
-    <div class="flex w-full flex-col gap-1" :class="width">
-        <label v-if="label" class="text-xs font-medium text-gray-600">
+    <div @click="handleClick" class="flex w-full flex-col gap-1" :class="width">
+        <label
+            v-if="label"
+            class="text-sm font-medium text-neutral-900 dark:text-neutral-100"
+        >
             {{ label }}
         </label>
 
@@ -24,13 +75,16 @@ const emit = defineEmits(['update:modelValue']);
                 :is="icon"
                 class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
             />
+
             <input
+                ref="inputRef"
                 v-bind="$attrs"
-                :value="modelValue"
-                @input="emit('update:modelValue', $event.target.value)"
+                :type="type"
+                :value="displayValue"
+                @input="handleInput"
                 :placeholder="placeholder"
                 :class="icon ? 'pl-10' : ''"
-                class="dark:bg-gray-950 rounded-md w-full border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 dark:bg-gray-950"
             />
         </div>
     </div>
