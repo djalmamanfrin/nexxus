@@ -83,29 +83,27 @@ const handleSave = () => {
         return;
     }
 
-    form
-        .transform((data) => ({
-            ...data,
-            _method: 'put',
-        }))
-        .post(`/payments/${selectedItem.value?.id}`, {
-            forceFormData: true,
-
-            onStart: () => {
-                console.log('Iniciando save...');
-            },
-            onSuccess: () => {
-                console.log('Salvo com sucesso');
-                open.value = false;
-                form.attachment = null;
-            },
-            onError: (errors) => {
-                console.error('Erro ao salvar:', errors);
-            },
-            onFinish: () => {
-                console.log('Finalizou requisição');
-            },
-        });
+    form.transform((data) => ({
+        ...data,
+        _method: 'put',
+        amount: data.amount ? Number(data.amount) / 100 : 0,
+    })).post(`/payments/${selectedItem.value?.id}`, {
+        forceFormData: true,
+        onStart: () => {
+            console.log('Iniciando save...');
+        },
+        onSuccess: () => {
+            console.log('Salvo com sucesso');
+            open.value = false;
+            form.attachment = null;
+        },
+        onError: (errors) => {
+            console.error('Erro ao salvar:', errors);
+        },
+        onFinish: () => {
+            console.log('Finalizou requisição');
+        },
+    });
 };
 </script>
 
