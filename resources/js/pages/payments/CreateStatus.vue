@@ -20,7 +20,7 @@ const submit = async () => {
         return;
     }
     try {
-        const response = await api.post('/payment-status', form.data());
+        const response = await api.post('/payment-statuses', form.data());
         if (response.status === 201) {
             emit('created', {
                 field: 'payment_status_id',
