@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import { useForm, router } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import AppSelect from '@/components/base/AppSelect.vue';
 import CreateStatus from '@/pages/payments/CreateStatus.vue';
-import { SelectOption } from '@/types/select';
 
 interface Payment {
     id: number;
@@ -13,28 +12,32 @@ interface Payment {
     payment_type_id: string;
     amount: string;
     paid_at: string;
-    attachments?: any[];
+}
+
+interface FormType {
+    expense_id: string;
+    bank_account_id: string;
+    payment_status_id: string;
+    payment_type_id: string;
+    amount: string;
+    paid_at: string;
+    attachment: File | null;
 }
 
 const props = defineProps<{
     payment: Payment;
+    form: FormType & {
+        defaults: Function;
+        reset: Function;
+    };
 }>();
-
-const form = useForm({
-    expense_id: '',
-    bank_account_id: '',
-    payment_status_id: '',
-    payment_type_id: '',
-    amount: '',
-    paid_at: '',
-});
 
 watch(
     () => props.payment,
     (payment) => {
         if (!payment) return;
 
-        form.defaults({
+        props.form.defaults({
             expense_id: payment.expense_id ?? '',
             bank_account_id: payment.bank_account_id ?? '',
             payment_status_id: payment.payment_status_id ?? '',
@@ -43,23 +46,19 @@ watch(
             paid_at: payment.paid_at ?? '',
         });
 
-        form.reset();
+        props.form.reset();
     },
     { immediate: true },
 );
 
-const submit = () => {
-    if (!props.payment) return;
-    form.put(`/payments/${props.payment.id}`);
-};
-
 const handleCreated = (item) => {
     router.reload({ only: ['statuses'] });
-    form[item.field] = item.value;
+    props.form[item.field] = item.value;
 };
 </script>
+
 <template>
-    <form v-if="payment" @submit.prevent="submit" class="space-y-4">
+    <div v-if="payment" class="space-y-4">
         <div class="grid grid-cols-1 gap-4">
             <div>
                 <label class="form-label">Conta</label>
@@ -79,7 +78,7 @@ const handleCreated = (item) => {
                     name="status"
                     width="w-56"
                     showCreate
-                    url="/api/payment-statuses"
+                    url="payment-statuses"
                     :createComponent="CreateStatus"
                 />
             </div>
@@ -103,5 +102,5 @@ const handleCreated = (item) => {
                 />
             </div>
         </div>
-    </form>
+    </div>
 </template>
