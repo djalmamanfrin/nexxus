@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { formatDateTimeLocal, parseDateTimeLocal } from '@/lib/date.ts';
 
 const props = defineProps({
     label: String,
@@ -37,6 +38,10 @@ const displayValue = computed(() => {
         return formatCurrency(props.modelValue);
     }
 
+    if (props.type === 'datetime-local') {
+        return formatDateTimeLocal(props.modelValue);
+    }
+
     return props.modelValue;
 });
 
@@ -46,6 +51,11 @@ const handleInput = (e) => {
     if (props.mask === 'currency') {
         const parsed = parseCurrency(raw);
         emit('update:modelValue', parsed);
+        return;
+    }
+
+    if (props.type === 'datetime-local') {
+        emit('update:modelValue', parseDateTimeLocal(raw));
         return;
     }
 
