@@ -11,16 +11,6 @@ class UpdatePaymentRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation(): void
-    {
-        if ($this->filled('amount')) {
-            $this->merge([
-                'amount' => $this->amount / 100,
-            ]);
-        }
-    }
-
-
     public function rules(): array
     {
         return [
