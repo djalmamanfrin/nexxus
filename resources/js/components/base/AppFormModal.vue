@@ -21,7 +21,7 @@ const emit = defineEmits(['update:open']);
         <DialogContent class="w-auto w-full max-w-[90vw]">
             <DialogHeader>
                 <DialogTitle>{{ title }}</DialogTitle>
-                <DialogDescription> {{description}} </DialogDescription>
+                <DialogDescription> {{ description }} </DialogDescription>
             </DialogHeader>
 
             <slot />
