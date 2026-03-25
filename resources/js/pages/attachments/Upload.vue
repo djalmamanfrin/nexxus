@@ -14,6 +14,14 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    btnIcon: {
+        type: Function,
+        default: CirclePlus,
+    },
+    btnVariant: {
+        type: String,
+        default: 'success',
+    },
 });
 
 const open = ref(false);
@@ -77,10 +85,11 @@ onUnmounted(() => {
 
 <template>
     <AppButton
+        v-bind="$attrs"
         @click="openFileSelector"
         :label="props.label"
-        :icon="CirclePlus"
-        variant="success"
+        :icon="props.btnIcon"
+        :variant="props.btnVariant"
     />
 
     <input
