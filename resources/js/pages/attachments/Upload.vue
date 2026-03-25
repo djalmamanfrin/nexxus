@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
+import api from '@/lib/axios';
+import { router, useForm } from '@inertiajs/vue3';
 import { onUnmounted, ref } from 'vue';
 import { CirclePlus, Upload, RefreshCw, Loader2 } from 'lucide-vue-next';
 import AppFormModal from '@/components/base/AppFormModal.vue';
 import AppButton from '@/components/AppButton.vue';
+
+const emit = defineEmits(['created']);
 
 const props = defineProps({
     url: {
@@ -39,20 +42,36 @@ function openFileSelector() {
     fileInput.value?.click();
 }
 
-function submit() {
-    form.post(props.url, {
-        forceFormData: true,
-        onSuccess: () => {
+const submit = async () => {
+    if (!form.isDirty) {
+        form.setError('attachment', 'Arquivo não selecionado');
+        return;
+    }
+    try {
+        const response = await api.post(props.url, form.data(), {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        if (response.status === 201) {
             open.value = false;
-
+            emit('created', {
+                label: response.data.name,
+                value: response.data.id,
+                field: response.data.field,
+            });
+            router.reload({ only: ['attachments'] });
             if (form.attachmentPreview) {
                 URL.revokeObjectURL(form.attachmentPreview);
             }
-
             form.reset();
-        },
-    });
-}
+        } else {
+            console.warn('Status code inesperado:', response.status);
+        }
+    } catch (error: any) {
+        console.error('Erro no upload:', error);
+    }
+};
 
 function handleFile(e: Event) {
     const target = e.target as HTMLInputElement;
