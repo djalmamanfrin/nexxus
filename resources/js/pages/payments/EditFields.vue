@@ -68,7 +68,7 @@ const handleCreated = (item) => {
             <AppSelectWithUpload
                 v-model="form.expense_id"
                 @created="handleCreated"
-                url="expenses"
+                :url="`/payments/${payment.id}/available-expenses`"
                 label="Despesa"
                 name="expense_id"
                 width="w-56"
