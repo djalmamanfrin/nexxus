@@ -56,8 +56,8 @@ const submit = async () => {
         if (response.status === 201) {
             open.value = false;
             emit('created', {
-                label: response.data.name,
-                value: response.data.id,
+                label: response.data.label,
+                value: response.data.value,
                 field: response.data.field,
             });
             router.reload({ only: ['attachments'] });
