@@ -5,6 +5,17 @@ import { CirclePlus, Upload, RefreshCw, Loader2 } from 'lucide-vue-next';
 import AppFormModal from '@/components/base/AppFormModal.vue';
 import AppButton from '@/components/AppButton.vue';
 
+const props = defineProps({
+    url: {
+        type: String,
+        required: true,
+    },
+    label: {
+        type: String,
+        required: true,
+    },
+});
+
 const open = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
 
@@ -21,7 +32,7 @@ function openFileSelector() {
 }
 
 function submit() {
-    form.post('/payments', {
+    form.post(props.url, {
         forceFormData: true,
         onSuccess: () => {
             open.value = false;
@@ -67,7 +78,7 @@ onUnmounted(() => {
 <template>
     <AppButton
         @click="openFileSelector"
-        label="Novo Pagamento"
+        :label="props.label"
         :icon="CirclePlus"
         variant="success"
     />
@@ -82,21 +93,21 @@ onUnmounted(() => {
 
     <AppFormModal
         :open="open"
-        title="Novo pagamento"
+        :title="props.label"
         description="Confirme se selecionou a imagem correta antes de salvar"
         @update:open="(value) => (open = value)"
     >
         <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="flex justify-center">
                 <div
-                    class="overflow-y-auto overflow-hidden relative max-h-[500px] rounded-lg"
+                    class="relative max-h-[500px] overflow-hidden overflow-y-auto rounded-lg"
                 >
                     <img
                         :src="form.attachmentPreview"
                         class="w-full cursor-zoom-in object-cover"
                         @click="openViewer = true"
-                        alt="Comprovante de pagamento"
-                     />
+                        alt="Comprovante anexado"
+                    />
 
                     <!-- fade no final -->
                     <div

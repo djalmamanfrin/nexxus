@@ -9,9 +9,9 @@ import FilterText from '@/components/filters/FilterText.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
-import Create from '@/pages/payments/Create.vue';
 import AppImagePreview from '@/components/base/AppImagePreview.vue';
 import AppTable from '@/components/base/AppTable.vue';
+import Upload from "@/pages/attachments/Upload.vue";
 
 export interface Payment {
     id: number;
@@ -56,7 +56,10 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
             <div class="content-box-header">
                 <h3 class="content-box-title">Pagamentos</h3>
                 <div class="content-box-btn">
-                    <Create />
+                    <Upload
+                        url="/payments"
+                        label="Novo Pagamento"
+                    />
                 </div>
             </div>
             <FlashMessage />
