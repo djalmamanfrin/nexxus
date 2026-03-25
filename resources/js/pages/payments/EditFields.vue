@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import { router } from '@inertiajs/vue3';
-import AppSelect from '@/components/base/AppSelect.vue';
 import CreateStatus from '@/pages/payments/CreateStatus.vue';
 import AppInput from '@/components/base/AppInput.vue';
+import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
 
 interface Payment {
     id: number;
@@ -53,7 +52,6 @@ watch(
 );
 
 const handleCreated = (item) => {
-    router.reload({ only: ['statuses'] });
     props.form[item.field] = item.value;
 };
 </script>
@@ -71,18 +69,18 @@ const handleCreated = (item) => {
                 <input v-model="form.expense_id" class="form-input" />
             </div>
 
-            <div>
-                <AppSelect
-                    v-model="form.payment_status_id"
-                    @created="handleCreated"
-                    label="Status"
-                    name="status"
-                    width="w-56"
-                    showCreate
-                    url="payment-statuses"
-                    :createComponent="CreateStatus"
-                />
-            </div>
+            <AppSelectWithModal
+                v-model="form.payment_status_id"
+                showCreate
+                @created="handleCreated"
+                :createComponent="CreateStatus"
+                url="payment-statuses"
+                label="Status"
+                name="status"
+                width="w-56"
+                title="Novo status"
+                description="Como deseja nomear?"
+            />
 
             <div>
                 <label class="form-label">Tipo</label>
