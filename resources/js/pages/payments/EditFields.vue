@@ -3,7 +3,7 @@ import { watch } from 'vue';
 import CreateStatus from '@/pages/payments/CreateStatus.vue';
 import AppInput from '@/components/base/AppInput.vue';
 import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
-import AppSelectWithUpload from "@/components/base/AppSelectWithUpload.vue";
+import AppSelectWithUpload from '@/components/base/AppSelectWithUpload.vue';
 
 interface Payment {
     id: number;
@@ -66,10 +66,11 @@ const handleCreated = (item) => {
             </div>
 
             <AppSelectWithUpload
-                v-model="form.payment_status_id"
+                v-model="form.expense_id"
+                @created="handleCreated"
                 url="expenses"
-                label="Status"
-                name="status"
+                label="Despesa"
+                name="expense_id"
                 width="w-56"
             />
 
