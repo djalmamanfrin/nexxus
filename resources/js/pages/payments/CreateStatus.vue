@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import api from '@/lib/axios';
 import { watch } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { Loader2, Save } from 'lucide-vue-next';
 import AppButton from '@/components/AppButton.vue';
 import AppInput from '@/components/base/AppInput.vue';
 
-const emit = defineEmits(['created', 'cancel']);
+const emit = defineEmits(['created', 'cancel']); // mudar de cancel para close
 
 const form = useForm<{
     name: string;
@@ -25,8 +25,10 @@ const submit = async () => {
             emit('created', {
                 field: 'payment_status_id',
                 value: response.data.id,
-                label: response.data.name
+                label: response.data.name,
             });
+
+            router.reload({ only: ['statuses'] });
             emit('cancel');
         } else {
             console.warn('Status inesperado:', response.status);
