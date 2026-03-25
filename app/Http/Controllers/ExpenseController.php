@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Attachment\AttachFileAction;
 use App\Models\Expense;
-use App\Models\PaymentStatus;
 use App\Models\Task;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class ExpenseController extends Controller
 {
@@ -38,42 +42,31 @@ class ExpenseController extends Controller
         return Inertia::render('expenses/Create');
     }
 
-    // Cadastrar o tarefa no banco de dados
-    public function store(Request $request)
+    /**
+     * @throws Throwable
+     */
+    public function store(Request $request, AttachFileAction $action): JsonResponse
     {
-        $request->validate(
-            [
-                'name' => 'required|string|max:255',
-                'started_at' => 'required|date',
-                'finished_at' => 'required|date|after_or_equal:started_at',
-            ],
-            [
-                'name.required' => "Campo nome é obrigatório!",
+        $request->validate([
+            'attachment' => ['required', 'file', 'image', 'max:5120'],
+        ]);
 
-                'started_at.required' => "Campo data/hora de início é obrigatório!",
-                'started_at.date' => "Informe uma data/hora válida para o início!",
+        $attachment = null;
+        $expense = DB::transaction(function () use ($request, $action, &$attachment) {
+            $expense = Expense::create();
+            $attachment = $action->execute(
+                $expense,
+                $request->file('attachment'),
+                'attachments/expenses');
 
-                'finished_at.required' => "Campo data/hora de término é obrigatório!",
-                'finished_at.date' => "Informe uma data/hora válida para o término!",
-                'finished_at.after_or_equal' => "A data de término deve ser igual ou posterior à data de início!",
-            ]
-        );
+            return $expense;
+        });
 
-
-        // Capturar possíveis exceções durante a execução.
-        try {
-            $task = Task::create([
-                'name' => $request->name,
-                'started_at' => $request->started_at,
-                'finished_at' => $request->finished_at,
-            ]);
-
-            return redirect()->route('expenses.show', ['task' => $task->id])->with('success', 'Tarefa cadastrada com sucesso!');
-        } catch (Exception $e) {
-
-            // Redirecionar o usuário, enviar a mensagem de erro
-            return back()->withInput()->with('error', 'Tarefa não cadastrada!');
-        }
+        return response()->json([
+            'field' => 'expense_id',
+            'value' => $expense->id,
+            'label' => $attachment->original_name,
+        ], Response::HTTP_CREATED);
     }
 
     // Carregar o formulário editar tarefa
