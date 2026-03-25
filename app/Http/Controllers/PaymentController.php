@@ -6,10 +6,12 @@ use App\Actions\Attachment\AttachFileAction;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Payment;
 use App\Models\PaymentStatus;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class PaymentController extends Controller
@@ -34,18 +36,26 @@ class PaymentController extends Controller
     /**
      * @throws Throwable
      */
-    public function store(Request $request, AttachFileAction $action): RedirectResponse
+    public function store(Request $request, AttachFileAction $action): JsonResponse
     {
         $request->validate([
             'attachment' => ['required', 'file', 'image', 'max:5120'],
         ]);
 
-        DB::transaction(function () use ($request, $action) {
+        $attachment = null;
+        $expense = DB::transaction(function () use ($request, $action, &$attachment) {
             $payment = Payment::create();
-            $action->execute($payment, $request->file('attachment'), 'attachments/payments');
+            $attachment = $action->execute(
+                $payment,
+                $request->file('attachment'),
+                'attachments/payments');
         });
 
-        return back()->with('success', 'Pagamento criado!');
+        return response()->json([
+            'field' => 'expense_id',
+            'value' => $expense->id,
+            'label' => $attachment->original_name,
+        ], Response::HTTP_CREATED);
     }
 
     /**
