@@ -40,6 +40,7 @@ const handleCreated = (item: SelectOption) => {
             </label>
 
             <Upload
+                @created="handleCreated"
                 :url="props.url"
                 label="Upload"
                 :btnIcon="UploadCloudIcon"
