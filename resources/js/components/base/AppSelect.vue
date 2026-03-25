@@ -1,25 +1,69 @@
+<script setup lang="ts">
+import { ref, computed, onMounted, watch } from 'vue';
+import axios from 'axios';
+import { SelectOption } from '@/types/select';
+
+interface Props {
+    label?: string;
+    modelValue?: string | number;
+    url?: string;
+    options?: SelectOption[];
+    width?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    width: 'w-full',
+});
+
+const emit = defineEmits(['update:modelValue', 'selected']);
+
+const internalOptions = ref<SelectOption[]>([]);
+const loading = ref(false);
+const error = ref<string | null>(null);
+
+const fetchOptions = async () => {
+    if (!props.url) return;
+
+    loading.value = true;
+    error.value = null;
+
+    try {
+        const { data } = await axios.get<SelectOption[]>(props.url);
+        internalOptions.value = data;
+    } catch (e) {
+        console.error(e);
+        error.value = 'Erro ao carregar opções';
+    } finally {
+        loading.value = false;
+    }
+};
+
+onMounted(fetchOptions);
+watch(() => props.url, fetchOptions);
+
+const options = computed(() => props.options ?? internalOptions.value);
+
+const onChange = (value: string) => {
+    const selectedItem = options.value.find(
+        (option) => String(option.value) === value,
+    );
+
+    // TODO: BUG - quando a opcao do opction selecionada é selecione o selectedItem é undefined
+
+    emit('update:modelValue', value);
+    emit('selected', selectedItem);
+};
+</script>
+
 <template>
     <div class="flex w-full flex-col" :class="width">
-        <!-- Label + botão -->
-        <div class="flex items-center justify-between">
-            <label
-                v-if="label"
-                class="text-sm font-medium text-gray-600 dark:text-gray-300"
-            >
-                {{ label }}
-            </label>
+        <label
+            v-if="label"
+            class="text-sm font-medium text-gray-600 dark:text-gray-300"
+        >
+            {{ label }}
+        </label>
 
-            <AppButton
-                v-if="showCreate"
-                @click="openModal"
-                label="Criar"
-                :icon="Plus"
-                variant="link"
-                class="flex items-center text-xs font-medium"
-            />
-        </div>
-
-        <!-- Select -->
         <select
             :value="modelValue"
             @change="onChange($event.target.value)"
@@ -36,102 +80,12 @@
             </option>
         </select>
 
-        <!-- Loading -->
         <span v-if="loading" class="mt-1 text-xs text-gray-500">
             Carregando...
         </span>
 
-        <!-- Error -->
         <span v-if="error" class="mt-1 text-xs text-red-500">
             {{ error }}
         </span>
-
-        <!-- Modal -->
-        <AppFormModal
-            :open="showModal"
-            title="Novo status de pagamento"
-            description="Como gostaria de nomear este novo status?"
-            @update:open="(value) => (showModal = value)"
-        >
-            <component
-                :is="createComponent"
-                @created="handleCreated"
-                @cancel="closeModal"
-            />
-        </AppFormModal>
     </div>
 </template>
-<script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
-import axios from 'axios';
-import { Plus } from 'lucide-vue-next';
-import { SelectOption } from '@/types/select';
-import AppButton from '@/components/AppButton.vue';
-import AppFormModal from '@/components/base/AppFormModal.vue';
-
-interface Props {
-    label?: string;
-    modelValue?: string | number;
-    url: string;
-    width?: string;
-    showCreate?: boolean;
-    createComponent?: any;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-    width: 'w-full',
-    showCreate: false,
-});
-
-const emit = defineEmits(['update:modelValue', 'created', 'selected']);
-
-const options = ref<SelectOption[]>([]);
-const loading = ref(false);
-const error = ref<string | null>(null);
-
-const showModal = ref(false);
-
-const openModal = () => {
-    showModal.value = true;
-};
-
-const closeModal = () => {
-    showModal.value = false;
-};
-
-const fetchOptions = async () => {
-    if (!props.url) return;
-
-    loading.value = true;
-    error.value = null;
-
-    try {
-        const { data } = await axios.get<SelectOption[]>(props.url);
-        options.value = data;
-    } catch (e) {
-        console.error(e);
-        error.value = 'Erro ao carregar opções';
-    } finally {
-        loading.value = false;
-    }
-};
-
-onMounted(fetchOptions);
-watch(() => props.url, fetchOptions);
-
-const onChange = (value: string) => {
-    const selectedItem = options.value.find(
-        (option) => String(option.value) === value,
-    );
-
-    emit('update:modelValue', value);
-    emit('selected', selectedItem);
-};
-
-const handleCreated = (item: SelectOption) => {
-    closeModal();
-    options.value.push(item);
-    emit('update:modelValue', item.value);
-    emit('created', item);
-};
-</script>
