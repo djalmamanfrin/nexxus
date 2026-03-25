@@ -24,8 +24,15 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
 
     Route::resource('payments', PaymentController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
-    Route::post('/payments/{payment}/attachments', [PaymentController::class, 'uploadAttachment'])
-        ->name('payments.attachment');
+    Route::post(
+        '/payments/{payment}/attachments',
+        [PaymentController::class, 'uploadAttachment']
+    )->name('payments.attachment');
+
+    Route::get(
+        '/payments/{payment}/available-expenses',
+        [PaymentController::class, 'availableExpenses']
+    )->name('payments.available-expenses');
 
     Route::resource('payment-statuses', PaymentStatusController::class)
         ->only(['index', 'store']);

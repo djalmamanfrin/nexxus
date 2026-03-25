@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Attachment\AttachFileAction;
 use App\Http\Requests\UpdatePaymentRequest;
+use App\Models\Expense;
 use App\Models\Payment;
 use App\Models\PaymentStatus;
 use Illuminate\Http\JsonResponse;
@@ -31,6 +32,23 @@ class PaymentController extends Controller
             'search_by' => $request->search_by,
             'status' => $request->status,
         ]);
+    }
+
+    public function availableExpenses(Payment $payment)
+    {
+        return Expense::query()
+            ->where(function ($query) use ($payment) {
+                $query
+                    ->whereDoesntHave('payments')
+                    ->orWhere('id', $payment->expense_id);
+            })
+            ->whereHas('attachments')
+            ->with('attachments')
+            ->get()
+            ->map(fn ($expense) => [
+                'value' => $expense->id,
+                'label' => $expense->attachments->first()?->original_name,
+            ]);
     }
 
     /**
