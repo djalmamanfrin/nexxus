@@ -28,7 +28,7 @@ class PaymentController extends Controller
 
         return Inertia::render('payments/Index', [
             'payments' => $payments,
-            'statuses' => PaymentStatus::select('id as value', 'name as label')->get(),
+            'statuses' => PaymentStatus::select('id as value', 'name as label', 'color')->get(),
             'search_by' => $request->search_by,
             'status' => $request->status,
         ]);
