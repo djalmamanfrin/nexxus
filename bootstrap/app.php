@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -59,6 +60,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 'type' => 'error',
                 'message' => $message
             ]);
+        });
+
+        $exceptions->render(function (AuthenticationException $e) {
+            return redirect()->guest(route('login'));
         });
 
         $exceptions->render(function () {
