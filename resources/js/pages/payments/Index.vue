@@ -11,7 +11,7 @@ import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
 import AppImagePreview from '@/components/base/AppImagePreview.vue';
 import AppTable from '@/components/base/AppTable.vue';
-import Upload from "@/pages/attachments/Upload.vue";
+import Upload from '@/pages/attachments/Upload.vue';
 
 export interface Payment {
     id: number;
@@ -41,8 +41,22 @@ const { filters, search, clear } = useFilters(
     '/payments',
 );
 
-function getStatusLabel(id: string | number) {
-    return props.statuses.find((s) => s.value == id)?.label ?? '-';
+function getStatus(id: string | number) {
+    const statusColorClasses: Record<string, string> = {
+        green: 'bg-green-100 text-green-800',
+        red: 'bg-red-100 text-red-800',
+        yellow: 'bg-yellow-100 text-yellow-800',
+        gray: 'bg-gray-100 text-gray-800',
+    };
+
+    const status = props.statuses.find((s) => s.value == id);
+
+    const color = status?.color || 'gray';
+
+    return {
+        label: status?.label || 'Desconhecido',
+        class: statusColorClasses[color] || statusColorClasses.gray,
+    };
 }
 
 /* Define os breadcrumbs que serão exibidos no layout */
@@ -109,13 +123,21 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                     <span v-else>-</span>
                 </template>
 
-                <!-- STATUS COM BADGE -->
                 <template #cell-payment_status_id="{ item }">
                     <span
-                        class="rounded bg-green-100 px-2 py-1 text-xs text-green-800"
-                    >
-                        {{ getStatusLabel(item.payment_status_id) }}
-                    </span>
+                        v-bind="
+                            (() => {
+                                const status = getStatus(item.payment_status_id);
+                                return {
+                                    class: [
+                                        'rounded px-2 py-1 text-xs',
+                                        status.class,
+                                    ],
+                                    innerText: status.label,
+                                };
+                            })()
+                        "
+                    />
                 </template>
             </AppTable>
         </div>
