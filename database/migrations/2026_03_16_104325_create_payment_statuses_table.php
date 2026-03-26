@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name'); // Ex: Pending, Paid, Cancelled
             $table->string('slug')->unique(); // Ex: pending, paid, cancelled
-            $table->string('color')->nullable(); // usado em UI (badge, label)
+            $table->string('color')->default('gray'); // usado em UI (badge, label)
             $table->boolean('active')->default(true);
             $table->timestamps();
         });
