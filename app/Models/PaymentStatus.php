@@ -29,6 +29,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class PaymentStatus extends Model
 {
+    const PENDING = 1;
+    const DONE = 2;
+
     protected $fillable = [
         'name',
         'slug',

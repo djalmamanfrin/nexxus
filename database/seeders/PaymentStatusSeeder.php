@@ -11,7 +11,7 @@ class PaymentStatusSeeder extends Seeder
     {
         PaymentStatus::insert([
             ['name' => 'Pendente', 'slug' => 'pendente', 'color' => 'yellow'],
-            ['name' => 'Atualizado', 'slug' => 'updated', 'color' => 'green'],
+            ['name' => 'Concluído', 'slug' => 'done', 'color' => 'green'],
         ]);
     }
 }
