@@ -11,13 +11,13 @@ class ExpenseCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Materials',
-            'Labor',
-            'Equipment',
-            'Transport',
-            'Food',
-            'Services',
-            'Taxes'
+            'Material',
+            'Equipamento',
+            'Transporte',
+            'Alimentação',
+            'Funcionários',
+            'Impostos',
+            'Tecnologia'
         ];
 
         foreach ($categories as $name) {
