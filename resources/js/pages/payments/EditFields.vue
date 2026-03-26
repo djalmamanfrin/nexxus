@@ -77,18 +77,18 @@ const handleCreated = (item) => {
                 width="w-56"
             />
 
-            <AppSelectWithModal
-                v-model="form.payment_status_id"
-                showCreate
-                @created="handleCreated"
-                :createComponent="CreateStatus"
-                url="payment-statuses"
-                label="Status"
-                name="status"
-                width="w-56"
-                title="Novo status"
-                description="Como deseja nomear?"
-            />
+<!--            <AppSelectWithModal-->
+<!--                v-model="form.payment_status_id"-->
+<!--                showCreate-->
+<!--                @created="handleCreated"-->
+<!--                :createComponent="CreateStatus"-->
+<!--                url="payment-statuses"-->
+<!--                label="Status"-->
+<!--                name="status"-->
+<!--                width="w-56"-->
+<!--                title="Novo status"-->
+<!--                description="Como deseja nomear?"-->
+<!--            />-->
 
 <!--            <div>-->
 <!--                <label class="form-label">Tipo</label>-->
