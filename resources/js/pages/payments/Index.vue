@@ -13,6 +13,7 @@ import AppImagePreview from '@/components/base/AppImagePreview.vue';
 import AppTable from '@/components/base/AppTable.vue';
 import Upload from '@/pages/attachments/Upload.vue';
 import { attachment } from '@/routes/payments';
+import FilterTabs from '@/components/filters/FilterTabs.vue';
 
 export interface Payment {
     id: number;
@@ -86,6 +87,11 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                         name="search_by"
                         placeholder="Ex: cpf, cnpj ou qualquer texto no comprovante"
                         :icon="Search"
+                    />
+                    <FilterTabs
+                        label="Status"
+                        name="status"
+                        :tabs="statuses"
                     />
                     <FilterSelect
                         :options="statuses"

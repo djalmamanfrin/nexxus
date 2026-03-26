@@ -23,7 +23,7 @@ function getValueLabel(key, value) {
     }
 
     // traduz select
-    if (meta.type === 'select') {
+    if (meta.type === 'tab') {
         return normalize(meta.display ? meta.display : value);
     }
 
@@ -40,17 +40,28 @@ function normalize(value) {
 </script>
 
 <template>
-    <div class="flex flex-wrap gap-2">
-        <span class="rounded bg-gray-200 px-2 py-1 text-xs">
-            <span class="text-gray-500"> Os resultados: </span>
+    <div class="flex flex-wrap items-center gap-2 text-xs">
+        <!-- Label inicial -->
+        <span
+            class="rounded bg-gray-200 px-2 py-1 text-gray-600 dark:bg-gray-800 dark:text-gray-300"
+        >
+            Os resultados:
         </span>
-        <div v-for="(value, key) in filters" :key="key">
-            <span v-if="value" class="rounded bg-gray-200 px-2 py-1 text-xs">
-                <span class="text-gray-500"> {{ getLabel(key) }}: </span>
-                <span class="font-semibold tracking-wide">
+
+        <!-- Filtros ativos -->
+        <template v-for="(value, key) in filters" :key="key">
+            <span
+                v-if="value"
+                class="inline-flex items-center gap-1 rounded bg-gray-200 px-2 py-1 dark:bg-gray-800"
+            >
+                <span class="text-gray-500 dark:text-gray-400">
+                    {{ getLabel(key) }}:
+                </span>
+
+                <span class="font-medium text-gray-700 dark:text-gray-200">
                     {{ getValueLabel(key, value) }}
                 </span>
             </span>
-        </div>
+        </template>
     </div>
 </template>
