@@ -14,9 +14,14 @@ class DatabaseSeeder extends Seeder
             BankSeeder::class,
             CostCenterTypeSeeder::class,
             ExpenseCategorySeeder::class,
-            PayeeSeeder::class,
-            WorkSeeder::class,
-            BankAccountSeeder::class,
         ]);
+
+        if (!app()->isProduction()) {
+            $this->call([
+                PayeeSeeder::class,
+                WorkSeeder::class,
+                BankAccountSeeder::class,
+            ]);
+        }
     }
 }
