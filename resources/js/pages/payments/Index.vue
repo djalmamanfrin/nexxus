@@ -12,6 +12,7 @@ import { SelectOption } from '@/types/select';
 import AppImagePreview from '@/components/base/AppImagePreview.vue';
 import AppTable from '@/components/base/AppTable.vue';
 import Upload from '@/pages/attachments/Upload.vue';
+import { attachment } from '@/routes/payments';
 
 export interface Payment {
     id: number;
@@ -112,12 +113,10 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                 ]"
                 :items="props.payments"
             >
-                <!-- UI COMPLEXA → SLOT -->
                 <template #cell-attachments="{ item }">
-                    <AppImagePreview
-                        v-if="item.attachments?.length"
-                        :file="item.attachments[0]"
-                    />
+                    <span v-if="item.attachments?.length">
+                        {{ item.attachments[0].original_name }}
+                    </span>
                     <span v-else>-</span>
                 </template>
 
@@ -125,7 +124,9 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                     <span
                         v-bind="
                             (() => {
-                                const status = getStatus(item.payment_status_id);
+                                const status = getStatus(
+                                    item.payment_status_id,
+                                );
                                 return {
                                     class: [
                                         'rounded px-2 py-1 text-xs',
