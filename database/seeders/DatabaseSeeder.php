@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             ExpenseCategorySeeder::class,
             PayeeSeeder::class,
             WorkSeeder::class,
+            BankAccountSeeder::class,
         ]);
     }
 }
