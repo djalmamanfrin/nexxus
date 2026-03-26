@@ -14,6 +14,11 @@ class PaymentTypeSeeder extends Seeder
     {
         DB::table('payment_types')->insert([
             [
+                'name' => 'Não especificado',
+                'slug' => 'not_specified',
+                'is_active' => true,
+            ],
+            [
                 'name' => 'Dinheiro',
                 'slug' => 'cash',
                 'is_active' => true,
