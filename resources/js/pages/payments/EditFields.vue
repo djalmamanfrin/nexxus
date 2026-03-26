@@ -4,6 +4,7 @@ import CreateStatus from '@/pages/payments/CreateStatus.vue';
 import AppInput from '@/components/base/AppInput.vue';
 import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
 import AppSelectWithUpload from '@/components/base/AppSelectWithUpload.vue';
+import AppSelect from '@/components/base/AppSelect.vue';
 
 interface Payment {
     id: number;
@@ -60,10 +61,12 @@ const handleCreated = (item) => {
 <template>
     <div v-if="payment" class="space-y-4">
         <div class="grid grid-cols-1 gap-4">
-            <div>
-                <label class="form-label">Conta</label>
-                <input v-model="form.bank_account_id" class="form-input" />
-            </div>
+            <AppSelect
+                v-model="form.bank_account_id"
+                url="bank-accounts"
+                label="Conta Bancária"
+                name="bank_id"
+            />
 
             <AppSelectWithUpload
                 v-model="form.expense_id"
