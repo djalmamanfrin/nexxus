@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { SelectOption } from '@/types/select';
+import AppLabel from '@/components/base/AppLabel.vue';
 
 interface Props {
     label?: string;
@@ -57,13 +58,7 @@ const onChange = (value: string) => {
 
 <template>
     <div class="flex w-full flex-col" :class="width">
-        <label
-            v-if="label"
-            class="text-sm font-medium text-gray-600 dark:text-gray-300"
-        >
-            {{ label }}
-        </label>
-
+        <AppLabel v-if="label" :label="label" />
         <select
             :value="modelValue"
             @change="onChange($event.target.value)"

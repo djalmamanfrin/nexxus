@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { formatDateTimeLocal, parseDateTimeLocal } from '@/lib/date.ts';
+import AppLabel from '@/components/base/AppLabel.vue';
 
 const props = defineProps({
     label: String,
@@ -92,13 +93,7 @@ const handleClick = () => {
 
 <template>
     <div @click="handleClick" class="flex w-full flex-col gap-1" :class="width">
-        <label
-            v-if="label"
-            class="text-sm font-medium text-neutral-900 dark:text-neutral-100"
-        >
-            {{ label }}
-        </label>
-
+        <AppLabel v-if="label" :label="label" />
         <div class="relative">
             <component
                 v-if="icon"
