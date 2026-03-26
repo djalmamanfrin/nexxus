@@ -90,10 +90,10 @@ const handleCreated = (item) => {
                 description="Como deseja nomear?"
             />
 
-            <div>
-                <label class="form-label">Tipo</label>
-                <input v-model="form.payment_type_id" class="form-input" />
-            </div>
+<!--            <div>-->
+<!--                <label class="form-label">Tipo</label>-->
+<!--                <input v-model="form.payment_type_id" class="form-input" />-->
+<!--            </div>-->
 
             <AppInput v-model="form.amount" label="Valor" mask="currency" />
 

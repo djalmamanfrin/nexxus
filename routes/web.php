@@ -4,6 +4,7 @@ use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentStatusController;
+use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\Tasks\TaskController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,6 +41,8 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
 
     Route::resource('payment-statuses', PaymentStatusController::class)
         ->only(['index', 'store']);
+    Route::resource('payment-types', PaymentTypeController::class)
+        ->only(['index']);
 
     Route::resource('expenses', ExpenseController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
