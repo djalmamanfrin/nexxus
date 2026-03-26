@@ -107,6 +107,7 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                         label: 'Status',
                         type: 'payment_status',
                     },
+                    { key: 'paid_at', label: 'Pago em', type: 'datetime' },
                     { key: 'created_at', label: 'Criado em', type: 'datetime' },
                 ]"
                 :items="props.payments"
