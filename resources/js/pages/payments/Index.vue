@@ -93,13 +93,13 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                         name="status"
                         :tabs="statuses"
                     />
-                    <FilterSelect
-                        :options="statuses"
-                        :selectedValue="status"
-                        label="Status"
-                        name="status"
-                        width="w-56"
-                    />
+<!--                    <FilterSelect-->
+<!--                        :options="statuses"-->
+<!--                        :selectedValue="status"-->
+<!--                        label="Status"-->
+<!--                        name="status"-->
+<!--                        width="w-56"-->
+<!--                    />-->
                 </AppFilterBar>
             </form>
 

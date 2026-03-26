@@ -23,7 +23,7 @@ function getValueLabel(key, value) {
     }
 
     // traduz select
-    if (meta.type === 'tab') {
+    if (meta.type === 'select' || meta.type === 'tab') {
         return normalize(meta.display ? meta.display : value);
     }
 

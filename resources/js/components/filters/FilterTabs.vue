@@ -40,8 +40,9 @@ function selectTab(value: string | number) {
 }
 
 onMounted(() => {
-    const selected = props.tabs.find((t) => t.value === filters[props.name]);
-
+    const selected = props.tabs.find(
+        (item) => item.value === Number(filters[props.name]),
+    );
     if (!selected) return;
 
     registerFilter?.(props.name, {
