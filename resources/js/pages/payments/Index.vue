@@ -70,10 +70,7 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
             <div class="content-box-header">
                 <h3 class="content-box-title">Pagamentos</h3>
                 <div class="content-box-btn">
-                    <Upload
-                        url="/payments"
-                        label="Novo Pagamento"
-                    />
+                    <Upload url="/payments" label="Novo Pagamento" />
                 </div>
             </div>
             <FlashMessage />
