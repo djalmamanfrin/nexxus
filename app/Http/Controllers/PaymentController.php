@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Attachment\AttachFileAction;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Expense;
+use App\Models\ExpenseStatus;
 use App\Models\Payment;
 use App\Models\PaymentStatus;
 use Illuminate\Http\JsonResponse;
@@ -38,6 +39,7 @@ class PaymentController extends Controller
     public function availableExpenses(Payment $payment)
     {
         return Expense::query()
+            ->where('expense_status_id', '===', ExpenseStatus::DONE)
             ->where(function ($query) use ($payment) {
                 $query
                     ->whereDoesntHave('payments')
@@ -68,6 +70,8 @@ class PaymentController extends Controller
                 $payment,
                 $request->file('attachment'),
                 'attachments/payments');
+
+            return $payment;
         });
 
         return response()->json([
