@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import Pagination from '@/components/Pagination.vue';
@@ -87,7 +87,10 @@ const handleSave = () => {
         dataForm.patch(`/payments/${paymentId}`, {
             preserveState: true,
             onStart: () => {},
-            onSuccess: () => {},
+            onSuccess: () => {
+                open.value = false;
+                dataForm.reset();
+            },
             onError: (errors) => {
                 console.error('Erro ao salvar:', errors);
             },
@@ -100,17 +103,16 @@ const handleSave = () => {
             forceFormData: true,
             preserveState: true,
             onStart: () => {},
-            onSuccess: () => {},
+            onSuccess: () => {
+                open.value = false;
+                fileForm.reset();
+            },
             onError: (errors) => {
                 console.error('Erro ao salvar:', errors);
             },
             onFinish: () => {},
         });
     }
-
-    open.value = false;
-    dataForm.reset();
-    fileForm.reset();
 };
 </script>
 
