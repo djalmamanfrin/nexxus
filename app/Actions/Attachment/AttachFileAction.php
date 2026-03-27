@@ -15,7 +15,7 @@ class AttachFileAction
         $attachment = Attachment::where('hash', $hash)->first();
         if ($attachment) {
             throw ValidationException::withMessages([
-                'attachment' => 'Este comprovante já foi utilizado.',
+                'message' => 'Este comprovante já foi utilizado.',
                 'model_id' => $attachment->attachable_id,
                 'model_type' => $attachment->attachable_type,
             ]);

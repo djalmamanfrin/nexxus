@@ -64,8 +64,8 @@ onUnmounted(() => {
     </div>
 
     <div class="flex flex-1 justify-center">
-        <span v-if="props.form.errors.attachment" class="text-sm text-red-500">
-            {{ props.form.errors.attachment }}
+        <span v-if="props.form.errors.message" class="text-sm text-red-500">
+            {{ props.form.errors.message }}
         </span>
     </div>
 

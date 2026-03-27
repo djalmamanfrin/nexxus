@@ -46,10 +46,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // 🔸 422
         $exceptions->render(function (ValidationException $e) {
-            return back()->withErrors($e->errors())->with('flash', [
-                'type' => 'error',
-                'message' => $e->getMessage()
-            ]);
+            return back()->withErrors($e->errors());
         });
 
         // 🔸 HTTP (404, 403...)
