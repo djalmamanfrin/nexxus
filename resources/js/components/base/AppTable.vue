@@ -1,17 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
 import Pagination from '@/components/Pagination.vue';
-import { formatDate, formatDateTime } from '@/lib/date.ts';
-import { formatMoney } from '@/lib/money.ts';
-import { Pencil, Trash } from 'lucide-vue-next';
-import AppButton from '@/components/AppButton.vue';
-import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
-import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
-import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
-import SidebarDrawerPanel from '@/components/ui/sidebar/SidebarDrawerPanel.vue';
-import EditFields from '@/pages/payments/EditFields.vue';
-import EditFile from '@/pages/payments/EditFile.vue';
+import { formatDate, formatDateTime } from '@/lib/date';
+import { formatMoney } from '@/lib/money';
 
 const props = defineProps({
     columns: {
@@ -24,25 +14,18 @@ const props = defineProps({
     },
 });
 
-// =======================
-// FORMATADORES (SÓ TEXTO)
-// =======================
 const formatValue = (item, column) => {
     const value = item[column.key];
 
     switch (column.type) {
         case 'money':
             return formatMoney(value);
-
         case 'date':
             return value ? formatDate(value) : '-';
-
         case 'datetime':
             return value ? formatDateTime(value) : '-';
-
         case 'boolean':
             return value ? 'Sim' : 'Não';
-
         default:
             return value ?? '-';
     }
@@ -56,62 +39,6 @@ const getAlignClass = (align) => {
             return 'text-right';
         default:
             return 'text-center';
-    }
-};
-
-const open = ref(false);
-const selectedItem = ref(null);
-
-const handleView = (item) => {
-    selectedItem.value = item;
-    open.value = true;
-};
-
-const dataForm = useForm({
-    expense_id: '',
-    bank_account_id: '',
-    payment_status_id: '',
-    payment_type_id: '',
-    amount: '',
-    paid_at: '',
-});
-
-const fileForm = useForm({
-    attachment: null,
-});
-const handleSave = () => {
-    if (!selectedItem.value?.id) return;
-    const paymentId = selectedItem.value.id;
-
-    if (dataForm.isDirty) {
-        dataForm.patch(`/payments/${paymentId}`, {
-            preserveState: true,
-            onStart: () => {},
-            onSuccess: () => {
-                open.value = false;
-                dataForm.reset();
-            },
-            onError: (errors) => {
-                console.error('Erro ao salvar:', errors);
-            },
-            onFinish: () => {},
-        });
-    }
-
-    if (fileForm.isDirty) {
-        fileForm.post(`/payments/${paymentId}/attachments`, {
-            forceFormData: true,
-            preserveState: true,
-            onStart: () => {},
-            onSuccess: () => {
-                open.value = false;
-                fileForm.reset();
-            },
-            onError: (errors) => {
-                console.error('Erro ao salvar:', errors);
-            },
-            onFinish: () => {},
-        });
     }
 };
 </script>
@@ -129,9 +56,15 @@ const handleSave = () => {
                     >
                         {{ column.label }}
                     </th>
-                    <th class="table-row-header text-center">Ações</th>
+                    <th
+                        v-if="$slots.actions"
+                        class="table-row-header text-center"
+                    >
+                        Ações
+                    </th>
                 </tr>
             </thead>
+
             <tbody>
                 <tr
                     v-for="item in items.data"
@@ -148,24 +81,16 @@ const handleSave = () => {
                             {{ formatValue(item, column) }}
                         </slot>
                     </td>
-                    <td class="table-actions table-actions-align">
-                        <AppButton
-                            @click="handleView(item)"
-                            title="Editar pagamento"
-                            variant="link"
-                            :icon="Pencil"
-                        />
-                        <AppButton
-                            title="Excluir pagamento"
-                            variant="link"
-                            :href="`/payments/${item.id}`"
-                            :icon="Trash"
-                        />
+                    <td
+                        v-if="$slots.actions"
+                        class="table-actions table-actions-align"
+                    >
+                        <slot name="actions" :item="item" />
                     </td>
                 </tr>
                 <tr v-if="!items.data?.length">
                     <td
-                        :colspan="columns.length"
+                        :colspan="columns.length + ($slots.actions ? 1 : 0)"
                         class="py-4 text-center text-gray-500"
                     >
                         Nenhum registro encontrado
@@ -173,23 +98,6 @@ const handleSave = () => {
                 </tr>
             </tbody>
         </table>
-
-        <!-- PAGINAÇÃO FIXA -->
         <Pagination v-if="items.links" :links="items.links" />
     </div>
-    <SidebarDrawer :open="open" @close="open = false" @save="handleSave">
-        <template #title> Comprovante de Pagamento </template>
-
-        <SidebarDrawerTabs>
-            <SidebarDrawerTab name="info" label="Informações" />
-            <SidebarDrawerTab name="arquivo" label="Arquivo" />
-        </SidebarDrawerTabs>
-
-        <SidebarDrawerPanel name="info">
-            <EditFields :payment="selectedItem" :form="dataForm" />
-        </SidebarDrawerPanel>
-        <SidebarDrawerPanel name="arquivo">
-            <EditFile :payment="selectedItem" :form="fileForm" />
-        </SidebarDrawerPanel>
-    </SidebarDrawer>
 </template>
