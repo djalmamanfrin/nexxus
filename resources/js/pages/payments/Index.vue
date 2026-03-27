@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
 import { Search } from 'lucide-vue-next';
 import FlashMessage from '@/components/FlashMessage.vue';
-import FilterSelect from '@/components/filters/FilterSelect.vue';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
-import AppImagePreview from '@/components/base/AppImagePreview.vue';
 import AppTable from '@/components/base/AppTable.vue';
-import Upload from '@/pages/attachments/Upload.vue';
-import { attachment } from '@/routes/payments';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
 
 export interface Payment {
@@ -61,20 +56,18 @@ function getStatus(id: string | number) {
     };
 }
 
-/* Define os breadcrumbs que serão exibidos no layout */
-const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
+const breadcrumbItems: BreadcrumbItem[] = [
+    {
+        title: 'Pagamentos',
+        href: '',
+        btn: { label: 'Novo Pagamento', url: '/payments' },
+    },
+];
 </script>
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Pagamentos" />
         <div class="content-box">
-            <div class="content-box-header">
-                <h3 class="content-box-title">Pagamentos</h3>
-                <div class="content-box-btn">
-                    <Upload url="/payments" label="Novo Pagamento" />
-                </div>
-            </div>
             <FlashMessage />
             <form @submit.prevent="search">
                 <AppFilterBar
@@ -88,18 +81,14 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                         placeholder="Ex: cpf, cnpj ou qualquer texto no comprovante"
                         :icon="Search"
                     />
-                    <FilterTabs
-                        label="Status"
-                        name="status"
-                        :tabs="statuses"
-                    />
-<!--                    <FilterSelect-->
-<!--                        :options="statuses"-->
-<!--                        :selectedValue="status"-->
-<!--                        label="Status"-->
-<!--                        name="status"-->
-<!--                        width="w-56"-->
-<!--                    />-->
+                    <FilterTabs label="Status" name="status" :tabs="statuses" />
+                    <!--                    <FilterSelect-->
+                    <!--                        :options="statuses"-->
+                    <!--                        :selectedValue="status"-->
+                    <!--                        label="Status"-->
+                    <!--                        name="status"-->
+                    <!--                        width="w-56"-->
+                    <!--                    />-->
                 </AppFilterBar>
             </form>
 
@@ -130,15 +119,15 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Pagamentos', href: '' }];
                     <span
                         v-bind="
                             (() => {
-                                const status = getStatus(
+                                const statusName = getStatus(
                                     item.payment_status_id,
                                 );
                                 return {
                                     class: [
                                         'rounded px-2 py-1 text-xs',
-                                        status.class,
+                                        statusName.class,
                                     ],
-                                    innerText: status.label,
+                                    innerText: statusName.label,
                                 };
                             })()
                         "
