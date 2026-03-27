@@ -41,7 +41,7 @@ class CostCenter extends Model
     protected $fillable = [
         'work_id',
         'cost_center_type_id',
-        'name',
+        'code',
         'description',
         'start_date',
         'expected_end_date',
