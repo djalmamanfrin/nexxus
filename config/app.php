@@ -40,6 +40,7 @@ return [
     */
 
     'debug' => (bool) env('APP_DEBUG', false),
+    'debug_secret' => env('DEBUG_SECRET'),
 
     /*
     |--------------------------------------------------------------------------

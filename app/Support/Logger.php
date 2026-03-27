@@ -8,6 +8,7 @@ class Logger
 {
     public static function info(string $message, array $context = []): void
     {
+        if (!self::shouldLog()) return;
         Log::info($message, self::enrich($context));
     }
 
@@ -18,7 +19,21 @@ class Logger
 
     public static function warning(string $message, array $context = []): void
     {
+        if (!self::shouldLog()) return;
         Log::warning($message, self::enrich($context));
+    }
+
+    private static function shouldLog(): bool
+    {
+        if (app()->environment('local')) {
+            return true;
+        }
+
+        if (app()->bound('debug_mode') && app('debug_mode')) {
+            return true;
+        }
+
+        return false;
     }
 
     private static function enrich(array $context): array
