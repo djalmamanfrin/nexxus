@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Search } from 'lucide-vue-next';
+import { PencilIcon, Search, Trash } from 'lucide-vue-next';
 import FlashMessage from '@/components/FlashMessage.vue';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
@@ -9,6 +10,14 @@ import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
 import AppTable from '@/components/base/AppTable.vue';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
+import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
+import EditFields from '@/pages/expenses/EditFields.vue';
+import EditFile from '@/pages/expenses/EditFile.vue';
+import { useForm } from '@inertiajs/vue3';
+import AppButton from '@/components/AppButton.vue';
+import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
+import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
+import SidebarDrawerPanel from '@/components/ui/sidebar/SidebarDrawerPanel.vue';
 
 export interface Expense {
     id: number;
@@ -21,6 +30,7 @@ export interface Expense {
     due_at: string;
     competence_date: string;
 }
+
 const props = defineProps<{
     expenses: {
         data: Expense[];
@@ -45,6 +55,7 @@ function getStatus(id: string | number) {
         yellow: 'bg-yellow-100 text-yellow-800',
         gray: 'bg-gray-100 text-gray-800',
     };
+
     const status = props.statuses.find((s) => s.value == id);
     const color = status?.color || 'gray';
 
@@ -54,34 +65,81 @@ function getStatus(id: string | number) {
     };
 }
 
+const open = ref(false);
+const selectedItem = ref<Expense | null>(null);
+
+const dataForm = useForm({
+    reference: '',
+    amount: '',
+    payee_id: '',
+    cost_center_id: '',
+    expense_status_id: '',
+    due_at: '',
+    competence_date: '',
+});
+
+const fileForm = useForm({
+    attachment: null,
+});
+
+const handleEdit = (item: Expense) => {
+    selectedItem.value = item;
+
+    dataForm.defaults({
+        reference: item.reference,
+        amount: item.amount,
+        payee_id: item.payee_id,
+        cost_center_id: item.cost_center_id,
+        expense_status_id: item.expense_status_id,
+        due_at: item.due_at,
+        competence_date: item.competence_date,
+    });
+    dataForm.reset();
+    open.value = true;
+};
+
+const handleSave = () => {
+    if (!selectedItem.value) return;
+
+    const id = selectedItem.value.id;
+
+    if (dataForm.isDirty) {
+        dataForm.patch(`/expenses/${id}`, {
+            preserveState: true,
+            onSuccess: () => {
+                open.value = false;
+                dataForm.reset();
+            },
+        });
+    }
+
+    if (fileForm.isDirty) {
+        fileForm.post(`/expenses/${id}/attachments`, {
+            forceFormData: true,
+            preserveState: true,
+            onSuccess: () => {
+                open.value = false;
+                fileForm.reset();
+            },
+        });
+    }
+};
+
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         title: 'Despesas',
         href: '',
-        btn: { label: 'Novo Despesa', url: '/expenses' },
+        btn: { label: 'Nova Despesa', url: '/expenses' },
     },
 ];
-
-// TODO:
-//  1. Implementar filtro por status - para isso terei que criar uma nova tabela expenses_statuses
-//  2. Exibir no filtro de despensas no fluxo do pgto apenas despensas com status 2
-//  3. Ajustar o AppTable para torná-lo mais genérico. Tem coisas amarradas do pagamento
-//  4. Implementar o EditFields para despesas
-//  5. Implementar o EditFile para despesas
-//  6. Implementar fluxo de excluir generalizado
-//  7. Implementar modal de criação de centro de custo
-//  8. Implementar tela/menu de criação de centro de custo
-//  9. Implementar modal de criação de benefeciário
-//  10. Implementar tela/menu de criação de benefeciário
-//  . Criar select com pesquisa para muitas opcoes do payee (talvez)
-//  . Criar o filtro Pagamentos para o EditFields das despesas
-//  . Exibir no filtro de pagamento no fluxo de despenas apenas pagamentos sem despesas associadas com status 1
 </script>
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
         <div class="content-box">
             <FlashMessage />
+
+            <!-- FILTROS -->
             <form @submit.prevent="search">
                 <AppFilterBar
                     v-model:filters="filters"
@@ -89,9 +147,9 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     @clear="clear"
                 >
                     <FilterText
-                        label="Digite algo referente a despesa"
+                        label="Buscar despesa"
                         name="search_by"
-                        placeholder="Ex: cpf, cnpj ou qualquer texto no comprovante"
+                        placeholder="CPF, CNPJ ou texto"
                         :icon="Search"
                     />
                     <FilterTabs label="Status" name="status" :tabs="statuses" />
@@ -100,28 +158,22 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
             <div class="my-4"></div>
 
+            <!-- TABELA GENÉRICA -->
             <AppTable
                 :columns="[
                     { key: 'attachments', label: 'Imagem', align: 'left' },
-                    { key: 'reference', label: 'Referência' },
                     { key: 'amount', label: 'Valor', type: 'money' },
                     {
-                        key: 'payee_id',
-                        label: 'Benifeciário',
+                        key: 'expense_status_id',
+                        label: 'Status',
+                        type: 'expense_status',
                     },
-                    {
-                        key: 'cost_center_id',
-                        label: 'C. de Custo',
-                    },
+                    { key: 'cost_center_id', label: 'C. de Custo' },
                     { key: 'due_at', label: 'Vencimento', type: 'datetime' },
-                    {
-                        key: 'competence_date',
-                        label: 'Competência',
-                        type: 'datetime',
-                    },
                     { key: 'created_at', label: 'Criado em', type: 'datetime' },
                 ]"
                 :items="props.expenses"
+                @view="handleEdit"
             >
                 <template #cell-attachments="{ item }">
                     <span v-if="item.attachments?.length">
@@ -130,25 +182,50 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     <span v-else>-</span>
                 </template>
 
-                <template #cell-payment_status_id="{ item }">
+                <template #cell-expense_status_id="{ item }">
                     <span
-                        v-bind="
-                            (() => {
-                                const statusName = getStatus(
-                                    item.payment_status_id,
-                                );
-                                return {
-                                    class: [
-                                        'rounded px-2 py-1 text-xs',
-                                        statusName.class,
-                                    ],
-                                    innerText: statusName.label,
-                                };
-                            })()
-                        "
+                        v-bind="{
+                            class: [
+                                'rounded px-2 py-1 text-xs',
+                                getStatus(item.expense_status_id).class,
+                            ],
+                        }"
+                    >
+                        {{ getStatus(item.expense_status_id).label }}
+                    </span>
+                </template>
+
+                <template #actions="{ item }">
+                    <AppButton
+                        @click="handleEdit(item)"
+                        title="Editar pagamento"
+                        variant="link"
+                        :icon="PencilIcon"
+                    />
+                    <AppButton
+                        title="Excluir pagamento"
+                        variant="link"
+                        :href="`/payments/${item.id}`"
+                        :icon="Trash"
                     />
                 </template>
             </AppTable>
         </div>
+
+        <SidebarDrawer :open="open" @close="open = false" @save="handleSave">
+            <template #title>Comprovante de Despesa</template>
+
+            <SidebarDrawerTabs>
+                <SidebarDrawerTab name="info" label="Informações" />
+                <SidebarDrawerTab name="arquivo" label="Arquivo" />
+            </SidebarDrawerTabs>
+
+            <SidebarDrawerPanel name="info">
+                <EditFields :expense="selectedItem" :form="dataForm" />
+            </SidebarDrawerPanel>
+            <SidebarDrawerPanel name="arquivo">
+                <EditFile :expense="selectedItem" :form="fileForm" />
+            </SidebarDrawerPanel>
+        </SidebarDrawer>
     </AppLayout>
 </template>
