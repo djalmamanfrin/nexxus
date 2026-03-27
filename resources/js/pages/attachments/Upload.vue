@@ -60,7 +60,7 @@ const submit = async () => {
                 value: response.data.value,
                 field: response.data.field,
             });
-            router.reload({ only: ['attachments'] });
+            router.reload();
             if (form.attachmentPreview) {
                 URL.revokeObjectURL(form.attachmentPreview);
             }
