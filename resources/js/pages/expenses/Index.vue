@@ -16,6 +16,7 @@ export interface Expense {
     amount: string;
     payee_id: string;
     cost_center_id: string;
+    expense_status_id: string;
     expense_category_id: string;
     due_at: string;
     competence_date: string;
@@ -25,12 +26,14 @@ const props = defineProps<{
         data: Expense[];
         links: { url: string | null; label: string; active: boolean }[];
     };
+    statuses: SelectOption[];
     search_by?: string;
 }>();
 
 const { filters, search, clear } = useFilters(
     {
         search_by: props.search_by || '',
+        status: props.status || null,
     },
     '/expenses',
 );
@@ -91,6 +94,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         placeholder="Ex: cpf, cnpj ou qualquer texto no comprovante"
                         :icon="Search"
                     />
+                    <FilterTabs label="Status" name="status" :tabs="statuses" />
                 </AppFilterBar>
             </form>
 

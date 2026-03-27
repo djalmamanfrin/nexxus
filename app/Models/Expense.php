@@ -121,7 +121,7 @@ class Expense extends Model
         });
 
         $query->when($filters['status'] ?? null, function ($query, $status) {
-            $query->where('payment_status_id', $status);
+            $query->where('expense_status_id', $status);
         });
 
         $query->when($filters['due_from'] ?? null, function ($query, $date) {
