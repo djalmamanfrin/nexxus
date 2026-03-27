@@ -62,6 +62,7 @@ class Expense extends Model
         'amount',
         'payee_id',
         'cost_center_id',
+        'expense_status_id',
         'expense_category_id',
         'due_at',
         'competence_date',
