@@ -11,7 +11,7 @@ import { SelectOption } from '@/types/select';
 import AppTable from '@/components/base/AppTable.vue';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
 import AppButton from '@/components/AppButton.vue';
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import EditFields from '@/pages/payments/EditFields.vue';
 import EditFile from '@/pages/payments/EditFile.vue';
 import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
@@ -97,6 +97,17 @@ const handleEdit = (item: Expense) => {
     open.value = true;
 };
 
+const handleDelete = (item: Expense) => {
+    if (!confirm('Tem certeza que deseja excluir esta despesa?')) return;
+
+    router.delete(`/payments/${item.id}`, {
+        preserveScroll: true,
+        onSuccess: () => {},
+        onError: (errors) => {
+            console.error(errors);
+        },
+    });
+};
 const handleSave = () => {
     if (!selectedItem.value) return;
     const id = selectedItem.value.id;

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useForm, router } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { PencilIcon, Search, Trash } from 'lucide-vue-next';
+import { PencilIcon, Search, Trash2Icon } from 'lucide-vue-next';
 import FlashMessage from '@/components/FlashMessage.vue';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
@@ -13,7 +14,6 @@ import FilterTabs from '@/components/filters/FilterTabs.vue';
 import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
 import EditFields from '@/pages/expenses/EditFields.vue';
 import EditFile from '@/pages/expenses/EditFile.vue';
-import { useForm } from '@inertiajs/vue3';
 import AppButton from '@/components/AppButton.vue';
 import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
 import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
@@ -97,6 +97,18 @@ const handleEdit = (item: Expense) => {
     });
     dataForm.reset();
     open.value = true;
+};
+
+const handleDelete = (item: Expense) => {
+    if (!confirm('Tem certeza que deseja excluir esta despesa?')) return;
+
+    router.delete(`/expenses/${item.id}`, {
+        preserveScroll: true,
+        onSuccess: () => {},
+        onError: (errors) => {
+            console.error(errors);
+        },
+    });
 };
 
 const handleSave = () => {
@@ -203,10 +215,10 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         :icon="PencilIcon"
                     />
                     <AppButton
+                        @click="handleDelete(item)"
                         title="Excluir despesa"
                         variant="link"
-                        :href="`/payments/${item.id}`"
-                        :icon="Trash"
+                        :icon="Trash2Icon"
                     />
                 </template>
             </AppTable>
