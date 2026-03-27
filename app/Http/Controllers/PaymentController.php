@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -93,7 +94,10 @@ class PaymentController extends Controller
             'attachment' => ['required', 'file', 'mimes:jpg,jpeg,png,webp'],
         ]);
 
-        $payment->attachments()->delete();
+        $payment->attachments()->each(function ($attachment) {
+            Storage::delete($attachment->file_path);
+            $attachment->delete();
+        });
 
         $attachFile->execute(
             $payment,
