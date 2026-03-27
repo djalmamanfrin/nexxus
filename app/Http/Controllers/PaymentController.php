@@ -81,9 +81,6 @@ class PaymentController extends Controller
         ], Response::HTTP_CREATED);
     }
 
-    /**
-     * @throws Throwable
-     */
     public function update(UpdatePaymentRequest $request, Payment $payment): RedirectResponse
     {
         $validated = $request->validated();

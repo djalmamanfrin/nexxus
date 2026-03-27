@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Attachment\AttachFileAction;
+use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
 use App\Models\ExpenseStatus;
 use Exception;
@@ -80,42 +81,12 @@ class ExpenseController extends Controller
         return Inertia::render('expenses/Edit', ['expense' => $expense]);
     }
 
-    // Editar a tarefa no banco de dados
-    public function update(Expense $expense, Request $request)
+    public function update(UpdateExpenseRequest  $request, Expense $expense)
     {
-        $request->validate(
-            [
-                'name' => 'required|string|max:255',
-                'started_at' => 'required|date',
-                'finished_at' => 'required|date|after_or_equal:started_at',
-            ],
-            [
-                'name.required' => "Campo nome é obrigatório!",
+        $validated = $request->validated();
+        $expense->update($validated);
 
-                'started_at.required' => "Campo data/hora de início é obrigatório!",
-                'started_at.date' => "Informe uma data/hora válida para o início!",
-
-                'finished_at.required' => "Campo data/hora de término é obrigatório!",
-                'finished_at.date' => "Informe uma data/hora válida para o término!",
-                'finished_at.after_or_equal' => "A data de término deve ser igual ou posterior à data de início!",
-            ]
-        );
-
-        // Capturar possíveis exceções durante a execução.
-        try {
-
-            $expense->update([
-                'name' => $request->name,
-                'started_at' => $request->started_at,
-                'finished_at' => $request->finished_at,
-            ]);
-
-            return redirect()->route('expenses.show', ['expense' => $expense->id])->with('success', 'Tarefa editada com sucesso!');
-        } catch (Exception $e) {
-
-            // Redirecionar o usuário, enviar a mensagem de erro
-            return back()->withInput()->with('error', 'Tarefa não editada!');
-        }
+        return back()->with('success', 'Atualizado com sucesso');
     }
 
     // Apagar a tarefa
