@@ -18,7 +18,7 @@ class DebugController extends Controller
             ], 404);
         }
 
-        Cache::put("debug:user:{$userId}", true, now()->addMinutes(10));
+        Cache::put("debug:user:{$userId}enable", true, now()->addMinutes(10));
 
         return response()->json([
             'message' => "Debug ativado para user {$userId}"
@@ -39,7 +39,7 @@ class DebugController extends Controller
             ], 404);
         }
 
-        Cache::forget("debug:user:{$userId}");
+        Cache::forget("debug:user:{$userId}enable");
 
         return response()->json([
             'message' => "Debug desativado para user {$userId}"
