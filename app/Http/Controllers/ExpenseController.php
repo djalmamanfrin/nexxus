@@ -92,16 +92,9 @@ class ExpenseController extends Controller
     // Apagar a tarefa
     public function destroy(Expense $expense)
     {
-        // Capturar possíveis exceções durante a execução.
-        try {
-            $expense->delete();
-
-            // Redirecionar o usuário, enviar a mensagem de sucesso
-            return redirect()->route('expenses.index')->with('success', 'Tarefa apagada com sucesso!');
-        } catch (Exception $e) {
-
-            // Redirecionar o usuário, enviar a mensagem de erro
-            return redirect()->route('expenses.index')->with('error', 'Tarefa não apagada!');
-        }
+        $expense->delete();
+        return redirect()
+            ->route('expenses.index')
+            ->with('success', 'Despesa apagada com sucesso!');
     }
 }
