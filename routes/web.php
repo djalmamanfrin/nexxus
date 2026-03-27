@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\CostCenterController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseStatusController;
 use App\Http\Controllers\PaymentController;
@@ -47,6 +48,8 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
     Route::resource('expenses', ExpenseController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     Route::resource('expense-statuses', ExpenseStatusController::class)
+        ->only(['index', 'store']);
+    Route::resource('cost-centers', CostCenterController::class)
         ->only(['index', 'store']);
 });
 
