@@ -59,8 +59,14 @@ onUnmounted(() => {
             label="Clique para trocar a imagem"
             type="button"
             @click="openFileSelector"
-            class="text-neutral-500 dark:bg-neutral-700 flex w-full items-center justify-center gap-2 rounded-lg bg-gray-50 px-4 py-6 hover:bg-neutral-200/60 hover:text-black dark:text-neutral-100"
+            class="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-50 px-4 py-6 text-neutral-500 hover:bg-neutral-200/60 hover:text-black dark:bg-neutral-700 dark:text-neutral-100"
         />
+    </div>
+
+    <div class="flex flex-1 justify-center">
+        <span v-if="props.form.errors.attachment" class="text-sm text-red-500">
+            {{ props.form.errors.attachment }}
+        </span>
     </div>
 
     <div
