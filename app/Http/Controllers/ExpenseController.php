@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Attachment\AttachFileAction;
 use App\Models\Expense;
+use App\Models\ExpenseStatus;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ class ExpenseController extends Controller
 
         return Inertia::render('expenses/Index', [
             'expenses' => $expenses,
+            'statuses' => ExpenseStatus::select('id as value', 'name as label', 'color')->get(),
             'search_by' => $request->search_by,
         ]);
     }
