@@ -58,6 +58,21 @@ const breadcrumbItems: BreadcrumbItem[] = [
         btn: { label: 'Novo Despesa', url: '/expenses' },
     },
 ];
+
+// TODO:
+//  1. Implementar filtro por status - para isso terei que criar uma nova tabela expenses_statuses
+//  2. Exibir no filtro de despensas no fluxo do pgto apenas despensas com status 2
+//  3. Ajustar o AppTable para torná-lo mais genérico. Tem coisas amarradas do pagamento
+//  4. Implementar o EditFields para despesas
+//  5. Implementar o EditFile para despesas
+//  6. Implementar fluxo de excluir generalizado
+//  7. Implementar modal de criação de centro de custo
+//  8. Implementar tela/menu de criação de centro de custo
+//  9. Implementar modal de criação de benefeciário
+//  10. Implementar tela/menu de criação de benefeciário
+//  . Criar select com pesquisa para muitas opcoes do payee (talvez)
+//  . Criar o filtro Pagamentos para o EditFields das despesas
+//  . Exibir no filtro de pagamento no fluxo de despenas apenas pagamentos sem despesas associadas com status 1
 </script>
 
 <template>

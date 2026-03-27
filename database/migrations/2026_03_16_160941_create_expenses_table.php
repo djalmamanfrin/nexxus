@@ -25,6 +25,11 @@ return new class extends Migration
                 ->constrained('cost_centers')
                 ->nullOnDelete();
 
+            $table->foreignId('expense_status_id')
+                ->default(1)
+                ->constrained('expense_statuses')
+                ->cascadeOnDelete();
+
             $table->foreignId('expense_category_id')
                 ->default(1)
                 ->constrained('expense_categories')
