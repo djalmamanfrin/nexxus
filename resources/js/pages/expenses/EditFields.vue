@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import CreateStatus from '@/pages/expenses/CreateStatus.vue';
 import AppInput from '@/components/base/AppInput.vue';
-import AppSelectWithUpload from '@/components/base/AppSelectWithUpload.vue';
 import AppSelect from '@/components/base/AppSelect.vue';
 import { formatDateTime } from '@/lib/date';
-import { ArrowLeft, BankNote } from 'lucide-vue-next';
-import AppButton from '@/components/AppButton.vue';
-import Icon from '@/components/Icon.vue';
 import AppLabel from '@/components/base/AppLabel.vue';
 import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
+import CreateCostCenter from '@/pages/cost_centers/CreateCostCenter.vue';
 
 interface Expense {
     id: number;
@@ -80,18 +76,18 @@ const handleCreated = (item) => {
                 name="payee_id"
             />
 
-            <!--            <AppSelectWithModal-->
-            <!--                v-model="form.cost_center_id"-->
-            <!--                showCreate-->
-            <!--                @created="handleCreated"-->
-            <!--                :createComponent="CreateCostCenter" falta criar o componente-->
-            <!--                url="cost-centers"-->
-            <!--                label="C. de Custo"-->
-            <!--                name="cost_center_id"-->
-            <!--                width="w-56"-->
-            <!--                title="Novo C. de Custo"-->
-            <!--                description="Como deseja nomear?"-->
-            <!--            />-->
+            <AppSelectWithModal
+                v-model="form.cost_center_id"
+                showCreate
+                @created="handleCreated"
+                :createComponent="CreateCostCenter"
+                url="cost-centers"
+                label="C. de Custo"
+                name="cost_center_id"
+                width="w-56"
+                title="Novo C. de Custo"
+                description="Como deseja nomear?"
+            />
 
             <AppInput v-model="form.reference" label="Referencia" />
             <AppInput v-model="form.amount" label="Valor" mask="currency" />
