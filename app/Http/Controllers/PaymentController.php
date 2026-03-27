@@ -62,7 +62,7 @@ class PaymentController extends Controller
         ]);
 
         $attachment = null;
-        $expense = DB::transaction(function () use ($request, $action, &$attachment) {
+        $payment = DB::transaction(function () use ($request, $action, &$attachment) {
             $payment = Payment::create();
             $attachment = $action->execute(
                 $payment,
@@ -71,8 +71,8 @@ class PaymentController extends Controller
         });
 
         return response()->json([
-            'field' => 'expense_id',
-            'value' => $expense->id,
+            'field' => 'payment_id',
+            'value' => $payment->id,
             'label' => $attachment->original_name,
         ], Response::HTTP_CREATED);
     }
