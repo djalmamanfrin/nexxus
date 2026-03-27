@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ExpenseStatusController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentStatusController;
 use App\Http\Controllers\PaymentTypeController;
@@ -45,6 +46,8 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
 
     Route::resource('expenses', ExpenseController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    Route::resource('expense-statuses', ExpenseStatusController::class)
+        ->only(['index', 'store']);
 });
 
 require __DIR__.'/settings.php';
