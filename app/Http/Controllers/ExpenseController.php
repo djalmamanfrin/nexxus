@@ -16,7 +16,9 @@ class ExpenseController extends Controller
 {
     public function index(Request $request)
     {
-        $expenses = Expense::filter($request->all())
+        $expenses = Expense::query()
+            ->with('attachments')
+            ->filter($request->all())
             ->latest()
             ->paginate(10)
             ->withQueryString();
