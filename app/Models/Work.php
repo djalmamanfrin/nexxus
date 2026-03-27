@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Work whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Work whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Work whereUuid($value)
+ * @property string $ulid
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Work whereUlid($value)
  * @mixin \Eloquent
  */
 class Work extends Model

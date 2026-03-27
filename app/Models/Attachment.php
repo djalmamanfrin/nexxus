@@ -35,6 +35,9 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereUuid($value)
+ * @property string $ulid
+ * @property-read string $url
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereUlid($value)
  * @mixin \Eloquent
  */
 class Attachment extends Model

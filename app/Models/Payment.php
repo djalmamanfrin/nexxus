@@ -42,6 +42,10 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment filter($filters)
  * @property-read \App\Models\PaymentType|null $type
+ * @property string $ulid
+ * @property int $payment_type_id
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaymentTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUlid($value)
  * @mixin \Eloquent
  */
 class Payment extends Model

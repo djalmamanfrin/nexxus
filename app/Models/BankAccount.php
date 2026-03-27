@@ -34,6 +34,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereUuid($value)
+ * @property string $ulid
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereUlid($value)
  * @mixin \Eloquent
  */
 class BankAccount extends Model

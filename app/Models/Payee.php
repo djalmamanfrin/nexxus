@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payee wherePixKeyType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payee whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payee whereUuid($value)
+ * @property string $ulid
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payee whereUlid($value)
  * @mixin \Eloquent
  */
 class Payee extends Model
