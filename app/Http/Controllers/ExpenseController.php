@@ -6,13 +6,11 @@ use App\Actions\Attachment\AttachFileAction;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
 use App\Models\ExpenseStatus;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 
 class ExpenseController extends Controller
 {
@@ -33,23 +31,11 @@ class ExpenseController extends Controller
         ]);
     }
 
-    // Visualizar os detalhes da tarefa
     public function show(Expense $expense)
     {
-
-        // Enviar os dados diretamente para a view
         return Inertia::render('expenses/Show', ['expense' => $expense]);
     }
 
-    // Carregar o formulário cadastrar tarefa
-    public function create()
-    {
-        return Inertia::render('expenses/Create');
-    }
-
-    /**
-     * @throws Throwable
-     */
     public function store(Request $request, AttachFileAction $action): JsonResponse
     {
         $request->validate([
@@ -74,13 +60,6 @@ class ExpenseController extends Controller
         ], Response::HTTP_CREATED);
     }
 
-    // Carregar o formulário editar tarefa
-    public function edit(Expense $expense)
-    {
-
-        return Inertia::render('expenses/Edit', ['expense' => $expense]);
-    }
-
     public function update(UpdateExpenseRequest  $request, Expense $expense)
     {
         $validated = $request->validated();
@@ -89,7 +68,6 @@ class ExpenseController extends Controller
         return back()->with('success', 'Atualizado com sucesso');
     }
 
-    // Apagar a tarefa
     public function destroy(Expense $expense)
     {
         $expense->delete();
