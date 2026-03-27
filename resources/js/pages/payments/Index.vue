@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Search } from 'lucide-vue-next';
+import { PencilIcon, Search, Trash, Trash2Icon } from 'lucide-vue-next';
 import FlashMessage from '@/components/FlashMessage.vue';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
@@ -9,6 +9,14 @@ import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
 import AppTable from '@/components/base/AppTable.vue';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
+import AppButton from '@/components/AppButton.vue';
+import { useForm } from '@inertiajs/vue3';
+import EditFields from '@/pages/expenses/EditFields.vue';
+import EditFile from '@/pages/expenses/EditFile.vue';
+import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
+import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
+import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
+import SidebarDrawerPanel from '@/components/ui/sidebar/SidebarDrawerPanel.vue';
 
 export interface Payment {
     id: number;
@@ -55,6 +63,60 @@ function getStatus(id: string | number) {
         class: statusColorClasses[color] || statusColorClasses.gray,
     };
 }
+const dataForm = useForm({
+    reference: '',
+    amount: '',
+    payee_id: '',
+    cost_center_id: '',
+    expense_status_id: '',
+    due_at: '',
+    competence_date: '',
+});
+
+const fileForm = useForm({
+    attachment: null,
+});
+
+const handleEdit = (item: Expense) => {
+    selectedItem.value = item;
+
+    dataForm.defaults({
+        expense_id: item.expense_id,
+        bank_account_id: item.bank_account_id,
+        payment_status_id: item.payment_status_id,
+        payment_type_id: item.payment_type_id,
+        amount: item.amount,
+        paid_at: item.paid_at,
+    });
+    dataForm.reset();
+    open.value = true;
+};
+
+const handleSave = () => {
+    if (!selectedItem.value) return;
+    const id = selectedItem.value.id;
+
+    if (dataForm.isDirty) {
+        dataForm.patch(`/payments/${id}`, {
+            preserveState: true,
+            onSuccess: () => {
+                open.value = false;
+                dataForm.reset();
+            },
+        });
+    }
+
+    if (fileForm.isDirty) {
+        fileForm.post(`/payments/${id}/attachments`, {
+            forceFormData: true,
+            preserveState: true,
+            onSuccess: () => {
+                open.value = false;
+                fileForm.reset();
+            },
+        });
+    }
+};
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -133,7 +195,36 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         "
                     />
                 </template>
+                <template #actions="{ item }">
+                    <AppButton
+                        @click="handleEdit(item)"
+                        title="Editar pagamento"
+                        variant="link"
+                        :icon="PencilIcon"
+                    />
+                    <AppButton
+                        title="Excluir pagamento"
+                        variant="link"
+                        :href="`/payments/${item.id}`"
+                        :icon="Trash2Icon"
+                    />
+                </template>
             </AppTable>
         </div>
+        <SidebarDrawer :open="open" @close="open = false" @save="handleSave">
+            <template #title>Comprovante de Pagamento</template>
+
+            <SidebarDrawerTabs>
+                <SidebarDrawerTab name="info" label="Informações" />
+                <SidebarDrawerTab name="arquivo" label="Arquivo" />
+            </SidebarDrawerTabs>
+
+            <SidebarDrawerPanel name="info">
+                <EditFields :expense="selectedItem" :form="dataForm" />
+            </SidebarDrawerPanel>
+            <SidebarDrawerPanel name="arquivo">
+                <EditFile :expense="selectedItem" :form="fileForm" />
+            </SidebarDrawerPanel>
+        </SidebarDrawer>
     </AppLayout>
 </template>
