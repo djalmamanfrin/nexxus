@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { PencilIcon, Search, Trash, Trash2Icon } from 'lucide-vue-next';
+import { PencilIcon, Search, Trash2Icon } from 'lucide-vue-next';
 import FlashMessage from '@/components/FlashMessage.vue';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
@@ -11,8 +12,8 @@ import AppTable from '@/components/base/AppTable.vue';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
 import AppButton from '@/components/AppButton.vue';
 import { useForm } from '@inertiajs/vue3';
-import EditFields from '@/pages/expenses/EditFields.vue';
-import EditFile from '@/pages/expenses/EditFile.vue';
+import EditFields from '@/pages/payments/EditFields.vue';
+import EditFile from '@/pages/payments/EditFile.vue';
 import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
 import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
 import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
@@ -63,6 +64,10 @@ function getStatus(id: string | number) {
         class: statusColorClasses[color] || statusColorClasses.gray,
     };
 }
+
+const open = ref(false);
+const selectedItem = ref<Expense | null>(null);
+
 const dataForm = useForm({
     reference: '',
     amount: '',
@@ -220,10 +225,10 @@ const breadcrumbItems: BreadcrumbItem[] = [
             </SidebarDrawerTabs>
 
             <SidebarDrawerPanel name="info">
-                <EditFields :expense="selectedItem" :form="dataForm" />
+                <EditFields :payment="selectedItem" :form="dataForm" />
             </SidebarDrawerPanel>
             <SidebarDrawerPanel name="arquivo">
-                <EditFile :expense="selectedItem" :form="fileForm" />
+                <EditFile :payment="selectedItem" :form="fileForm" />
             </SidebarDrawerPanel>
         </SidebarDrawer>
     </AppLayout>
