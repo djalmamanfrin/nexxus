@@ -38,6 +38,7 @@ const props = defineProps<{
     };
     statuses: SelectOption[];
     search_by?: string;
+    status?: string | number | null;
 }>();
 
 const { filters, search, clear } = useFilters(
@@ -100,7 +101,6 @@ const handleEdit = (item: Expense) => {
 
 const handleSave = () => {
     if (!selectedItem.value) return;
-
     const id = selectedItem.value.id;
 
     if (dataForm.isDirty) {
@@ -198,12 +198,12 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 <template #actions="{ item }">
                     <AppButton
                         @click="handleEdit(item)"
-                        title="Editar pagamento"
+                        title="Editar despesa"
                         variant="link"
                         :icon="PencilIcon"
                     />
                     <AppButton
-                        title="Excluir pagamento"
+                        title="Excluir despesa"
                         variant="link"
                         :href="`/payments/${item.id}`"
                         :icon="Trash"

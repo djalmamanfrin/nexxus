@@ -28,6 +28,7 @@ class ExpenseController extends Controller
             'expenses' => $expenses,
             'statuses' => ExpenseStatus::select('id as value', 'name as label', 'color')->get(),
             'search_by' => $request->search_by,
+            'status' => $request->status,
         ]);
     }
 
