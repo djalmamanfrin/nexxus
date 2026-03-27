@@ -83,23 +83,15 @@ const handleSave = () => {
     if (!selectedItem.value?.id) return;
     const paymentId = selectedItem.value.id;
 
-    console.log('Iniciando save...');
-
     if (dataForm.isDirty) {
         dataForm.patch(`/payments/${paymentId}`, {
             preserveState: true,
-            onStart: () => {
-                console.log('Iniciando save...');
-            },
-            onSuccess: () => {
-                console.log('Salvo com sucesso');
-            },
+            onStart: () => {},
+            onSuccess: () => {},
             onError: (errors) => {
                 console.error('Erro ao salvar:', errors);
             },
-            onFinish: () => {
-                console.log('Finalizou requisição');
-            },
+            onFinish: () => {},
         });
     }
 
@@ -107,19 +99,12 @@ const handleSave = () => {
         fileForm.post(`/payments/${paymentId}/attachments`, {
             forceFormData: true,
             preserveState: true,
-            onStart: () => {
-                console.log('Iniciando save...');
-            },
-            onSuccess: () => {
-                console.log('Salvo com sucesso');
-                fileForm.attachment = null;
-            },
+            onStart: () => {},
+            onSuccess: () => {},
             onError: (errors) => {
                 console.error('Erro ao salvar:', errors);
             },
-            onFinish: () => {
-                console.log('Finalizou requisição');
-            },
+            onFinish: () => {},
         });
     }
 
