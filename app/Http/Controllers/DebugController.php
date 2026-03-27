@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 class DebugController extends Controller
 {
-    public function enableDebug(Request $request, int $userId): JsonResponse
+    public function enable(Request $request, int $userId): JsonResponse
     {
         $exists = User::where('id', $userId)->exists();
         if (!$exists) {
@@ -25,7 +25,7 @@ class DebugController extends Controller
         ]);
     }
 
-    public function disableDebug(Request $request, int $userId): JsonResponse
+    public function disable(Request $request, int $userId): JsonResponse
     {
         $token = $request->header('X-Debug-Secret');
         if ($token !== config('app.debug_secret')) {
