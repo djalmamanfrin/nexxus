@@ -32,11 +32,6 @@ const items: NavItem[] = [
         href: '/expenses',
         icon: CircleDollarSignIcon,
     },
-    {
-        title: 'Tarefas',
-        href: '/tasks',
-        icon: CalendarCheck2,
-    },
 ];
 
 defineProps<{

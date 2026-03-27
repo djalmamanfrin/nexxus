@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Actions\Attachment\AttachFileAction;
 use App\Models\Expense;
-use App\Models\Task;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,11 +28,11 @@ class ExpenseController extends Controller
     }
 
     // Visualizar os detalhes da tarefa
-    public function show(Task $task)
+    public function show(Expense $expense)
     {
 
         // Enviar os dados diretamente para a view
-        return Inertia::render('expenses/Show', ['task' => $task]);
+        return Inertia::render('expenses/Show', ['expense' => $expense]);
     }
 
     // Carregar o formulário cadastrar tarefa
@@ -70,14 +69,14 @@ class ExpenseController extends Controller
     }
 
     // Carregar o formulário editar tarefa
-    public function edit(Task $task)
+    public function edit(Expense $expense)
     {
 
-        return Inertia::render('expenses/Edit', ['task' => $task]);
+        return Inertia::render('expenses/Edit', ['expense' => $expense]);
     }
 
     // Editar a tarefa no banco de dados
-    public function update(Task $task, Request $request)
+    public function update(Expense $expense, Request $request)
     {
         $request->validate(
             [
@@ -100,13 +99,13 @@ class ExpenseController extends Controller
         // Capturar possíveis exceções durante a execução.
         try {
 
-            $task->update([
+            $expense->update([
                 'name' => $request->name,
                 'started_at' => $request->started_at,
                 'finished_at' => $request->finished_at,
             ]);
 
-            return redirect()->route('expenses.show', ['task' => $task->id])->with('success', 'Tarefa editada com sucesso!');
+            return redirect()->route('expenses.show', ['expense' => $expense->id])->with('success', 'Tarefa editada com sucesso!');
         } catch (Exception $e) {
 
             // Redirecionar o usuário, enviar a mensagem de erro
@@ -115,11 +114,11 @@ class ExpenseController extends Controller
     }
 
     // Apagar a tarefa
-    public function destroy(Task $task)
+    public function destroy(Expense $expense)
     {
         // Capturar possíveis exceções durante a execução.
         try {
-            $task->delete();
+            $expense->delete();
 
             // Redirecionar o usuário, enviar a mensagem de sucesso
             return redirect()->route('expenses.index')->with('success', 'Tarefa apagada com sucesso!');
