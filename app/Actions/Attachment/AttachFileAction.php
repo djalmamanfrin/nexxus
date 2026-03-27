@@ -4,6 +4,7 @@ namespace App\Actions\Attachment;
 
 use App\Models\Attachment;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Validation\ValidationException;
 use RuntimeException;
 
 class AttachFileAction
@@ -13,10 +14,11 @@ class AttachFileAction
         $hash = hash_file('sha256', $file->getRealPath());
         $attachment = Attachment::where('hash', $hash)->first();
         if ($attachment) {
-            if (!$model->attachments()->where('id', $attachment->id)->exists()) {
-                $model->attachments()->save($attachment);
-            }
-            return $attachment;
+            throw ValidationException::withMessages([
+                'attachment' => 'Este comprovante já foi utilizado.',
+                'model_id' => $attachment->attachable_id,
+                'model_type' => $attachment->attachable_type,
+            ]);
         }
 
         $disk = config('filesystems.default')
