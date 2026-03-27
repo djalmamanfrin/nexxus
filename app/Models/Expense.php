@@ -45,6 +45,12 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereReference($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereUuid($value)
+ * @property string $ulid
+ * @property int $expense_status_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read int|null $attachments_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereExpenseStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereUlid($value)
  * @mixin \Eloquent
  */
 class Expense extends Model
@@ -76,6 +82,11 @@ class Expense extends Model
     public function costCenter(): BelongsTo
     {
         return $this->belongsTo(CostCenter::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(ExpenseStatus::class, 'expense_status_id');
     }
 
     public function category(): BelongsTo
