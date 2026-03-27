@@ -1,27 +1,24 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
-import { CirclePlus, Eye, Pencil, Search } from 'lucide-vue-next';
-import Pagination from '@/components/Pagination.vue';
+import { Search } from 'lucide-vue-next';
 import FlashMessage from '@/components/FlashMessage.vue';
-import DeleteButton from '@/components/DeleteButton.vue';
-import AppButton from '@/components/AppButton.vue';
-import FilterDate from '@/components/filters/FilterDate.vue';
-import FilterSelect from '@/components/filters/FilterSelect.vue';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
+import AppTable from '@/components/base/AppTable.vue';
+import FilterTabs from '@/components/filters/FilterTabs.vue';
 
 export interface Expense {
     id: number;
     reference: string;
     amount: string;
+    payee_id: string;
     cost_center_id: string;
+    expense_category_id: string;
     due_at: string;
-    description: string;
-    created_at: string;
+    competence_date: string;
 }
 const props = defineProps<{
     expenses: {
@@ -34,32 +31,38 @@ const props = defineProps<{
 const { filters, search, clear } = useFilters(
     {
         search_by: props.search_by || '',
-        status: props.status || '',
-        paid_at: props.paid_at || '',
-        created_to: props.created_to || '',
     },
     '/expenses',
 );
 
-/* Define os breadcrumbs que serão exibidos no layout */
-const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Despesas', href: '' }];
+function getStatus(id: string | number) {
+    const statusColorClasses: Record<string, string> = {
+        green: 'bg-green-100 text-green-800',
+        red: 'bg-red-100 text-red-800',
+        yellow: 'bg-yellow-100 text-yellow-800',
+        gray: 'bg-gray-100 text-gray-800',
+    };
+    const status = props.statuses.find((s) => s.value == id);
+    const color = status?.color || 'gray';
+
+    return {
+        label: status?.label || 'Desconhecido',
+        class: statusColorClasses[color] || statusColorClasses.gray,
+    };
+}
+
+const breadcrumbItems: BreadcrumbItem[] = [
+    {
+        title: 'Despesas',
+        href: '',
+        btn: { label: 'Novo Despesa', url: '/expenses' },
+    },
+];
 </script>
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Despesas" />
         <div class="content-box">
-            <div class="content-box-header">
-                <h3 class="content-box-title">Despesas</h3>
-                <div class="content-box-btn">
-                    <AppButton
-                        href="/expenses/create"
-                        label="Nova Despesa"
-                        :icon="CirclePlus"
-                        variant="success"
-                    />
-                </div>
-            </div>
             <FlashMessage />
             <form @submit.prevent="search">
                 <AppFilterBar
@@ -68,7 +71,7 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Despesas', href: '' }];
                     @clear="clear"
                 >
                     <FilterText
-                        label="Digite algo referente ao comprovante"
+                        label="Digite algo referente a despesa"
                         name="search_by"
                         placeholder="Ex: cpf, cnpj ou qualquer texto no comprovante"
                         :icon="Search"
@@ -78,76 +81,55 @@ const breadcrumbItems: BreadcrumbItem[] = [{ title: 'Despesas', href: '' }];
 
             <div class="my-4"></div>
 
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr class="table-header">
-                            <th class="table-row-header">ID</th>
-                            <th class="table-row-header">Referencia</th>
-                            <th class="table-row-header">Valor</th>
-                            <th class="table-row-header">C. de Custo</th>
-                            <th class="table-row-header">Vencimento</th>
-                            <th class="table-row-header">Descrição</th>
-                            <th class="table-row-header">Criado em</th>
-                            <th class="table-row-header">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="expense in props.expenses.data"
-                            :key="expense.id"
-                            class="table-body"
-                        >
-                            <td class="table-row-body">
-                                {{ expense.id }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ expense.reference }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ expense.notes }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ expense.amount }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ expense.cost_center_id }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ expense.due_at }}
-                            </td>
-                            <td class="table-row-body">
-                                {{ expense.description }}
-                            </td>
-                            <td class="table-actions">
-                                <div class="table-actions-align">
-                                    <Link
-                                        :href="`/expenses/${expense.id}`"
-                                        class="btn-primary align-icon-btn"
-                                    >
-                                        <Eye class="h-4 w-4" />
-                                        <span>Visualizar</span>
-                                    </Link>
+            <AppTable
+                :columns="[
+                    { key: 'attachments', label: 'Imagem', align: 'left' },
+                    { key: 'reference', label: 'Referência' },
+                    { key: 'amount', label: 'Valor', type: 'money' },
+                    {
+                        key: 'payee_id',
+                        label: 'Benifeciário',
+                    },
+                    {
+                        key: 'cost_center_id',
+                        label: 'C. de Custo',
+                    },
+                    { key: 'due_at', label: 'Vencimento', type: 'datetime' },
+                    {
+                        key: 'competence_date',
+                        label: 'Competência',
+                        type: 'datetime',
+                    },
+                    { key: 'created_at', label: 'Criado em', type: 'datetime' },
+                ]"
+                :items="props.expenses"
+            >
+                <template #cell-attachments="{ item }">
+                    <span v-if="item.attachments?.length">
+                        {{ item.attachments[0].original_name }}
+                    </span>
+                    <span v-else>-</span>
+                </template>
 
-                                    <Link
-                                        :href="`/expenses/${expense.id}/edit`"
-                                        class="btn-warning align-icon-btn"
-                                    >
-                                        <Pencil class="h-4 w-4" />
-                                        <span>Editar</span>
-                                    </Link>
-
-                                    <DeleteButton
-                                        :url="`/expenses/${expense.id}`"
-                                        title="Deseja realmente apagar esta tarefa?"
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <Pagination :links="props.expenses.links" />
-            </div>
+                <template #cell-payment_status_id="{ item }">
+                    <span
+                        v-bind="
+                            (() => {
+                                const statusName = getStatus(
+                                    item.payment_status_id,
+                                );
+                                return {
+                                    class: [
+                                        'rounded px-2 py-1 text-xs',
+                                        statusName.class,
+                                    ],
+                                    innerText: statusName.label,
+                                };
+                            })()
+                        "
+                    />
+                </template>
+            </AppTable>
         </div>
     </AppLayout>
 </template>
