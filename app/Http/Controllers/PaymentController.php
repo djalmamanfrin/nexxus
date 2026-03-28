@@ -9,6 +9,7 @@ use App\Models\Expense;
 use App\Models\ExpenseStatus;
 use App\Models\Payment;
 use App\Models\PaymentStatus;
+use App\Support\Logger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,14 +41,12 @@ class PaymentController extends Controller
     public function availableExpenses(Payment $payment)
     {
         return Expense::query()
-            ->where('expense_status_id', '===', ExpenseStatus::DONE)
+            ->where('expense_status_id', '=', ExpenseStatus::DONE)
             ->where(function ($query) use ($payment) {
                 $query
                     ->whereDoesntHave('payments')
                     ->orWhere('id', $payment->expense_id);
             })
-            ->whereHas('attachments')
-            ->with('attachments')
             ->get()
             ->map(fn ($expense) => [
                 'value' => $expense->id,
