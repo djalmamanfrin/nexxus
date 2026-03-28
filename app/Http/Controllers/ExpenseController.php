@@ -12,6 +12,7 @@ use App\Support\Logger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -86,6 +87,26 @@ class ExpenseController extends Controller
         $expense->update($validated);
 
         return back()->with('success', 'Atualizado com sucesso');
+    }
+
+    public function uploadAttachment(Request $request, Expense $expense, AttachFileAction $attachFile)
+    {
+        $request->validate([
+            'attachment' => ['required', 'file', 'mimes:jpg,jpeg,png,webp'],
+        ]);
+
+        $expense->attachments()->each(function ($attachment) {
+            Storage::delete($attachment->file_path);
+            $attachment->delete();
+        });
+
+        $attachFile->execute(
+            $expense,
+            $request->file('attachment'),
+            'payments'
+        );
+
+        return back()->with('success', 'Arquivo atualizado com sucesso');
     }
 
     public function destroy(Expense $expense)
