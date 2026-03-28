@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Attachment\AttachFileAction;
 use App\Http\Requests\UpdatePaymentRequest;
+use App\Http\Resources\PaymentResource;
 use App\Models\Expense;
 use App\Models\ExpenseStatus;
 use App\Models\Payment;
@@ -22,14 +23,14 @@ class PaymentController extends Controller
     public function index(Request $request)
     {
         $payments = Payment::query()
-            ->with('attachments')
+            ->with('attachments', 'status', 'expense', 'bankAccount')
             ->filter($request->all())
             ->latest()
             ->paginate(10)
             ->withQueryString();
 
         return Inertia::render('payments/Index', [
-            'payments' => $payments,
+            'payments' => PaymentResource::collection($payments),
             'statuses' => PaymentStatus::select('id as value', 'name as label', 'color')->get(),
             'search_by' => $request->search_by,
             'status' => $request->status,
