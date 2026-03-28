@@ -35,10 +35,8 @@ watch(
         if (!payment) return;
 
         props.form.defaults({
-            expense_id: payment.expense_id ?? '',
-            bank_account_id: payment.bank_account_id ?? '',
-            payment_status_id: payment.payment_status_id ?? '',
-            payment_type_id: payment.payment_type_id ?? '',
+            expense_id: payment.expense?.id ?? '',
+            bank_account_id: payment.bank_account?.id ?? '',
             amount: payment.amount ?? '',
             paid_at: payment.paid_at ?? '',
         });

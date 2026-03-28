@@ -36,7 +36,7 @@ watch(
         props.form.defaults({
             reference: expense.reference ?? '',
             amount: expense.amount ?? '',
-            payee_id: expense.payee_id ?? '',
+            payee_id: expense.payee?.id ?? '',
             cost_center_id: expense.cost_center?.id ?? '',
             due_at: expense.due_at ?? '',
             competence_date: expense.competence_date ?? '',
