@@ -46,7 +46,7 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
     Route::resource('expenses', ExpenseController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     Route::get('/expenses/{payment}/payment-options', [ExpenseController::class, 'paymentOptions'])
-        ->name('payments.available-expenses');
+        ->name('expenses.payment-options');
     Route::resource('expense-statuses', ExpenseStatusController::class)
         ->only(['index', 'store']);
 
