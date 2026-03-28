@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue';
 import AppButton from '@/components/AppButton.vue';
-
-interface Expense {
-    id: number;
-    attachments?: any[];
-}
+import { Expense } from '@/types';
 
 const props = defineProps<{
     expense: Expense;

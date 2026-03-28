@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useForm, router } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, Expense } from '@/types';
 import { PencilIcon, Search, Trash2Icon } from 'lucide-vue-next';
 import FlashMessage from '@/components/FlashMessage.vue';
 import FilterText from '@/components/filters/FilterText.vue';
@@ -18,31 +18,6 @@ import AppButton from '@/components/AppButton.vue';
 import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
 import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
 import SidebarDrawerPanel from '@/components/ui/sidebar/SidebarDrawerPanel.vue';
-
-interface Expense {
-    id: number;
-    reference: string;
-    amount: string;
-
-    payee?: {
-        id: number;
-        name: string;
-    } | null;
-
-    cost_center?: {
-        id: number;
-        name: string;
-    } | null;
-
-    status?: {
-        id: number;
-        name: string;
-        color: string;
-    } | null;
-
-    due_at: string | null;
-    competence_date: string | null;
-}
 
 const props = defineProps<{
     expenses: {
@@ -146,8 +121,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
     <AppLayout :breadcrumbs="breadcrumbItems">
         <div class="content-box">
             <FlashMessage />
-
-            <!-- FILTROS -->
             <form @submit.prevent="search">
                 <AppFilterBar
                     v-model:filters="filters"

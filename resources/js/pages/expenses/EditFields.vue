@@ -7,31 +7,6 @@ import AppLabel from '@/components/base/AppLabel.vue';
 import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
 import CreateCostCenter from '@/pages/cost_centers/CreateCostCenter.vue';
 
-interface Expense {
-    id: number;
-    reference: string;
-    amount: string;
-
-    payee?: {
-        id: number;
-        name: string;
-    } | null;
-
-    cost_center?: {
-        id: number;
-        name: string;
-    } | null;
-
-    status?: {
-        id: number;
-        name: string;
-        color: string;
-    } | null;
-
-    due_at: string | null;
-    competence_date: string | null;
-}
-
 interface FormType {
     id: number;
     reference: string;

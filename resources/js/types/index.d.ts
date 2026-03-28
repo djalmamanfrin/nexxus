@@ -61,6 +61,31 @@ export interface Payment {
     created_at: string;
 }
 
+export interface Expense {
+    id: number;
+    reference: string;
+    amount: string;
+
+    payee?: {
+        id: number;
+        name: string;
+    } | null;
+
+    cost_center?: {
+        id: number;
+        name: string;
+    } | null;
+
+    status?: {
+        id: number;
+        name: string;
+        color: string;
+    } | null;
+
+    due_at: string | null;
+    competence_date: string | null;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;
 
 // TODO:
