@@ -55,6 +55,9 @@ const handleCreated = (item) => {
 <template>
     <div v-if="expense" class="space-y-4">
         <div class="grid grid-cols-1 gap-4">
+            <AppInput v-model="form.reference" label="Referencia" />
+            <AppInput v-model="form.amount" label="Valor" mask="currency" />
+
             <AppSelect
                 v-model="form.payee_id"
                 url="payees"
@@ -74,9 +77,6 @@ const handleCreated = (item) => {
                 title="Novo C. de Custo"
                 description="Como deseja nomear?"
             />
-
-            <AppInput v-model="form.reference" label="Referencia" />
-            <AppInput v-model="form.amount" label="Valor" mask="currency" />
 
             <AppInput
                 v-model="form.due_at"
