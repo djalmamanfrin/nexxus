@@ -7,6 +7,13 @@ import FilterTabs from '@/components/filters/FilterTabs.vue';
 import EditFields from '@/pages/expenses/EditFields.vue';
 import CrudIndexPage from '@/pages/CrudIndexPage.vue';
 import AppFileInput from '@/components/base/AppFileInput.vue';
+import AppFormLayout from '@/components/base/AppFormLayout.vue';
+import AppInput from '@/components/base/AppInput.vue';
+import AppSelect from '@/components/base/AppSelect.vue';
+import CreateCostCenter from '@/pages/cost_centers/CreateCostCenter.vue';
+import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
+import AppLabel from '@/components/base/AppLabel.vue';
+import { formatDateTime } from '@/lib/date';
 
 const props = defineProps<{
     expenses: {
@@ -84,7 +91,48 @@ const breadcrumbItems: BreadcrumbItem[] = [
         </template>
 
         <template #form="{ item, form }">
-            <EditFields :expense="item" :form="form" />
+            <AppFormLayout :item="item">
+                <AppInput v-model="form.reference" label="Referencia" />
+                <AppInput v-model="form.amount" label="Valor" mask="currency" />
+
+                <AppSelect
+                    v-model="form.payee_id"
+                    url="payees/options"
+                    label="Beneficiário"
+                    name="payee_id"
+                />
+
+                <AppSelectWithModal
+                    v-model="form.cost_center_id"
+                    showCreate
+                    @created="({ field, value }) => (form[field] = value)"
+                    :createComponent="CreateCostCenter"
+                    url="cost-centers"
+                    label="C. de Custo"
+                    name="cost_center_id"
+                    width="w-56"
+                    title="Novo C. de Custo"
+                    description="Como deseja nomear?"
+                />
+
+                <AppInput
+                    v-model="form.due_at"
+                    label="Vencimento em"
+                    type="datetime-local"
+                />
+                <AppInput
+                    v-model="form.competence_date"
+                    label="Competencia"
+                    type="datetime-local"
+                />
+
+                <template #footer>
+                    <AppLabel label="Criado em:" />
+                    <p class="text-sm text-gray-500">
+                        {{ formatDateTime(item.created_at) }}
+                    </p>
+                </template>
+            </AppFormLayout>
         </template>
 
         <template #file="{ item, form }">
