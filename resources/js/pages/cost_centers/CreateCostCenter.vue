@@ -91,7 +91,7 @@ watch(
         <div>
             <AppSelect
                 v-model="form.work_id"
-                url="/works"
+                url="/works/options"
                 label="Obra"
             />
             <div class="min-h-[20px] text-sm">
