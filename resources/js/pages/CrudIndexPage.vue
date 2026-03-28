@@ -153,7 +153,11 @@ const handleSave = () => {
 
             <SidebarDrawerTabs>
                 <SidebarDrawerTab name="info" label="Informações" />
-                <SidebarDrawerTab name="arquivo" label="Arquivo" />
+                <SidebarDrawerTab
+                    v-if="$slots.file"
+                    name="arquivo"
+                    label="Arquivo"
+                />
             </SidebarDrawerTabs>
 
             <SidebarDrawerPanel name="info">
