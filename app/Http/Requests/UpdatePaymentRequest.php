@@ -16,7 +16,6 @@ class UpdatePaymentRequest extends FormRequest
         return [
             'expense_id' => ['nullable', 'integer'],
             'bank_account_id' => ['nullable', 'integer'],
-            'payment_status_id' => ['nullable', 'integer'],
             'payment_type_id' => ['nullable', 'integer'],
             'amount' => ['nullable', 'numeric'],
             'paid_at' => ['nullable', 'date'],
