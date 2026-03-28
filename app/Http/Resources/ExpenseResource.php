@@ -15,6 +15,7 @@ class ExpenseResource extends JsonResource
             'amount' => $this->amount,
             'description' => $this->description,
             'due_at' => $this->due_at?->toDateString(),
+            'created_at' => $this->created_at?->toDateString(),
             'competence_date' => $this->competence_date?->toDateString(),
             'cost_center' => $this->whenLoaded('costCenter', function () {
                 return [
