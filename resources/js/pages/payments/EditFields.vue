@@ -9,16 +9,7 @@ import { ArrowLeft, BankNote } from 'lucide-vue-next';
 import AppButton from '@/components/AppButton.vue';
 import Icon from '@/components/Icon.vue';
 import AppLabel from '@/components/base/AppLabel.vue';
-
-interface Payment {
-    id: number;
-    expense_id: string;
-    bank_account_id: string;
-    payment_status_id: string;
-    payment_type_id: string;
-    amount: string;
-    paid_at: string;
-}
+import { Payment } from '@/types';
 
 interface FormType {
     expense_id: string;

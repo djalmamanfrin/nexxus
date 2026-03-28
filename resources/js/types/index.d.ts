@@ -37,4 +37,37 @@ export interface User {
     updated_at: string;
 }
 
+export interface Payment {
+    id: number;
+    expense?: {
+        id: number;
+        name: string;
+    } | null;
+    bank_account?: {
+        id: number;
+        name: string;
+    } | null;
+    status?: {
+        id: number;
+        name: string;
+        color: string;
+    } | null;
+    payment_type?: {
+        id: number;
+        name: string;
+    } | null;
+    amount: string;
+    paid_at: string;
+    created_at: string;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;
+
+// TODO:
+//  7. Ajustar o fluxo de payments para adicionar reource
+//  8. Implementar tela/menu de criação de centro de custo
+//  9. Implementar modal de criação de benefeciário
+//  10. Implementar tela/menu de criação de benefeciário
+//  . Criar select com pesquisa para muitas opcoes do payee (talvez)
+//  . Criar o filtro Pagamentos para o EditFields das despesas
+//  . Exibir no filtro de pagamento no fluxo de despenas apenas pagamentos sem despesas associadas com status 1

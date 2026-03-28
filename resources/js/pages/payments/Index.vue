@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, Payment } from '@/types';
 import { PencilIcon, Search, Trash2Icon } from 'lucide-vue-next';
 import FlashMessage from '@/components/FlashMessage.vue';
 import FilterText from '@/components/filters/FilterText.vue';
@@ -19,16 +19,6 @@ import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
 import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
 import SidebarDrawerPanel from '@/components/ui/sidebar/SidebarDrawerPanel.vue';
 
-export interface Payment {
-    id: number;
-    expense_id: string;
-    bank_account_id: string;
-    payment_status_id: string;
-    payment_type_id: string;
-    amount: string;
-    paid_at: string;
-    created_at: string;
-}
 const props = defineProps<{
     payments: {
         data: Payment[];
@@ -47,35 +37,16 @@ const { filters, search, clear } = useFilters(
     '/payments',
 );
 
-function getStatus(id: string | number) {
-    const statusColorClasses: Record<string, string> = {
-        green: 'bg-green-100 text-green-800',
-        red: 'bg-red-100 text-red-800',
-        yellow: 'bg-yellow-100 text-yellow-800',
-        gray: 'bg-gray-100 text-gray-800',
-    };
-
-    const status = props.statuses.find((s) => s.value == id);
-
-    const color = status?.color || 'gray';
-
-    return {
-        label: status?.label || 'Desconhecido',
-        class: statusColorClasses[color] || statusColorClasses.gray,
-    };
-}
-
 const open = ref(false);
 const selectedItem = ref<Expense | null>(null);
 
 const dataForm = useForm({
-    reference: '',
-    amount: '',
-    payee_id: '',
-    cost_center_id: '',
-    expense_status_id: '',
-    due_at: '',
-    competence_date: '',
+    expense_id: null,
+    bank_account_id: null,
+    payment_status_id: null,
+    payment_type_id: null,
+    amount: null,
+    paid_at: null,
 });
 
 const fileForm = useForm({
@@ -176,11 +147,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 :columns="[
                     { key: 'attachments', label: 'Imagem', align: 'left' },
                     { key: 'amount', label: 'Valor', type: 'money' },
-                    {
-                        key: 'payment_status_id',
-                        label: 'Status',
-                        type: 'payment_status',
-                    },
+                    { key: 'status.name', label: 'Status' },
                     { key: 'paid_at', label: 'Pago em', type: 'datetime' },
                     { key: 'created_at', label: 'Criado em', type: 'datetime' },
                 ]"
@@ -193,23 +160,15 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     <span v-else>-</span>
                 </template>
 
-                <template #cell-payment_status_id="{ item }">
+                <template #cell-status.name="{ item }">
                     <span
-                        v-bind="
-                            (() => {
-                                const statusName = getStatus(
-                                    item.payment_status_id,
-                                );
-                                return {
-                                    class: [
-                                        'rounded px-2 py-1 text-xs',
-                                        statusName.class,
-                                    ],
-                                    innerText: statusName.label,
-                                };
-                            })()
-                        "
-                    />
+                        :class="[
+                            'rounded px-2 py-1 text-xs',
+                            `bg-${item.status?.color}-100 text-${item.status?.color}-800`,
+                        ]"
+                    >
+                        {{ item.status?.name || '-' }}
+                    </span>
                 </template>
                 <template #actions="{ item }">
                     <AppButton
