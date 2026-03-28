@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Attachment\AttachFileAction;
-use App\Http\Requests\UpdateWorkRequest;
 use App\Models\Work;
-use App\Models\WorkStatus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
