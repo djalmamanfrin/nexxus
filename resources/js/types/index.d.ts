@@ -94,6 +94,7 @@ export interface Expense {
 export type BreadcrumbItemType = BreadcrumbItem;
 
 // TODO:
+//  4. Edit novo do expense está funcional, mas nao gera a msg de atualizado com sucesso
 //  5. Update de arquivos nao gera mensagem de sucesso porque uso JsonResponse e n InertiaResponse
 //  6. Mudar o nome do componente Upload.vue para AttachmentUploadModal
 //  7. Revisar o FilterText
