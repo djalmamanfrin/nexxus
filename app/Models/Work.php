@@ -44,4 +44,14 @@ class Work extends Model
     {
         return $this->hasMany(CostCenter::class);
     }
+
+    public function scopeFilter($query, $filters): void
+    {
+        $query->when($filters['search_by'] ?? null, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('description', 'like', "%$search%");
+            });
+        });
+    }
 }

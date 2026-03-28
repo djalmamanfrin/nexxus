@@ -8,6 +8,7 @@ use App\Http\Controllers\ExpenseStatusController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentStatusController;
 use App\Http\Controllers\PaymentTypeController;
+use App\Http\Controllers\WorkController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -50,10 +51,16 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     Route::resource('expense-statuses', ExpenseStatusController::class)
         ->only(['index', 'store']);
+
     Route::resource('cost-centers', CostCenterController::class)
         ->only(['index', 'store']);
     Route::resource('cost-center-types', CostCenterTypeController::class)
         ->only(['index']);
+
+    Route::resource('works', WorkController::class)
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    Route::get('works/options', [WorkController::class, 'options'])
+        ->name('works.options');
 });
 
 require __DIR__.'/settings.php';
