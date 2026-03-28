@@ -38,22 +38,6 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function availableExpenses(Payment $payment)
-    {
-        return Expense::query()
-            ->where('expense_status_id', '=', ExpenseStatus::DONE)
-            ->where(function ($query) use ($payment) {
-                $query
-                    ->whereDoesntHave('payments')
-                    ->orWhere('id', $payment->expense_id);
-            })
-            ->get()
-            ->map(fn ($expense) => [
-                'value' => $expense->id,
-                'label' => $expense->attachments->first()?->original_name,
-            ]);
-    }
-
     /**
      * @throws Throwable
      */

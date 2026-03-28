@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
 use App\Models\ExpenseStatus;
+use App\Models\Payment;
 use App\Support\Logger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,6 +32,23 @@ class ExpenseController extends Controller
             'search_by' => $request->search_by,
             'status' => $request->status,
         ]);
+    }
+
+    public function paymentOptions(Payment $payment): JsonResponse
+    {
+        $expensesEligible = Expense::query()
+            ->where('expense_status_id', '=', ExpenseStatus::DONE)
+            ->where(function ($query) use ($payment) {
+                $query
+                    ->whereDoesntHave('payments')
+                    ->orWhere('id', $payment->expense_id);
+            })
+            ->get()
+            ->map(fn ($expense) => [
+                'value' => $expense->id,
+                'label' => $expense->attachments->first()?->original_name,
+            ]);
+        return response()->json($expensesEligible);
     }
 
     public function show(Expense $expense)
