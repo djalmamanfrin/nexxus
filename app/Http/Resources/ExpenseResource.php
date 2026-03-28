@@ -47,6 +47,7 @@ class ExpenseResource extends JsonResource
                 fn () => $this->attachments->map(fn ($file) => [
                     'id' => $file->id,
                     'original_name' => $file->original_name,
+                    'url' => $file->url,
                 ]),
                 []
             ),
