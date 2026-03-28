@@ -51,4 +51,15 @@ class Payee extends Model
     {
         return $this->hasMany(Expense::class);
     }
+
+    public function scopeFilter($query, $filters): void
+    {
+        $query->when($filters['search_by'] ?? null, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('document', 'like', "%$search%")
+                    ->orWhere('pix_key', 'like', "%$search%");
+            });
+        });
+    }
 }

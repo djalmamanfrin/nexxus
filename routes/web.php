@@ -5,6 +5,7 @@ use App\Http\Controllers\CostCenterController;
 use App\Http\Controllers\CostCenterTypeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseStatusController;
+use App\Http\Controllers\PayeeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentStatusController;
 use App\Http\Controllers\PaymentTypeController;
@@ -61,6 +62,11 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     Route::get('works/options', [WorkController::class, 'options'])
         ->name('works.options');
+
+    Route::resource('payees', PayeeController::class)
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    Route::get('payees/options', [PayeeController::class, 'options'])
+        ->name('payees.options');
 });
 
 require __DIR__.'/settings.php';
