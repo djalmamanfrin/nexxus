@@ -5,8 +5,8 @@ import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
 import EditFields from '@/pages/payments/EditFields.vue';
-import EditFile from '@/pages/payments/EditFile.vue';
 import CrudIndexPage from '@/pages/CrudIndexPage.vue';
+import AppFileInput from '@/components/base/AppFileInput.vue';
 
 const props = defineProps<{
     payments: {
@@ -91,7 +91,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
         </template>
 
         <template #file="{ item, form }">
-            <EditFile :payment="item" :form="form" />
+            <AppFileInput :attachments="item?.attachments" :form="form" />
         </template>
     </CrudIndexPage>
 </template>
