@@ -11,11 +11,13 @@ import AppSelect from '@/components/base/AppSelect.vue';
 const emit = defineEmits(['created', 'cancel']); // mudar de cancel para close
 
 const form = useForm<{
+    work_id: number;
     cost_center_type_id: number;
     code: string;
     budget: number;
     description: string;
 }>({
+    work_id: null,
     cost_center_type_id: null,
     code: '',
     budget: 0,
@@ -23,14 +25,6 @@ const form = useForm<{
 });
 
 const submit = async () => {
-    if (!form.code) {
-        form.setError('code', 'O campo nome é obrigatório');
-        return;
-    }
-    if (!form.budget) {
-        form.setError('budget', 'O campo orçamento é obrigatório');
-        return;
-    }
     try {
         const response = await api.post('/cost-centers', form.data());
         if (response.status === 201) {
@@ -90,6 +84,22 @@ watch(
             <div class="min-h-[20px] text-sm">
                 <span v-show="form.errors.code" class="block text-red-500">
                     {{ form.errors.code }}
+                </span>
+            </div>
+        </div>
+
+        <div>
+            <AppSelect
+                v-model="form.work_id"
+                url="/works"
+                label="Obra"
+            />
+            <div class="min-h-[20px] text-sm">
+                <span
+                    v-show="form.errors.work_id"
+                    class="block text-red-500"
+                >
+                    {{ form.errors.work_id }}
                 </span>
             </div>
         </div>
