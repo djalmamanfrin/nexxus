@@ -70,7 +70,7 @@ class PaymentController extends Controller
         $validated = $request->validated();
         $payment->update($validated);
 
-        return back()->with('success', 'Atualizado com sucesso');
+        return back()->with('success', 'Pagamento atualizado com sucesso');
     }
 
     public function uploadAttachment(Request $request, Payment $payment, AttachFileAction $attachFile)
@@ -90,6 +90,6 @@ class PaymentController extends Controller
             'payments'
         );
 
-        return back()->with('success', 'Arquivo atualizado');
+        return back()->with('success', 'Arquivo atualizado com sucesso');
     }
 }
