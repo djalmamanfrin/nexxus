@@ -11,12 +11,25 @@ interface Expense {
     id: number;
     reference: string;
     amount: string;
-    payee_id: string;
-    cost_center_id: string;
-    expense_status_id: string;
-    expense_category_id: string;
-    due_at: string;
-    competence_date: string;
+
+    payee?: {
+        id: number;
+        name: string;
+    } | null;
+
+    cost_center?: {
+        id: number;
+        name: string;
+    } | null;
+
+    status?: {
+        id: number;
+        name: string;
+        color: string;
+    } | null;
+
+    due_at: string | null;
+    competence_date: string | null;
 }
 
 interface FormType {
@@ -33,7 +46,7 @@ interface FormType {
 }
 
 const props = defineProps<{
-    expense: Expense;
+    expense: Expense | null;
     form: FormType & {
         defaults: Function;
         reset: Function;
@@ -49,9 +62,7 @@ watch(
             reference: expense.reference ?? '',
             amount: expense.amount ?? '',
             payee_id: expense.payee_id ?? '',
-            cost_center_id: expense.cost_center_id ?? '',
-            expense_status_id: expense.expense_status_id ?? '',
-            expense_category_id: expense.expense_category_id ?? '',
+            cost_center_id: expense.cost_center?.id ?? '',
             due_at: expense.due_at ?? '',
             competence_date: expense.competence_date ?? '',
         });
