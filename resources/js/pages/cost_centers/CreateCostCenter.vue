@@ -6,14 +6,17 @@ import { Loader2, Save } from 'lucide-vue-next';
 import AppButton from '@/components/AppButton.vue';
 import AppInput from '@/components/base/AppInput.vue';
 import AppTextarea from '@/components/base/AppTextarea.vue';
+import AppSelect from '@/components/base/AppSelect.vue';
 
 const emit = defineEmits(['created', 'cancel']); // mudar de cancel para close
 
 const form = useForm<{
+    cost_center_type_id: number;
     code: string;
     budget: number;
     description: string;
 }>({
+    cost_center_type_id: null,
     code: '',
     budget: 0,
     description: '',
@@ -87,6 +90,21 @@ watch(
             <div class="min-h-[20px] text-sm">
                 <span v-show="form.errors.code" class="block text-red-500">
                     {{ form.errors.code }}
+                </span>
+            </div>
+        </div>
+        <div>
+            <AppSelect
+                v-model="form.cost_center_type_id"
+                url="/cost-center-types"
+                label="Tipo"
+            />
+            <div class="min-h-[20px] text-sm">
+                <span
+                    v-show="form.errors.cost_center_type_id"
+                    class="block text-red-500"
+                >
+                    {{ form.errors.cost_center_type_id }}
                 </span>
             </div>
         </div>

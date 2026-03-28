@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CostCenterController;
+use App\Http\Controllers\CostCenterTypeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseStatusController;
 use App\Http\Controllers\PaymentController;
@@ -51,6 +52,8 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
         ->only(['index', 'store']);
     Route::resource('cost-centers', CostCenterController::class)
         ->only(['index', 'store']);
+    Route::resource('cost-center-types', CostCenterTypeController::class)
+        ->only(['index']);
 });
 
 require __DIR__.'/settings.php';

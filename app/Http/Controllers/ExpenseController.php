@@ -6,6 +6,7 @@ use App\Actions\Attachment\AttachFileAction;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
 use App\Models\ExpenseStatus;
+use App\Support\Logger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
