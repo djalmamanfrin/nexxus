@@ -14,12 +14,18 @@ const props = defineProps({
     },
 });
 
-const formatValue = (item, column) => {
-    const value = item[column.key];
+const getValue = (obj: any, path: string) => {
+    if (!obj || !path) return null;
+
+    return path.split('.').reduce((acc, key) => acc?.[key], obj);
+};
+
+const formatValue = (item: any, column: any) => {
+    const value = getValue(item, column.key);
 
     switch (column.type) {
         case 'money':
-            return formatMoney(value);
+            return value ? formatMoney(value) : '-';
         case 'date':
             return value ? formatDate(value) : '-';
         case 'datetime':
@@ -31,7 +37,7 @@ const formatValue = (item, column) => {
     }
 };
 
-const getAlignClass = (align) => {
+const getAlignClass = (align: string) => {
     switch (align) {
         case 'left':
             return 'text-left';
@@ -98,6 +104,6 @@ const getAlignClass = (align) => {
                 </tr>
             </tbody>
         </table>
-        <Pagination v-if="items.links" :links="items.links" />
+        <Pagination v-if="items?.meta?.links" :links="items.meta.links" />
     </div>
 </template>
