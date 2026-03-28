@@ -37,8 +37,19 @@ export interface User {
     updated_at: string;
 }
 
+export interface Attachment {
+    id: number;
+    original_name: string;
+    url: string;
+    mime_type: string;
+}
+
 export interface Payment {
     id: number;
+    amount: string;
+    paid_at: string;
+    created_at: string;
+    attachments: Attachment[];
     expense?: {
         id: number;
         name: string;
@@ -56,34 +67,28 @@ export interface Payment {
         id: number;
         name: string;
     } | null;
-    amount: string;
-    paid_at: string;
-    created_at: string;
 }
 
 export interface Expense {
     id: number;
     reference: string;
     amount: string;
-
+    due_at: string | null;
+    competence_date: string | null;
+    attachments: Attachment[];
     payee?: {
         id: number;
         name: string;
     } | null;
-
     cost_center?: {
         id: number;
         name: string;
     } | null;
-
     status?: {
         id: number;
         name: string;
         color: string;
     } | null;
-
-    due_at: string | null;
-    competence_date: string | null;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

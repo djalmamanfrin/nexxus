@@ -36,12 +36,14 @@ class PaymentResource extends JsonResource
                     'color' => $this->status?->color,
                 ];
             }),
-            'attachments' => $this->whenLoaded('attachments', function () {
-                return $this->attachments->map(fn ($file) => [
+            'attachments' => $this->whenLoaded(
+                'attachments',
+                fn () => $this->attachments->map(fn ($file) => [
                     'id' => $file->id,
                     'original_name' => $file->original_name,
-                ]);
-            }),
+                ]),
+                []
+            ),
         ];
     }
 }
