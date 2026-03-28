@@ -60,7 +60,7 @@ const handleCreated = (item) => {
 
             <AppSelect
                 v-model="form.payee_id"
-                url="payees"
+                url="payees/options"
                 label="Beneficiário"
                 name="payee_id"
             />
