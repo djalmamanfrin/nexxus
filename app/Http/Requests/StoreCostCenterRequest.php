@@ -18,6 +18,7 @@ class StoreCostCenterRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'work_id' => ['required', 'integer', 'exists:works,id'],
             'cost_center_type_id' => ['required', 'integer', 'exists:cost_center_types,id'],
             'code' => [
                 'required',
@@ -57,9 +58,12 @@ class StoreCostCenterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'cost_center_type_id.required' => 'O tipo dentro de custo é obrigatório.',
-            'cost_center_type_id.numeric' => 'O tipo dentro de custo deve ser um número válido.',
-            'cost_center_type_id.exists' => 'O tipo dentro de custo não encontrado na base.',
+            'work_id.required' => 'A obra é obrigatório.',
+            'work_id.numeric' => 'A obra deve ser um número válido.',
+            'work_id.exists' => 'Obra não encontrado na base.',
+            'cost_center_type_id.required' => 'O tipo centro de custo é obrigatório.',
+            'cost_center_type_id.numeric' => 'O tipo centro de custo deve ser um número válido.',
+            'cost_center_type_id.exists' => 'O tipo centro de custo não encontrado na base.',
             'code.required' => 'O código é obrigatório.',
             'code.string' => 'O código deve ser com números e pontos.',
             'code.min' => 'O código deve ter pelo menos 3 caracteres.',
