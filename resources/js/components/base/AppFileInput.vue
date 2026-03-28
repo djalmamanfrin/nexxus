@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue';
 import AppButton from '@/components/AppButton.vue';
-import { Expense } from '@/types';
+import { Attachment } from '@/types';
 
 const props = defineProps<{
-    expense: Expense;
+    attachments?: Attachment[];
     form: {
         attachment: File | null;
+        errors?: Record<string, string>;
     };
 }>();
 
 const previewUrl = ref<string | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 
-function openFileSelector() {
+const openFileSelector = () => {
     fileInput.value?.click();
-}
+};
 
 const handleFileChange = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0];
@@ -60,8 +61,8 @@ onUnmounted(() => {
     </div>
 
     <div class="flex flex-1 justify-center">
-        <span v-if="props.form.errors.message" class="text-sm text-red-500">
-            {{ props.form.errors.message }}
+        <span v-if="form.errors?.attachment" class="text-sm text-red-500">
+            {{ form.errors.attachment }}
         </span>
     </div>
 
@@ -69,8 +70,8 @@ onUnmounted(() => {
         class="flex-1 overflow-auto rounded-lg bg-gray-50 px-16 py-8 dark:bg-neutral-700"
     >
         <img
-            v-if="previewUrl || expense.attachments?.length"
-            :src="previewUrl || expense.attachments?.[0]?.url"
+            v-if="previewUrl || attachments?.length"
+            :src="previewUrl || attachments?.[0]?.url"
             class="w-full rounded-lg object-contain"
             alt=""
         />
