@@ -2,25 +2,33 @@
 import Pagination from '@/components/Pagination.vue';
 import { formatDate, formatDateTime } from '@/lib/date';
 import { formatMoney } from '@/lib/money';
+export interface Column {
+    key: string;
+    label: string;
+    align?: 'left' | 'center' | 'right';
+    type?: 'money' | 'date' | 'datetime' | 'boolean';
+}
 
-const props = defineProps({
-    columns: {
-        type: Array,
-        required: true,
-    },
+const props = defineProps<{
+    columns: Column[];
     items: {
-        type: Object,
-        required: true,
-    },
-});
+        data: any[];
+        meta?: any;
+    };
+}>();
 
+// =======================
+// HELPERS
+// =======================
+
+// dot notation: status.name
 const getValue = (obj: any, path: string) => {
     if (!obj || !path) return null;
 
     return path.split('.').reduce((acc, key) => acc?.[key], obj);
 };
 
-const formatValue = (item: any, column: any) => {
+const formatValue = (item: any, column: Column) => {
     const value = getValue(item, column.key);
 
     switch (column.type) {
@@ -35,6 +43,9 @@ const formatValue = (item: any, column: any) => {
         default:
             return value ?? '-';
     }
+};
+const getSlotName = (key: string) => {
+    return `cell-${key.replace(/\./g, '_')}`;
 };
 
 const getAlignClass = (align: string) => {
@@ -70,7 +81,6 @@ const getAlignClass = (align: string) => {
                     </th>
                 </tr>
             </thead>
-
             <tbody>
                 <tr
                     v-for="item in items.data"
@@ -83,7 +93,7 @@ const getAlignClass = (align: string) => {
                         class="table-row-body"
                         :class="getAlignClass(column.align)"
                     >
-                        <slot :name="`cell-${column.key}`" :item="item">
+                        <slot :name="getSlotName(column.key)" :item="item">
                             {{ formatValue(item, column) }}
                         </slot>
                     </td>
@@ -104,6 +114,6 @@ const getAlignClass = (align: string) => {
                 </tr>
             </tbody>
         </table>
-        <Pagination v-if="items?.meta?.links" :links="items.meta.links" />
+        <Pagination v-if="items.meta?.links" :links="items.meta.links" />
     </div>
 </template>
