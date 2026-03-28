@@ -94,7 +94,9 @@ export interface Expense {
 export type BreadcrumbItemType = BreadcrumbItem;
 
 // TODO:
-//  7. Ajustar o fluxo de payments para adicionar reource
+//  5. Update de arquivos nao gera mensagem de sucesso porque uso JsonResponse e n InertiaResponse
+//  6. Mudar o nome do componente Upload.vue para AttachmentUploadModal
+//  7. Revisar o FilterText
 //  8. Implementar tela/menu de criação de centro de custo
 //  9. Implementar modal de criação de benefeciário
 //  10. Implementar tela/menu de criação de benefeciário
