@@ -19,16 +19,29 @@ import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
 import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
 import SidebarDrawerPanel from '@/components/ui/sidebar/SidebarDrawerPanel.vue';
 
-export interface Expense {
+interface Expense {
     id: number;
     reference: string;
     amount: string;
-    payee_id: string;
-    cost_center_id: string;
-    expense_status_id: string;
-    expense_category_id: string;
-    due_at: string;
-    competence_date: string;
+
+    payee?: {
+        id: number;
+        name: string;
+    } | null;
+
+    cost_center?: {
+        id: number;
+        name: string;
+    } | null;
+
+    status?: {
+        id: number;
+        name: string;
+        color: string;
+    } | null;
+
+    due_at: string | null;
+    competence_date: string | null;
 }
 
 const props = defineProps<{
@@ -72,9 +85,9 @@ const handleEdit = (item: Expense) => {
     dataForm.defaults({
         reference: item.reference,
         amount: item.amount,
-        payee_id: item.payee_id,
-        cost_center_id: item.cost_center_id,
-        expense_status_id: item.expense_status_id,
+        payee_id: item.payee?.id ?? null,
+        cost_center_id: item.cost_center?.id ?? null,
+        expense_status_id: item.status?.id ?? null,
         due_at: item.due_at,
         competence_date: item.competence_date,
     });
