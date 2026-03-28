@@ -49,23 +49,6 @@ const { filters, search, clear } = useFilters(
     '/expenses',
 );
 
-function getStatus(id: string | number) {
-    const statusColorClasses: Record<string, string> = {
-        green: 'bg-green-100 text-green-800',
-        red: 'bg-red-100 text-red-800',
-        yellow: 'bg-yellow-100 text-yellow-800',
-        gray: 'bg-gray-100 text-gray-800',
-    };
-
-    const status = props.statuses.find((s) => s.value == id);
-    const color = status?.color || 'gray';
-
-    return {
-        label: status?.label || 'Desconhecido',
-        class: statusColorClasses[color] || statusColorClasses.gray,
-    };
-}
-
 const open = ref(false);
 const selectedItem = ref<Expense | null>(null);
 
@@ -170,18 +153,13 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
             <div class="my-4"></div>
 
-            <!-- TABELA GENÉRICA -->
             <AppTable
                 :columns="[
                     { key: 'attachments', label: 'Imagem', align: 'left' },
                     { key: 'amount', label: 'Valor', type: 'money' },
-                    {
-                        key: 'expense_status_id',
-                        label: 'Status',
-                        type: 'expense_status',
-                    },
-                    { key: 'cost_center_id', label: 'C. de Custo' },
-                    { key: 'due_at', label: 'Vencimento', type: 'datetime' },
+                    { key: 'status.name', label: 'Status' },
+                    { key: 'cost_center.code', label: 'C. de Custo' },
+                    { key: 'due_at', label: 'Vencimento', type: 'date' },
                     { key: 'created_at', label: 'Criado em', type: 'datetime' },
                 ]"
                 :items="props.expenses"
@@ -194,16 +172,14 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     <span v-else>-</span>
                 </template>
 
-                <template #cell-expense_status_id="{ item }">
+                <template #cell-status.name="{ item }">
                     <span
-                        v-bind="{
-                            class: [
-                                'rounded px-2 py-1 text-xs',
-                                getStatus(item.expense_status_id).class,
-                            ],
-                        }"
+                        :class="[
+                            'rounded px-2 py-1 text-xs',
+                            `bg-${item.status?.color}-100 text-${item.status?.color}-800`,
+                        ]"
                     >
-                        {{ getStatus(item.expense_status_id).label }}
+                        {{ item.status?.name || '-' }}
                     </span>
                 </template>
 
