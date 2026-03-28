@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Attachment\AttachFileAction;
 use App\Http\Requests\UpdateExpenseRequest;
+use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
 use App\Models\ExpenseStatus;
 use App\Support\Logger;
@@ -18,14 +19,14 @@ class ExpenseController extends Controller
     public function index(Request $request)
     {
         $expenses = Expense::query()
-            ->with('attachments')
+            ->with(['attachments', 'costCenter', 'payee', 'status', 'category'])
             ->filter($request->all())
             ->latest()
             ->paginate(10)
             ->withQueryString();
 
         return Inertia::render('expenses/Index', [
-            'expenses' => $expenses,
+            'expenses' => ExpenseResource::collection($expenses),
             'statuses' => ExpenseStatus::select('id as value', 'name as label', 'color')->get(),
             'search_by' => $request->search_by,
             'status' => $request->status,
