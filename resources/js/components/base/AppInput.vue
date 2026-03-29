@@ -9,6 +9,10 @@ const props = defineProps({
     placeholder: String,
     icon: Function,
     mask: String,
+    error: {
+        type: String,
+        default: '',
+    },
     type: {
         type: String,
         default: 'text',
@@ -112,5 +116,8 @@ const handleClick = () => {
                 class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 dark:bg-gray-950"
             />
         </div>
+        <span v-if="error" class="text-xs text-red-500">
+            {{ error }}
+        </span>
     </div>
 </template>
