@@ -70,15 +70,10 @@ watch(
     <div class="space-y-3">
         <AppInput
             v-model="form.name"
+            :error="form.errors.name"
             maxlength="30"
             placeholder="Ex: Pago, Pendente, Em atraso"
         />
-        <div class="min-h-[20px] text-sm">
-            <span v-show="form.errors.name" class="block text-red-500">
-                {{ form.errors.name }}
-            </span>
-        </div>
-
         <div class="flex justify-end">
             <AppButton
                 @click="submit"

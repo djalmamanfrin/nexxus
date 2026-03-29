@@ -70,6 +70,7 @@ watch(
     <div class="space-y-3">
         <AppInput
             v-model="form.name"
+            :error="form.errors.name"
             maxlength="30"
             placeholder="Ex: Pago, Pendente, Em atraso"
         />

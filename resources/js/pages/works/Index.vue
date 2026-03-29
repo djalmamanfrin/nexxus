@@ -29,7 +29,7 @@ const { filters, search, clear } = useFilters(
 const activeValues = [
     { label: 'Sim', value: 1 },
     { label: 'Não', value: 0 },
-]
+];
 
 const columns = [
     { key: 'name', label: 'Obra' },
@@ -72,12 +72,21 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 name="search_by"
                 placeholder="Pesquise pelo nome ou algo na descrição"
             />
-            <FilterTabs v-if="activeValues?.length" label="Ativo" name="is_active" :tabs="activeValues"/>
+            <FilterTabs
+                v-if="activeValues?.length"
+                label="Ativo"
+                name="is_active"
+                :tabs="activeValues"
+            />
         </template>
 
         <template #form="{ item, form }">
             <AppFormLayout :item="item">
-                <AppInput v-model="form.name" label="Name" />
+                <AppInput
+                    v-model="form.name"
+                    :error="form.errors.name"
+                    label="Name"
+                />
                 <AppSwitch v-model="form.is_active" label="Ativo" />
                 <AppTextarea
                     v-model="form.description"

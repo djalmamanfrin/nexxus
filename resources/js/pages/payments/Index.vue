@@ -132,10 +132,16 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 <!--                <input v-model="form.payment_type_id" class="form-input" />-->
                 <!--            </div>-->
 
-                <AppInput v-model="form.amount" label="Valor" mask="currency" />
+                <AppInput
+                    v-model="form.amount"
+                    :error="form.errors.amount"
+                    label="Valor"
+                    mask="currency"
+                />
 
                 <AppInput
                     v-model="form.paid_at"
+                    :error="form.errors.paid_at"
                     label="Pago em"
                     type="datetime-local"
                 />

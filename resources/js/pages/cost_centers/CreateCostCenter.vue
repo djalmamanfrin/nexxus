@@ -77,15 +77,11 @@ watch(
         <div>
             <AppInput
                 v-model="form.code"
+                :error="form.errors.code"
                 label="Código"
                 maxlength="12"
                 placeholder="Ex: 0010.0001"
             />
-            <div class="min-h-[20px] text-sm">
-                <span v-show="form.errors.code" class="block text-red-500">
-                    {{ form.errors.code }}
-                </span>
-            </div>
         </div>
 
         <div>
@@ -95,10 +91,7 @@ watch(
                 label="Obra"
             />
             <div class="min-h-[20px] text-sm">
-                <span
-                    v-show="form.errors.work_id"
-                    class="block text-red-500"
-                >
+                <span v-show="form.errors.work_id" class="block text-red-500">
                     {{ form.errors.work_id }}
                 </span>
             </div>
@@ -109,28 +102,16 @@ watch(
                 url="/cost-center-types"
                 label="Tipo"
             />
-            <div class="min-h-[20px] text-sm">
-                <span
-                    v-show="form.errors.cost_center_type_id"
-                    class="block text-red-500"
-                >
-                    {{ form.errors.cost_center_type_id }}
-                </span>
-            </div>
         </div>
         <div>
             <AppInput
                 v-model="form.budget"
+                :error="form.errors.budget"
                 label="Orçamento"
                 maxlength="12"
                 placeholder="R$ 25.000"
                 mask="currency"
             />
-            <div class="min-h-[20px] text-sm">
-                <span v-show="form.errors.budget" class="block text-red-500">
-                    {{ form.errors.budget }}
-                </span>
-            </div>
         </div>
         <div>
             <AppTextarea

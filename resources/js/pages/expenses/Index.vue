@@ -87,13 +87,27 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 name="search_by"
                 placeholder="CPF, CNPJ ou texto"
             />
-            <FilterTabs v-if="statuses?.length" label="Status" name="status" :tabs="statuses" />
+            <FilterTabs
+                v-if="statuses?.length"
+                label="Status"
+                name="status"
+                :tabs="statuses"
+            />
         </template>
 
         <template #form="{ item, form }">
             <AppFormLayout :item="item">
-                <AppInput v-model="form.reference" label="Referencia" />
-                <AppInput v-model="form.amount" label="Valor" mask="currency" />
+                <AppInput
+                    v-model="form.reference"
+                    :error="form.errors.reference"
+                    label="Referencia"
+                />
+                <AppInput
+                    v-model="form.amount"
+                    :error="form.errors.amount"
+                    label="Valor"
+                    mask="currency"
+                />
 
                 <AppSelect
                     v-model="form.payee_id"
@@ -117,11 +131,13 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
                 <AppInput
                     v-model="form.due_at"
+                    :error="form.errors.due_at"
                     label="Vencimento em"
                     type="datetime-local"
                 />
                 <AppInput
                     v-model="form.competence_date"
+                    :error="form.errors.competence_date"
                     label="Competencia"
                     type="datetime-local"
                 />

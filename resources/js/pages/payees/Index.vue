@@ -83,12 +83,21 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
         <template #form="{ item, form }">
             <AppFormLayout :item="item">
-                <AppInput v-model="form.name" label="Name" />
+                <AppInput
+                    v-model="form.name"
+                    :error="form.errors.name"
+                    label="Name"
+                />
                 <AppInput
                     v-model="form.document_type"
+                    :error="form.errors.document_type"
                     label="Tipo de documento"
                 />
-                <AppInput v-model="form.document" label="CNPJ/CPF" />
+                <AppInput
+                    v-model="form.document"
+                    :error="form.errors.document"
+                    label="CNPJ/CPF"
+                />
                 <AppSwitch
                     v-model="form.is_pix_document"
                     label="Usar documento como PIX"

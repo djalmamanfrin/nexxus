@@ -89,19 +89,26 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     title="Nova Obra"
                     description="Como deseja nomear?"
                 />
-                <AppInput v-model="form.code" label="Código" />
+                <AppInput
+                    v-model="form.code"
+                    :error="form.errors.code"
+                    label="Código"
+                />
                 <AppInput
                     v-model="form.budget"
+                    :error="form.errors.budget"
                     label="Orçamento"
                     mask="currency"
                 />
                 <AppInput
                     v-model="form.start_date"
+                    :error="form.errors.start_date"
                     label="Início em"
                     type="datetime-local"
                 />
                 <AppInput
                     v-model="form.expected_end_date"
+                    :error="form.errors.expected_end_date"
                     label="Expectativa de término em"
                     type="datetime-local"
                 />
