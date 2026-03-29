@@ -48,17 +48,17 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
     Route::resource('expense-statuses', ExpenseStatusController::class)
         ->only(['index', 'store']);
 
+    Route::resource('works', WorkController::class)
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    Route::get('works/options', [WorkController::class, 'options'])
+        ->name('works.options');
+
     Route::resource('cost-centers', CostCenterController::class)
         ->only(['index', 'store']);
     Route::get('/cost-centers/options', [CostCenterController::class, 'options'])
         ->name('expenses.payment-options');
     Route::resource('cost-center-types', CostCenterTypeController::class)
         ->only(['index']);
-
-    Route::resource('works', WorkController::class)
-        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
-    Route::get('works/options', [WorkController::class, 'options'])
-        ->name('works.options');
 
     Route::resource('payees', PayeeController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
