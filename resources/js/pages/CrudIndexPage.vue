@@ -11,6 +11,7 @@ import SidebarDrawerTab from '@/components/ui/sidebar/SidebarDrawerTab.vue';
 import SidebarDrawerPanel from '@/components/ui/sidebar/SidebarDrawerPanel.vue';
 import AppButton from '@/components/AppButton.vue';
 import { PencilIcon, Trash2Icon } from 'lucide-vue-next';
+import FlashMessage from '@/components/FlashMessage.vue';
 
 interface Item {
     id: number;
@@ -99,6 +100,7 @@ const handleSave = () => {
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="content-box">
+            <FlashMessage/>
             <form @submit.prevent="search">
                 <AppFilterBar
                     v-model:filters="filtersProxy"
