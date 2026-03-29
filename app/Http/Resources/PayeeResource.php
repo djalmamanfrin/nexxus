@@ -13,6 +13,7 @@ class PayeeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'document' => $this->document,
+            'is_pix_document' => $this->is_pix_document,
             'document_type' => $this->document_type,
             'pix_key' => $this->pix_key,
             'pix_key_type' => $this->pix_key_type,
