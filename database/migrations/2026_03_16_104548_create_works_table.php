@@ -12,7 +12,7 @@ return new class extends Migration
             $table->ulid()->unique()->index();
             $table->string('name');
             $table->string('code')->nullable();
-            $table->boolean('active')->default(true);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
