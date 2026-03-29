@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCostCenterRequest;
+use App\Http\Requests\CostCenters\StoreCostCenterRequest;
+use App\Http\Requests\UpdateCostCenterRequest;
 use App\Http\Resources\CostCenterResource;
 use App\Models\CostCenter;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,5 +41,21 @@ class CostCenterController extends Controller
     {
         $paymentStatus = CostCenter::create($request->validated());
         return response()->json($paymentStatus->only('id', 'code'), Response::HTTP_CREATED);
+    }
+
+    public function update(UpdateCostCenterRequest  $request, CostCenter $costCenter)
+    {
+        $validated = $request->validated();
+        $costCenter->update($validated);
+
+        return back()->with('success', 'Centro de custo atualizado com sucesso');
+    }
+
+    public function destroy(CostCenter $costCenter): RedirectResponse
+    {
+        $costCenter->delete();
+        return redirect()
+            ->route('cost-centers.index')
+            ->with('success', 'Centro de custo apagado com sucesso!');
     }
 }
