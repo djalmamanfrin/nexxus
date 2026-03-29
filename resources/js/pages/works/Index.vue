@@ -6,6 +6,7 @@ import CrudIndexPage from '@/pages/CrudIndexPage.vue';
 import AppFormLayout from '@/components/base/AppFormLayout.vue';
 import AppInput from '@/components/base/AppInput.vue';
 import AppTextarea from '@/components/base/AppTextarea.vue';
+import AppSwitch from '@/components/base/AppSwitch.vue';
 
 const props = defineProps<{
     works: {
@@ -26,6 +27,7 @@ const { filters, search, clear } = useFilters(
 
 const columns = [
     { key: 'name', label: 'Obra' },
+    { key: 'is_active', label: 'Ativo', type: 'boolean' },
     { key: 'created_at', label: 'Criado em', type: 'datetime' },
 ];
 
@@ -49,11 +51,13 @@ const breadcrumbItems: BreadcrumbItem[] = [
         :clear="clear"
         :initialForm="{
             name: null,
+            is_active: null,
             description: null,
         }"
         :mapToForm="
             (item) => ({
                 name: item.name,
+                is_active: item.is_active,
                 description: item.description,
             })
         "
@@ -69,6 +73,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
         <template #form="{ item, form }">
             <AppFormLayout :item="item">
                 <AppInput v-model="form.name" label="Name" />
+                <AppSwitch v-model="form.is_active" label="Ativo" />
                 <AppTextarea
                     v-model="form.description"
                     label="Descrição"
