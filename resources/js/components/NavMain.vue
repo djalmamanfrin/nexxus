@@ -10,10 +10,12 @@ import { urlIsActive } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import {
-    CalendarCheck2,
+    Building2,
     CircleDollarSignIcon,
-    HomeIcon,
+    Contact,
     DollarSign,
+    HomeIcon,
+    Wallet,
 } from 'lucide-vue-next';
 
 const items: NavItem[] = [
@@ -31,6 +33,21 @@ const items: NavItem[] = [
         title: 'Despesas',
         href: '/expenses',
         icon: CircleDollarSignIcon,
+    },
+    {
+        title: 'Obras',
+        href: '/works',
+        icon: Building2,
+    },
+    {
+        title: 'C. de Custos',
+        href: '/center-costs',
+        icon: Wallet,
+    },
+    {
+        title: 'Beneficiários',
+        href: '/payees',
+        icon: Contact,
     },
 ];
 
