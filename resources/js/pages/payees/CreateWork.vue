@@ -20,15 +20,15 @@ const submit = async () => {
         return;
     }
     try {
-        const response = await api.post('/payment-statuses', form.data());
+        const response = await api.post('/works', form.data());
         if (response.status === 201) {
             emit('created', {
-                field: 'payment_status_id',
+                field: 'work_id',
                 value: response.data.id,
                 label: response.data.name,
             });
 
-            router.reload({ only: ['statuses'] });
+            router.reload();
             emit('cancel');
         } else {
             console.warn('Status inesperado:', response.status);
@@ -72,7 +72,7 @@ watch(
             v-model="form.name"
             :error="form.errors.name"
             maxlength="30"
-            placeholder="Ex: Pago, Pendente, Em atraso"
+            placeholder="Nome da Obra"
         />
         <div class="flex justify-end">
             <AppButton
