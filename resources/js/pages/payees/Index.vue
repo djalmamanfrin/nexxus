@@ -159,7 +159,12 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         placeholder="Ex: cpf, cnpj ou qualquer texto no comprovante"
                         :icon="Search"
                     />
-                    <FilterTabs label="Status" name="status" :tabs="statuses" />
+                    <FilterTabs
+                        v-if="statuses?.length"
+                        label="Status"
+                        name="status"
+                        :tabs="statuses"
+                    />
                     <!--                    <FilterSelect-->
                     <!--                        :options="statuses"-->
                     <!--                        :selectedValue="status"-->

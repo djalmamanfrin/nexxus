@@ -80,7 +80,12 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 name="search_by"
                 placeholder="CPF, CNPJ ou texto"
             />
-            <FilterTabs label="Status" name="status" :tabs="statuses" />
+            <FilterTabs
+                v-if="statuses?.length"
+                label="Status"
+                name="status"
+                :tabs="statuses"
+            />
 
             <!--                    <FilterSelect-->
             <!--                        :options="statuses"-->
