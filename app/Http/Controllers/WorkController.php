@@ -13,7 +13,6 @@ class WorkController extends Controller
     public function index(Request $request)
     {
         $works = Work::query()
-            ->with('attachments')
             ->filter($request->all())
             ->latest()
             ->paginate(10)
