@@ -9,9 +9,9 @@ class PaymentStatusSeeder extends Seeder
 {
     public function run(): void
     {
-        PaymentStatus::create([
+        collect([
             ['name' => 'Pendente', 'slug' => 'pendente', 'color' => 'yellow'],
             ['name' => 'Concluído', 'slug' => 'done', 'color' => 'green'],
-        ]);
+        ])->each(fn ($status) => PaymentStatus::create($status));
     }
 }

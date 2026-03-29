@@ -13,13 +13,13 @@ class BankAccountSeeder extends Seeder
      */
     public function run(): void
     {
-        BankAccount::create([
+        collect([
             'bank_id' => 1,
             'name' => 'Conta Principal',
             'agency' => '0001',
             'account_number' => '123456',
             'type' => 'checking',
             'document' => '12345678000123',
-        ]);
+        ])->each(fn ($bankAccount) => BankAccount::create($bankAccount));
     }
 }

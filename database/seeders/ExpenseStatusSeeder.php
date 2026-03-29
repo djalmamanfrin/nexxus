@@ -9,9 +9,9 @@ class ExpenseStatusSeeder extends Seeder
 {
     public function run(): void
     {
-        ExpenseStatus::create([
+        collect([
             ['name' => 'Pendente', 'slug' => 'pendente', 'color' => 'yellow'],
             ['name' => 'Concluído', 'slug' => 'done', 'color' => 'green'],
-        ]);
+        ])->each(fn ($status) => ExpenseStatus::create($status));
     }
 }

@@ -12,7 +12,7 @@ class PaymentTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        PaymentType::create([
+        collect([
             [
                 'name' => 'Não especificado',
                 'slug' => 'not_specified',
@@ -37,7 +37,7 @@ class PaymentTypeSeeder extends Seeder
                 'name' => 'PIX',
                 'slug' => 'pix',
                 'is_active' => true,
-            ],
-        ]);
+            ]
+        ])->each(fn ($type) => PaymentType::create($type));
     }
 }

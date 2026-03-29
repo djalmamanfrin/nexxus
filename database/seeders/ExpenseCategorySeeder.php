@@ -10,7 +10,7 @@ class ExpenseCategorySeeder extends Seeder
 {
     public function run(): void
     {
-        $categories = [
+        collect([
             'Material',
             'Equipamento',
             'Transporte',
@@ -18,14 +18,8 @@ class ExpenseCategorySeeder extends Seeder
             'Funcionários',
             'Impostos',
             'Tecnologia'
-        ];
-
-        foreach ($categories as $name) {
-            ExpenseCategory::create([
-                'name' => $name,
-                'slug' => Str::slug($name),
-                'active' => true
-            ]);
-        }
+        ])
+            ->map(fn ($name) => ['name' => $name, 'slug' => Str::slug($name), 'active' => true])
+            ->each(fn ($category) => ExpenseCategory::create($category));
     }
 }
