@@ -122,6 +122,7 @@ export interface Payee {
     name: string;
     document: string;
     document_type: string;
+    is_pix_document: boolean;
     pix_key: string;
     pix_key_type: string;
 }
