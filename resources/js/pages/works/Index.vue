@@ -11,6 +11,7 @@ import FilterTabs from '@/components/filters/FilterTabs.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import CreateWork from '@/pages/payees/CreateWork.vue';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
+import AppCreateModal from '@/components/AppCreateModal.vue';
 
 const props = defineProps<{
     works: {
@@ -51,8 +52,22 @@ const breadcrumbs: BreadcrumbItem[] = [
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
         <template #header-actions>
-            <AppButtonWithModal :create-component="CreateWork" label="Nova Obra" />
+            <AppButtonWithModal label="Nova Obra">
+                <template #default="{ close }">
+                    <AppCreateModal :url="url" @success="close" :initialData="{ name: null}">
+                        <template #fields="{ form }">
+                            <AppInput
+                                v-model="form.name"
+                                :error="form.errors.name"
+                                maxlength="30"
+                                placeholder="Nome da Obra"
+                            />
+                        </template>
+                    </AppCreateModal>
+                </template>
+            </AppButtonWithModal>
         </template>
+
         <CrudIndexPage
             :items="props.works"
             :columns="columns"

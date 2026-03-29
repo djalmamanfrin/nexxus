@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Work;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,25 +35,42 @@ class WorkController extends Controller
         return response()->json($works);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:60'],
         ]);
 
-        $validated = $request->only('name');
         $work = Work::create($validated);
 
-        return response()->json([
-            'field' => 'work_id',
-            'value' => $work->id,
-            'label' => $work->name,
-        ], Response::HTTP_CREATED);
+        return back()->with([
+            'success' => 'Obra criada com sucesso',
+            'created' => [
+                'field' => 'work_id',
+                'value' => $work->id,
+                'label' => $work->name,
+            ],
+        ]);
     }
+
+//    public function store(Request $request): JsonResponse
+//    {
+//        $request->validate([
+//            'name' => ['required', 'string', 'min:3', 'max:60'],
+//        ]);
+//
+//        $validated = $request->only('name');
+//        $work = Work::create($validated);
+//
+//        return response()->json([
+//            'field' => 'work_id',
+//            'value' => $work->id,
+//            'label' => $work->name,
+//        ], Response::HTTP_CREATED);
+//    }
 
     public function update(Request  $request, Work $work)
     {
-
         $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'is_active' => ['required', 'boolean'],
