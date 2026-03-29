@@ -57,8 +57,8 @@ class PayeeController extends Controller
             'document' => ['required', 'string'],
             'document_type' => ['required', 'string'],
             'is_pix_document' => ['required', 'boolean'],
-            'pix_key' => ['required', 'string'],
-            'pix_key_type' => ['required', 'string'],
+            'pix_key' => ['nullable', 'string'],
+            'pix_key_type' => ['nullable', 'string'],
         ]);
 
         $data = $request->all();
