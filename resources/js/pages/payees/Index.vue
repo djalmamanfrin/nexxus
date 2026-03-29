@@ -97,8 +97,13 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     <AppInput
                         v-model="form.pix_key_type"
                         label="Tipo de chave Pix"
+                        :error="form.errors.pix_key_type"
                     />
-                    <AppInput v-model="form.pix_key" label="Chave pix" />
+                    <AppInput
+                        v-model="form.pix_key"
+                        label="Chave pix"
+                        :error="form.errors.pix_key"
+                    />
                 </div>
             </AppFormLayout>
         </template>
