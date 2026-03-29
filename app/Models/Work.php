@@ -53,5 +53,9 @@ class Work extends Model
                 $q->where('name', 'like', "%$search%");
             });
         });
+
+        $query->when(!is_null($filters['is_active'] ?? null),
+            fn ($q) => $q->where('is_active', $filters['is_active'])
+        );
     }
 }

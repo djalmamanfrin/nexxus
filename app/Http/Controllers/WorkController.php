@@ -21,6 +21,7 @@ class WorkController extends Controller
         return Inertia::render('works/Index', [
             'works' => $works,
             'search_by' => $request->search_by,
+            'is_active' => $request->is_active,
         ]);
     }
 
