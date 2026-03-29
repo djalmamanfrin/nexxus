@@ -96,6 +96,8 @@ const breadcrumbItems: BreadcrumbItem[] = [
             <!--                    />-->
         </template>
 
+        <template #title> Pagamento </template>
+
         <template #form="{ item, form }">
             <AppFormLayout :item="item">
                 <AppSelect

@@ -76,6 +76,8 @@ const breadcrumbItems: BreadcrumbItem[] = [
             />
         </template>
 
+        <template #title> Centro de Custo </template>
+
         <template #form="{ item, form }">
             <AppFormLayout :item="item">
                 <AppSelectWithModal

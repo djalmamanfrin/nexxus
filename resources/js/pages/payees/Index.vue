@@ -81,6 +81,8 @@ const breadcrumbItems: BreadcrumbItem[] = [
             />
         </template>
 
+        <template #title> Beneficiário </template>
+
         <template #form="{ item, form }">
             <AppFormLayout :item="item">
                 <AppInput
