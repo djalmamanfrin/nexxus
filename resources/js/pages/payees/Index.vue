@@ -30,6 +30,7 @@ const columns = [
     { key: 'name', label: 'Nome Fantasia' },
     { key: 'document', label: 'CNPJ/CPF' },
     { key: 'document_type', label: 'Tipo de documento' },
+    { key: 'is_pix_document', label: 'Pix documento?' },
     { key: 'pix_key', label: 'Chave pix' },
     { key: 'pix_key_type', label: 'Tipo de chave pix' },
     { key: 'created_at', label: 'Criado em', type: 'datetime' },
@@ -57,6 +58,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
             name: null,
             document: null,
             document_type: null,
+            is_pix_document: null,
             pix_key: null,
             pix_key_type: null,
         }"
@@ -65,6 +67,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 name: item.name,
                 document: item.document,
                 document_type: item.document_type,
+                is_pix_document: item.is_pix_document,
                 pix_key: item.pix_key,
                 pix_key_type: item.pix_key_type,
             })
@@ -81,10 +84,22 @@ const breadcrumbItems: BreadcrumbItem[] = [
         <template #form="{ item, form }">
             <AppFormLayout :item="item">
                 <AppInput v-model="form.name" label="Name" />
-                <AppInput v-model="form.document_type" label="Tipo de documento" />
+                <AppInput
+                    v-model="form.document_type"
+                    label="Tipo de documento"
+                />
                 <AppInput v-model="form.document" label="CNPJ/CPF" />
-                <AppInput v-model="form.pix_key_type" label="Tipo de chave Pix" />
-                <AppInput v-model="form.pix_key" label="Chave pix" />
+                <AppSwitch
+                    v-model="form.is_pix_document"
+                    label="Usar documento como PIX"
+                />
+                <div v-if="!form.is_pix_document">
+                    <AppInput
+                        v-model="form.pix_key_type"
+                        label="Tipo de chave Pix"
+                    />
+                    <AppInput v-model="form.pix_key" label="Chave pix" />
+                </div>
             </AppFormLayout>
         </template>
     </CrudIndexPage>
