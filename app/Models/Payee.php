@@ -62,4 +62,9 @@ class Payee extends Model
             });
         });
     }
+
+    public function getIsPixDocumentAttribute(): bool
+    {
+        return $this->pix_key && $this->pix_key === $this->document;
+    }
 }
