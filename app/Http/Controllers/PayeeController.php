@@ -56,12 +56,20 @@ class PayeeController extends Controller
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'document' => ['required', 'string'],
             'document_type' => ['required', 'string'],
+            'is_pix_document' => ['required', 'boolean'],
             'pix_key' => ['required', 'string'],
             'pix_key_type' => ['required', 'string'],
         ]);
-        $payee->update($request->all());
 
-        return back()->with('success', 'Benefeciário atualizada com sucesso');
+        $data = $request->all();
+        if ($request->boolean('is_pix_document')) {
+            $data['pix_key'] = $data['document'];
+            $data['pix_key_type'] = $data['document_type'];
+        }
+        $payee->update($data);
+
+        return back()
+            ->with('success', 'Benefeciário atualizada com sucesso');
     }
 
     public function destroy(Payee $payee)
