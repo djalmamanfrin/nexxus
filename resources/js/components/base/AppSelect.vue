@@ -3,12 +3,11 @@ import { ref, computed, onMounted, watch } from 'vue';
 import axios from 'axios';
 import AppLabel from '@/components/base/AppLabel.vue';
 import type { SelectOption } from '@/types/select';
-import type { PropType } from 'vue';
 
-const props = defineProps({
+const props = defineProps<{
     label: String,
     modelValue: {
-        type: [String, Number] as PropType<string | number>,
+        type: [String, Number],
         default: '',
     },
     url: {
@@ -16,8 +15,8 @@ const props = defineProps({
         default: '',
     },
     options: {
-        type: Array as PropType<SelectOption[]>,
-        default: () => [],
+        type: SelectOption[],
+        default:[],
     },
     error: {
         type: String,
@@ -27,14 +26,10 @@ const props = defineProps({
         type: String,
         default: 'w-full',
     },
-});
-
-const emit = defineEmits<{
-    (e: 'update:modelValue', value: string | number): void;
-    (e: 'selected', item: SelectOption | undefined): void;
 }>();
 
-// Estado interno
+const emit = defineEmits(['update:modelValue', 'selected']);
+
 const internalOptions = ref<SelectOption[]>([]);
 const loading = ref(false);
 const fetchError = ref<string | null>(null);
@@ -59,31 +54,35 @@ const fetchOptions = async () => {
 onMounted(fetchOptions);
 watch(() => props.url, fetchOptions);
 
-// Combina opções passadas por prop com opções da API
-const options = computed(() => {
-    return props.options.length ? props.options : internalOptions.value;
-});
+const options = computed(() => props.options ?? internalOptions.value);
 
-const onChange = (value: string | number) => {
+const onChange = (value: string) => {
     const selectedItem = options.value.find(
         (option) => String(option.value) === String(value)
     );
+
+    // TODO: BUG - quando a opcao do opction selecionada é selecione o selectedItem é undefined
+
     emit('update:modelValue', value);
     emit('selected', selectedItem);
 };
 </script>
 
 <template>
-    <div :class="width" class="flex flex-col gap-1">
+    <div class="flex w-full flex-col gap-1" :class="width">
         <AppLabel v-if="label" :label="label" />
-
         <select
             :value="modelValue"
             @change="onChange($event.target.value)"
             class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 dark:bg-gray-950"
         >
             <option value="">Selecione</option>
-            <option v-for="option in options" :key="option.value" :value="option.value">
+
+            <option
+                v-for="option in options"
+                :key="option.value"
+                :value="option.value"
+            >
                 {{ option.label }}
             </option>
         </select>
