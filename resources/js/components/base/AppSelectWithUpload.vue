@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { UploadCloudIcon } from 'lucide-vue-next';
 import AppSelect from './AppSelect.vue';
 import { SelectOption } from '@/types/select';
-import Upload from '@/pages/attachments/Upload.vue';
+import AppUploadModal from '@/components/base/AppUploadModal.vue';
 
 interface Props {
     label?: string;
@@ -40,7 +40,7 @@ const handleCreated = (item: SelectOption) => {
                 {{ label }}
             </label>
 
-            <Upload
+            <AppUploadModal
                 @created="handleCreated"
                 url="expenses"
                 label="Upload"

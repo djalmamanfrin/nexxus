@@ -2,7 +2,7 @@
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import type { BreadcrumbItemType } from '@/types';
-import Upload from '@/pages/attachments/Upload.vue';
+import AppUploadModal from '@/components/base/AppUploadModal.vue';
 
 withDefaults(
     defineProps<{
@@ -28,7 +28,7 @@ withDefaults(
 
         <!-- Lado direito -->
         <div v-if="breadcrumbs && breadcrumbs[0].btn" class="flex items-center gap-2">
-            <Upload :url="breadcrumbs[0].btn.url" :label="breadcrumbs[0].btn.label" />
+            <AppUploadModal :url="breadcrumbs[0].btn.url" :label="breadcrumbs[0].btn.label" />
         </div>
     </header>
 </template>
