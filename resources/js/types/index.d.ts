@@ -129,12 +129,9 @@ export interface Payee {
 export type BreadcrumbItemType = BreadcrumbItem;
 
 // TODO:
-//  4. Edit novo do expense está funcional, mas nao gera a msg de atualizado com sucesso
 //  5. Update de arquivos nao gera mensagem de sucesso porque uso JsonResponse e n InertiaResponse
 //  6. Mudar o nome do componente Upload.vue para AttachmentUploadModal
 //  7. Revisar o FilterText
-//  9. Implementar modal de criação de benefeciário
-//  10. Implementar tela/menu de criação de benefeciário
 //  . Criar select com pesquisa para muitas opcoes do payee (talvez)
 //  . Criar o filtro Pagamentos para o EditFields das despesas
 //  . Exibir no filtro de pagamento no fluxo de despenas apenas pagamentos sem despesas associadas com status 1
