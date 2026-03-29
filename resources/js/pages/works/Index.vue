@@ -7,6 +7,7 @@ import AppFormLayout from '@/components/base/AppFormLayout.vue';
 import AppInput from '@/components/base/AppInput.vue';
 import AppTextarea from '@/components/base/AppTextarea.vue';
 import AppSwitch from '@/components/base/AppSwitch.vue';
+import FilterTabs from '@/components/filters/FilterTabs.vue';
 
 const props = defineProps<{
     works: {
@@ -24,6 +25,11 @@ const { filters, search, clear } = useFilters(
     },
     url,
 );
+
+const activeValues = [
+    { label: 'Sim', value: 1 },
+    { label: 'Não', value: 0 },
+]
 
 const columns = [
     { key: 'name', label: 'Obra' },
@@ -66,6 +72,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 name="search_by"
                 placeholder="Pesquise pelo nome ou algo na descrição"
             />
+            <FilterTabs v-if="activeValues?.length" label="Ativo" name="is_active" :tabs="activeValues"/>
         </template>
 
         <template #form="{ item, form }">
