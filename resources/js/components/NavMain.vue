@@ -41,7 +41,7 @@ const items: NavItem[] = [
     },
     {
         title: 'C. de Custos',
-        href: '/center-costs',
+        href: '/cost-centers',
         icon: Wallet,
     },
     {
