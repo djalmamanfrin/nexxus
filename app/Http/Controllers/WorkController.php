@@ -36,7 +36,7 @@ class WorkController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:255'],
+            'name' => ['required', 'string', 'min:3', 'max:60'],
         ]);
 
         $validated = $request->only('name');
