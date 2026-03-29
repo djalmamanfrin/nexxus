@@ -9,7 +9,10 @@ const registerFilter = inject('registerFilter');
 const props = defineProps<{
     label: string;
     name: string;
-    tabs: SelectOption[];
+    tabs: {
+        type: SelectOption[];
+        default: () => [];
+    };
 }>();
 
 const currentValue = computed(() => filters[props.name] ?? '');
