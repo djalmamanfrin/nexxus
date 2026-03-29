@@ -10,7 +10,7 @@ class PayeeSeeder extends Seeder
 {
     public function run(): void
     {
-        Payee::insert([
+        Payee::create([
             [
                 'ulid' => Str::ulid(),
                 'name' => 'Fornecedor de Materiais Ltda',

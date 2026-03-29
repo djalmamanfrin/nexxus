@@ -10,9 +10,10 @@ class WorkSeeder extends Seeder
 {
     public function run(): void
     {
-        Work::insert([
-            ['ulid' => Str::ulid(), 'name' => 'Construção Residencial Alpha'],
-            ['ulid' => Str::ulid(), 'name' => 'Reforma Comercial Beta'],
+        Work::create([
+            ['ulid' => Str::ulid(), 'name' => 'Construção Residencial Alpha', 'is_active' => true],
+            ['ulid' => Str::ulid(), 'name' => 'Papelaria Mega', 'is_active' => true],
+            ['ulid' => Str::ulid(), 'name' => 'Reforma Comercial Beta', 'is_active' => false],
         ]);
     }
 }

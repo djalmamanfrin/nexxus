@@ -9,7 +9,7 @@ class PaymentStatusSeeder extends Seeder
 {
     public function run(): void
     {
-        PaymentStatus::insert([
+        PaymentStatus::create([
             ['name' => 'Pendente', 'slug' => 'pendente', 'color' => 'yellow'],
             ['name' => 'Concluído', 'slug' => 'done', 'color' => 'green'],
         ]);

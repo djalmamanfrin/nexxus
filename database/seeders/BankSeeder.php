@@ -9,7 +9,7 @@ class BankSeeder extends Seeder
 {
     public function run(): void
     {
-        Bank::insert([
+        Bank::create([
             ['code' => '001', 'name' => 'Banco do Brasil'],
             ['code' => '237', 'name' => 'Bradesco'],
             ['code' => '341', 'name' => 'Itaú'],

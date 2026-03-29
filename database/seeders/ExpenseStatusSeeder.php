@@ -9,7 +9,7 @@ class ExpenseStatusSeeder extends Seeder
 {
     public function run(): void
     {
-        ExpenseStatus::insert([
+        ExpenseStatus::create([
             ['name' => 'Pendente', 'slug' => 'pendente', 'color' => 'yellow'],
             ['name' => 'Concluído', 'slug' => 'done', 'color' => 'green'],
         ]);

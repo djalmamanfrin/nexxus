@@ -9,7 +9,7 @@ class CostCenterTypeSeeder extends Seeder
 {
     public function run(): void
     {
-        CostCenterType::insert([
+        CostCenterType::create([
             ['name' => 'Outros', 'code' => 'OUT'],
             ['name' => 'Operational', 'code' => 'OP'],
             ['name' => 'Administrative', 'code' => 'ADM'],
