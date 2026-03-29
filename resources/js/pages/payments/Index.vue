@@ -7,6 +7,11 @@ import FilterTabs from '@/components/filters/FilterTabs.vue';
 import EditFields from '@/pages/payments/EditFields.vue';
 import CrudIndexPage from '@/pages/CrudIndexPage.vue';
 import AppFileInput from '@/components/base/AppFileInput.vue';
+import AppFormLayout from '@/components/base/AppFormLayout.vue';
+import AppInput from '@/components/base/AppInput.vue';
+import AppSelect from '@/components/base/AppSelect.vue';
+import AppSelectWithUpload from '@/components/base/AppSelectWithUpload.vue';
+import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
 
 const props = defineProps<{
     payments: {
@@ -87,7 +92,49 @@ const breadcrumbItems: BreadcrumbItem[] = [
         </template>
 
         <template #form="{ item, form }">
-            <EditFields :payment="item" :form="form" />
+            <AppFormLayout :item="item">
+                <AppSelect
+                    v-model="form.bank_account_id"
+                    url="bank-accounts"
+                    label="Conta Bancária"
+                    name="bank_id"
+                />
+
+                <AppSelectWithUpload
+                    v-model="form.expense_id"
+                    @created="({ field, value }) => (form[field] = value)"
+                    :url="`/expenses/${item.id}/payment-options`"
+                    label="Despesa"
+                    name="expense_id"
+                    width="w-56"
+                />
+
+                <!--            <AppSelectWithModal-->
+                <!--                v-model="form.payment_status_id"-->
+                <!--                showCreate-->
+                <!--                @created="handleCreated"-->
+                <!--                :createComponent="CreateStatus"-->
+                <!--                url="payment-statuses"-->
+                <!--                label="Status"-->
+                <!--                name="status"-->
+                <!--                width="w-56"-->
+                <!--                title="Novo status"-->
+                <!--                description="Como deseja nomear?"-->
+                <!--            />-->
+
+                <!--            <div>-->
+                <!--                <label class="form-label">Tipo</label>-->
+                <!--                <input v-model="form.payment_type_id" class="form-input" />-->
+                <!--            </div>-->
+
+                <AppInput v-model="form.amount" label="Valor" mask="currency" />
+
+                <AppInput
+                    v-model="form.paid_at"
+                    label="Pago em"
+                    type="datetime-local"
+                />
+            </AppFormLayout>
         </template>
 
         <template #file="{ item, form }">
