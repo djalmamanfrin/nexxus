@@ -7,6 +7,7 @@ import AppFormLayout from '@/components/base/AppFormLayout.vue';
 import AppInput from '@/components/base/AppInput.vue';
 import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
 import CreateWork from '@/pages/payees/CreateWork.vue';
+import AppTextarea from '@/components/base/AppTextarea.vue';
 
 const props = defineProps<{
     cost_centers: {
@@ -49,15 +50,21 @@ const breadcrumbItems: BreadcrumbItem[] = [
         :search="search"
         :clear="clear"
         :initialForm="{
-            code: '',
-            budget: '',
             work_id: null,
+            code: null,
+            budget: null,
+            start_date: null,
+            expected_end_date: null,
+            description: null,
         }"
         :mapToForm="
             (item) => ({
+                work_id: item.work?.id ?? null,
                 code: item.code,
                 budget: item.budget,
-                work_id: item.work?.id ?? null,
+                start_date: item.start_date,
+                expected_end_date: item.expected_end_date,
+                description: item.description,
             })
         "
     >
@@ -71,19 +78,37 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
         <template #form="{ item, form }">
             <AppFormLayout :item="item">
-                <AppInput v-model="form.code" label="Referencia" />
-                <AppInput v-model="form.budget" label="Valor" mask="currency" />
-
                 <AppSelectWithModal
                     v-model="form.work_id"
                     showCreate
                     @created="({ field, value }) => (form[field] = value)"
                     :createComponent="CreateWork"
-                    url="cost-centers/options"
+                    url="works/options"
                     label="Obra"
                     name="work_id"
                     title="Nova Obra"
                     description="Como deseja nomear?"
+                />
+                <AppInput v-model="form.code" label="Código" />
+                <AppInput
+                    v-model="form.budget"
+                    label="Orçamento"
+                    mask="currency"
+                />
+                <AppInput
+                    v-model="form.start_date"
+                    label="Início em"
+                    type="datetime-local"
+                />
+                <AppInput
+                    v-model="form.expected_end_date"
+                    label="Expectativa de término em"
+                    type="datetime-local"
+                />
+                <AppTextarea
+                    v-model="form.description"
+                    label="Descrição"
+                    placeholder="Uma descrição que ajuda a identificar o centro de custo"
                 />
             </AppFormLayout>
         </template>
