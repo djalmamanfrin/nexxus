@@ -125,13 +125,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     label="Competencia"
                     type="datetime-local"
                 />
-
-                <template #footer>
-                    <AppLabel label="Criado em:" />
-                    <p class="text-sm text-gray-500">
-                        {{ formatDateTime(item.created_at) }}
-                    </p>
-                </template>
             </AppFormLayout>
         </template>
 

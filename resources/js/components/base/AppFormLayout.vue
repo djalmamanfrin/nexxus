@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import AppLabel from '@/components/base/AppLabel.vue';
+import { formatDateTime } from '@/lib/date';
+
 defineProps<{
     item: any;
 }>();
@@ -11,7 +14,10 @@ defineProps<{
         </div>
 
         <div class="flex items-center justify-between pt-2">
-            <slot name="footer" />
+            <AppLabel label="Criado em:" />
+            <p class="text-sm text-gray-500">
+                {{ formatDateTime(item.created_at) }}
+            </p>
         </div>
     </div>
 </template>
