@@ -3,40 +3,33 @@ import { ref } from 'vue';
 import { Plus } from 'lucide-vue-next';
 import AppFormModal from '@/components/base/AppFormModal.vue';
 import AppButton from '@/components/AppButton.vue';
-import { SelectOption } from '@/types/select';
 
 interface Props {
     label?: string;
-    width?: string;
-    createComponent: any;
     title?: string;
     description?: string;
+    width?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     width: 'w-full',
 });
 
-const emit = defineEmits(['created']);
-
 const showModal = ref(false);
 
-const handleCreated = (item: SelectOption) => {
-    emit('created', item);
+const handleClose = () => {
     showModal.value = false;
 };
 </script>
 
 <template>
-    <div class="flex w-full flex-col" :class="width">
-        <div class="flex items-center justify-between">
-            <AppButton
-                @click="showModal = true"
-                :label="label"
-                :icon="Plus"
-                variant="success"
-            />
-        </div>
+    <div :class="['flex flex-col', width]">
+        <AppButton
+            @click="showModal = true"
+            :label="label"
+            :icon="Plus"
+            variant="success"
+        />
 
         <AppFormModal
             :open="showModal"
@@ -44,10 +37,9 @@ const handleCreated = (item: SelectOption) => {
             :description="description"
             @update:open="showModal = $event"
         >
-            <component
-                :is="createComponent"
-                @created="handleCreated"
-                @cancel="showModal = false"
+            <slot
+                name="default"
+                :close="handleClose"
             />
         </AppFormModal>
     </div>
