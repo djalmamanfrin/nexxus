@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { router, useForm } from '@inertiajs/vue3';
-
-import AppLayout from '@/layouts/AppLayout.vue';
 import AppTable, { Column } from '@/components/base/AppTable.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
@@ -25,8 +23,6 @@ const props = defineProps<{
     };
     columns: Column[];
     baseUrl: string;
-
-    breadcrumbs: any[];
 
     filters: any;
     search: Function;
@@ -98,9 +94,8 @@ const handleSave = () => {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbs">
         <div class="content-box">
-            <FlashMessage/>
+            <FlashMessage />
             <form @submit.prevent="search">
                 <AppFilterBar
                     v-model:filters="filtersProxy"
@@ -170,5 +165,4 @@ const handleSave = () => {
                 <slot name="file" :item="selectedItem" :form="fileForm" />
             </SidebarDrawerPanel>
         </SidebarDrawer>
-    </AppLayout>
 </template>
