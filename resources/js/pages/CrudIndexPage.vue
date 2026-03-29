@@ -132,13 +132,13 @@ const handleSave = () => {
                 <template #actions="{ item }">
                     <AppButton
                         @click="handleEdit(item)"
-                        title="Editar pagamento"
+                        title="Editar"
                         variant="link"
                         :icon="PencilIcon"
                     />
                     <AppButton
                         @click="handleDelete(item)"
-                        title="Excluir pagamento"
+                        title="Excluir"
                         variant="link"
                         :icon="Trash2Icon"
                     />
@@ -164,7 +164,7 @@ const handleSave = () => {
                 <slot name="form" :item="selectedItem" :form="dataForm" />
             </SidebarDrawerPanel>
 
-            <SidebarDrawerPanel name="arquivo">
+            <SidebarDrawerPanel v-if="$slots.file" name="arquivo">
                 <slot name="file" :item="selectedItem" :form="fileForm" />
             </SidebarDrawerPanel>
         </SidebarDrawer>
