@@ -52,13 +52,11 @@ const breadcrumbItems: BreadcrumbItem[] = [
         :initialForm="{
             name: null,
             is_active: null,
-            description: null,
         }"
         :mapToForm="
             (item) => ({
                 name: item.name,
                 is_active: item.is_active,
-                description: item.description,
             })
         "
     >
