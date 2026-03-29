@@ -44,7 +44,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Obras',
         href: '',
-        btn: { label: 'Nova Obra', url: url },
     },
 ];
 </script>
