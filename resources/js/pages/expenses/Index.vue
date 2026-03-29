@@ -107,7 +107,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     showCreate
                     @created="({ field, value }) => (form[field] = value)"
                     :createComponent="CreateCostCenter"
-                    url="cost-centers"
+                    url="cost-centers/options"
                     label="C. de Custo"
                     name="cost_center_id"
                     width="w-56"

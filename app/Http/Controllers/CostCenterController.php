@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CostCenterController extends Controller
 {
-    public function index(): JsonResponse
+    public function options(): JsonResponse
     {
         $paymentStatus = CostCenter::query()
             ->select('id as value', 'code as label')
