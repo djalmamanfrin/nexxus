@@ -1,51 +1,39 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import axios from 'axios';
+import { SelectOption } from '@/types/select';
 import AppLabel from '@/components/base/AppLabel.vue';
-import type { SelectOption } from '@/types/select';
 
-const props = defineProps<{
-    label: String,
-    modelValue: {
-        type: [String, Number],
-        default: '',
-    },
-    url: {
-        type: String,
-        default: '',
-    },
-    options: {
-        type: SelectOption[],
-        default:[],
-    },
-    error: {
-        type: String,
-        default: '',
-    },
-    width: {
-        type: String,
-        default: 'w-full',
-    },
-}>();
+interface Props {
+    label?: string;
+    modelValue?: string | number;
+    url?: string;
+    options?: SelectOption[];
+    width?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    width: 'w-full',
+});
 
 const emit = defineEmits(['update:modelValue', 'selected']);
 
 const internalOptions = ref<SelectOption[]>([]);
 const loading = ref(false);
-const fetchError = ref<string | null>(null);
+const error = ref<string | null>(null);
 
 const fetchOptions = async () => {
     if (!props.url) return;
 
     loading.value = true;
-    fetchError.value = null;
+    error.value = null;
 
     try {
         const { data } = await axios.get<SelectOption[]>(props.url);
         internalOptions.value = data;
     } catch (e) {
         console.error(e);
-        fetchError.value = 'Erro ao carregar opções';
+        error.value = 'Erro ao carregar opções';
     } finally {
         loading.value = false;
     }
@@ -87,8 +75,12 @@ const onChange = (value: string) => {
             </option>
         </select>
 
-        <span v-if="loading" class="mt-1 text-xs text-gray-500">Carregando...</span>
-        <span v-if="fetchError" class="mt-1 text-xs text-red-500">{{ fetchError }}</span>
-        <span v-if="props.error" class="mt-1 text-xs text-red-500">{{ props.error }}</span>
+        <span v-if="loading" class="mt-1 text-xs text-gray-500">
+            Carregando...
+        </span>
+
+        <span v-if="error" class="mt-1 text-xs text-red-500">
+            {{ error }}
+        </span>
     </div>
 </template>
