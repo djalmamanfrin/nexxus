@@ -90,6 +90,23 @@ export interface Expense {
         color: string;
     } | null;
 }
+export interface CostCenter {
+    id: number;
+    code: string;
+    description: string;
+    budget: string;
+    start_date: string | null;
+    expected_end_date: string | null;
+    created_at: string | null;
+    work?: {
+        id: number;
+        name: string;
+    } | null;
+    type?: {
+        id: number;
+        name: string;
+    } | null;
+}
 
 export type BreadcrumbItemType = BreadcrumbItem;
 
