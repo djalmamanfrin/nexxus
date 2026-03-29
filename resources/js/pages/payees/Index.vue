@@ -10,14 +10,14 @@ import AppSwitch from '@/components/base/AppSwitch.vue';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
 
 const props = defineProps<{
-    payess: {
+    payees: {
         data: Payee[];
         links: { url: string | null; label: string; active: boolean }[];
     };
     search_by?: string;
 }>();
 
-const url = '/payess';
+const url = '/payees';
 
 const { filters, search, clear } = useFilters(
     {
@@ -46,7 +46,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
 <template>
     <CrudIndexPage
-        :items="props.payess"
+        :items="props.payees"
         :columns="columns"
         :base-url="url"
         :breadcrumbs="breadcrumbItems"
