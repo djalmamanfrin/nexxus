@@ -117,6 +117,15 @@ export interface Work {
     created_at: string;
 }
 
+export interface Payee {
+    id: number;
+    name: string;
+    document: string;
+    document_type: string;
+    pix_key: string;
+    pix_key_type: string;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;
 
 // TODO:
