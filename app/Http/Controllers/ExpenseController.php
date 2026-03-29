@@ -86,7 +86,7 @@ class ExpenseController extends Controller
         $validated = $request->validated();
         $expense->update($validated);
 
-        return back()->with('success', 'Atualizado com sucesso');
+        return back()->with('success', 'Despesa atualizado com sucesso');
     }
 
     public function uploadAttachment(Request $request, Expense $expense, AttachFileAction $attachFile)
