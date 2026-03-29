@@ -14,14 +14,13 @@ class PayeeController extends Controller
     public function index(Request $request)
     {
         $payees = Payee::query()
-            ->with('attachments')
             ->filter($request->all())
             ->latest()
             ->paginate(10)
             ->withQueryString();
 
-        return Inertia::render('works/Index', [
-            'works' => PayeeResource::collection($payees),
+        return Inertia::render('payees/Index', [
+            'payees' => PayeeResource::collection($payees),
             'search_by' => $request->search_by,
         ]);
     }
@@ -55,9 +54,12 @@ class PayeeController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
+            'document' => ['required', 'string'],
+            'document_type' => ['required', 'string'],
+            'pix_key' => ['required', 'string'],
+            'pix_key_type' => ['required', 'string'],
         ]);
-        $validated = $request->only('name');
-        $payee->update($validated);
+        $payee->update($request->all());
 
         return back()->with('success', 'Benefeciário atualizada com sucesso');
     }
@@ -66,7 +68,7 @@ class PayeeController extends Controller
     {
         $payee->delete();
         return redirect()
-            ->route('works.index')
-            ->with('success', 'Benefeciário apagada com sucesso!');
+            ->route('payees.index')
+            ->with('success', 'Benefeciário apagado com sucesso!');
     }
 }
