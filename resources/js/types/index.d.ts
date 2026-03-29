@@ -111,6 +111,8 @@ export interface CostCenter {
 export interface Work {
     id: number;
     name: string;
+    code: string;
+    is_active: string;
     description: string;
     created_at: string;
 }
