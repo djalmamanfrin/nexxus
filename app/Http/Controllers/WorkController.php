@@ -55,10 +55,9 @@ class WorkController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'is_active' => ['required', 'boolean'],
-            'description' => 'nullable|string|min:3|max:255'
         ]);
 
-        $validated = $request->only('name', 'is_active', 'description');
+        $validated = $request->only('name', 'is_active');
         $work->update($validated);
 
         return back()->with('success', 'Obra atualizada com sucesso');

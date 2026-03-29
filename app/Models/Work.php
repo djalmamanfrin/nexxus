@@ -39,7 +39,6 @@ class Work extends Model
         'name',
         'code',
         'is_active',
-        'description'
     ];
 
     public function costCenters(): HasMany
@@ -51,8 +50,7 @@ class Work extends Model
     {
         $query->when($filters['search_by'] ?? null, function ($query, $search) {
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%$search%")
-                    ->orWhere('description', 'like', "%$search%");
+                $q->where('name', 'like', "%$search%");
             });
         });
     }
