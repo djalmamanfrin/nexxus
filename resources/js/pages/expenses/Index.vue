@@ -14,6 +14,8 @@ import CreateCostCenter from '@/pages/cost_centers/CreateCostCenter.vue';
 import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
 import AppLabel from '@/components/base/AppLabel.vue';
 import { formatDateTime } from '@/lib/date';
+import AppUploadModal from '@/components/base/AppUploadModal.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 const props = defineProps<{
     expenses: {
@@ -25,12 +27,14 @@ const props = defineProps<{
     status?: string | number | null;
 }>();
 
+const url = '/expenses';
+
 const { filters, search, clear } = useFilters(
     {
         search_by: props.search_by || '',
         status: props.status || null,
     },
-    '/expenses',
+    url,
 );
 
 const columns = [
@@ -42,112 +46,115 @@ const columns = [
     { key: 'created_at', label: 'Criado em', type: 'datetime' },
 ];
 
-const breadcrumbItems: BreadcrumbItem[] = [
+const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Despesas',
         href: '',
-        btn: { label: 'Nova Despesa', url: '/expenses' },
     },
 ];
 </script>
 
 <template>
-    <CrudIndexPage
-        :items="props.expenses"
-        :columns="columns"
-        base-url="/expenses"
-        :breadcrumbs="breadcrumbItems"
-        v-model:filters="filters"
-        :search="search"
-        :clear="clear"
-        :initialForm="{
-            reference: '',
-            amount: '',
-            payee_id: null,
-            cost_center_id: null,
-            expense_status_id: null,
-            due_at: null,
-            competence_date: null,
-        }"
-        :mapToForm="
-            (item) => ({
-                reference: item.reference,
-                amount: item.amount,
-                payee_id: item.payee?.id ?? null,
-                cost_center_id: item.cost_center?.id ?? null,
-                expense_status_id: item.status?.id ?? null,
-                due_at: item.due_at,
-                competence_date: item.competence_date,
-            })
-        "
-    >
-        <template #filters>
-            <FilterText
-                label="Buscar despesa"
-                name="search_by"
-                placeholder="CPF, CNPJ ou texto"
-            />
-            <FilterTabs
-                v-if="statuses?.length"
-                label="Status"
-                name="status"
-                :tabs="statuses"
-            />
+    <AppLayout :breadcrumbs="breadcrumbs">
+        <template #header-actions>
+            <AppUploadModal label="Nova Despesa" :url="url" />
         </template>
-
-        <template #title> Despesas </template>
-
-        <template #form="{ item, form }">
-            <AppFormLayout :item="item">
-                <AppInput
-                    v-model="form.reference"
-                    :error="form.errors.reference"
-                    label="Referencia"
+        <CrudIndexPage
+            :items="props.expenses"
+            :columns="columns"
+            :base-url="url"
+            v-model:filters="filters"
+            :search="search"
+            :clear="clear"
+            :initialForm="{
+                reference: '',
+                amount: '',
+                payee_id: null,
+                cost_center_id: null,
+                expense_status_id: null,
+                due_at: null,
+                competence_date: null,
+            }"
+            :mapToForm="
+                (item) => ({
+                    reference: item.reference,
+                    amount: item.amount,
+                    payee_id: item.payee?.id ?? null,
+                    cost_center_id: item.cost_center?.id ?? null,
+                    expense_status_id: item.status?.id ?? null,
+                    due_at: item.due_at,
+                    competence_date: item.competence_date,
+                })
+            "
+        >
+            <template #filters>
+                <FilterText
+                    label="Buscar despesa"
+                    name="search_by"
+                    placeholder="CPF, CNPJ ou texto"
                 />
-                <AppInput
-                    v-model="form.amount"
-                    :error="form.errors.amount"
-                    label="Valor"
-                    mask="currency"
+                <FilterTabs
+                    v-if="statuses?.length"
+                    label="Status"
+                    name="status"
+                    :tabs="statuses"
                 />
+            </template>
 
-                <AppSelect
-                    v-model="form.payee_id"
-                    url="payees/options"
-                    label="Beneficiário"
-                    name="payee_id"
-                />
+            <template #title> Despesas </template>
 
-                <AppSelectWithModal
-                    v-model="form.cost_center_id"
-                    showCreate
-                    @created="({ field, value }) => (form[field] = value)"
-                    :createComponent="CreateCostCenter"
-                    url="cost-centers/options"
-                    label="C. de Custo"
-                    name="cost_center_id"
-                    width="w-56"
-                    title="Novo C. de Custo"
-                    description="Como deseja nomear?"
-                />
+            <template #form="{ item, form }">
+                <AppFormLayout :item="item">
+                    <AppInput
+                        v-model="form.reference"
+                        :error="form.errors.reference"
+                        label="Referencia"
+                    />
+                    <AppInput
+                        v-model="form.amount"
+                        :error="form.errors.amount"
+                        label="Valor"
+                        mask="currency"
+                    />
 
-                <AppInput
-                    v-model="form.due_at"
-                    :error="form.errors.due_at"
-                    label="Vencimento em"
-                    type="datetime-local"
-                />
-                <AppInput
-                    v-model="form.competence_date"
-                    :error="form.errors.competence_date"
-                    label="Competencia"
-                    type="datetime-local"
-                />
-            </AppFormLayout>
-        </template>
+                    <AppSelect
+                        v-model="form.payee_id"
+                        url="payees/options"
+                        label="Beneficiário"
+                        name="payee_id"
+                    />
 
-        <template #file="{ item, form }">
-            <AppFileInput :attachments="item?.attachments" :form="form" />
-        </template>
-    </CrudIndexPage>
+                    <AppSelectWithModal
+                        v-model="form.cost_center_id"
+                        showCreate
+                        @created="({ field, value }) => (form[field] = value)"
+                        :createComponent="CreateCostCenter"
+                        url="cost-centers/options"
+                        label="C. de Custo"
+                        name="cost_center_id"
+                        width="w-56"
+                        title="Novo C. de Custo"
+                        description="Como deseja nomear?"
+                    />
+
+                    <AppInput
+                        v-model="form.due_at"
+                        :error="form.errors.due_at"
+                        label="Vencimento em"
+                        type="datetime-local"
+                    />
+                    <AppInput
+                        v-model="form.competence_date"
+                        :error="form.errors.competence_date"
+                        label="Competencia"
+                        type="datetime-local"
+                    />
+                </AppFormLayout>
+            </template>
+
+            <template #file="{ item, form }">
+                <AppFileInput :attachments="item?.attachments" :form="form" />
+            </template>
+        </CrudIndexPage>
+    </AppLayout>
 </template>
