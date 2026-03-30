@@ -9,6 +9,8 @@ import AppSwitch from '@/components/base/AppSwitch.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import CreatePayee from '@/pages/payees/CreatePayee.vue';
+import AppCreateModal from '@/components/AppCreateModal.vue';
+import Fields from '@/pages/payees/Fields.vue';
 
 const props = defineProps<{
     payees: {
@@ -49,9 +51,32 @@ const breadcrumbs: BreadcrumbItem[] = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <template #header-actions>
             <AppButtonWithModal
-                :create-component="CreatePayee"
                 label="Novo Beneficiário"
-            />
+                title="Novo Beneficiário"
+                description="Cadastre os beneficiários para identificar de quem
+                você está comprando ou pagando. Isso permite acompanhar com quais
+                 empresas ou pessoas você mais gasta e manter seus registros
+                 organizados"
+            >
+                <template #default="{ close }">
+                    <AppCreateModal
+                        :url="url"
+                        @success="close"
+                        :initialData="{
+                            name: null,
+                            document: null,
+                            document_type: null,
+                            is_pix_document: null,
+                            pix_key: null,
+                            pix_key_type: null,
+                        }"
+                    >
+                        <template #fields="{ form }">
+                            <Fields :form="form" />
+                        </template>
+                    </AppCreateModal>
+                </template>
+            </AppButtonWithModal>
         </template>
         <CrudIndexPage
             :items="props.payees"
@@ -91,37 +116,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
             <template #form="{ item, form }">
                 <AppFormLayout :item="item">
-                    <AppInput
-                        v-model="form.name"
-                        :error="form.errors.name"
-                        label="Name"
-                    />
-                    <AppInput
-                        v-model="form.document_type"
-                        :error="form.errors.document_type"
-                        label="Tipo de documento"
-                    />
-                    <AppInput
-                        v-model="form.document"
-                        :error="form.errors.document"
-                        label="CNPJ/CPF"
-                    />
-                    <AppSwitch
-                        v-model="form.is_pix_document"
-                        label="Usar documento como PIX"
-                    />
-                    <div v-if="!form.is_pix_document">
-                        <AppInput
-                            v-model="form.pix_key_type"
-                            label="Tipo de chave Pix"
-                            :error="form.errors.pix_key_type"
-                        />
-                        <AppInput
-                            v-model="form.pix_key"
-                            label="Chave pix"
-                            :error="form.errors.pix_key"
-                        />
-                    </div>
+                    <Fields :form="form" />
                 </AppFormLayout>
             </template>
         </CrudIndexPage>
