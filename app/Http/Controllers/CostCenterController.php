@@ -37,11 +37,25 @@ class CostCenterController extends Controller
 
         return response()->json($paymentStatus);
     }
-    public function store(StoreCostCenterRequest $request): JsonResponse
+
+    public function store(StoreCostCenterRequest $request): RedirectResponse
     {
-        $paymentStatus = CostCenter::create($request->validated());
-        return response()->json($paymentStatus->only('id', 'code'), Response::HTTP_CREATED);
+        $costCenter = CostCenter::create($request->validated());
+
+        return back()->with([
+            'success' => 'Centro de custo criada com sucesso',
+            'created' => [
+                'field' => 'work_id',
+                'value' => $costCenter->id,
+                'label' => $costCenter->code,
+            ],
+        ]);
     }
+//    public function store(StoreCostCenterRequest $request): JsonResponse
+//    {
+//        $paymentStatus = CostCenter::create($request->validated());
+//        return response()->json($paymentStatus->only('id', 'code'), Response::HTTP_CREATED);
+//    }
 
     public function update(UpdateCostCenterRequest  $request, CostCenter $costCenter)
     {
