@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Payees\StorePayeesRequest;
+use App\Http\Requests\Payees\PayeesRequest;
 use App\Http\Resources\PayeeResource;
 use App\Models\Payee;
 use Illuminate\Http\JsonResponse;
@@ -35,7 +35,7 @@ class PayeeController extends Controller
         return response()->json($payees);
     }
 
-    public function store(StorePayeesRequest $request): RedirectResponse
+    public function store(PayeesRequest $request): RedirectResponse
     {
         $data = $request->validated();
         if ($request->boolean('is_pix_document')) {
@@ -73,18 +73,9 @@ class PayeeController extends Controller
 //        ], Response::HTTP_CREATED);
 //    }
 
-    public function update(Request  $request, Payee $payee)
+    public function update(PayeesRequest $request, Payee $payee)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:255'],
-            'document' => ['required', 'string'],
-            'document_type' => ['required', 'string'],
-            'is_pix_document' => ['required', 'boolean'],
-            'pix_key' => ['nullable', 'string'],
-            'pix_key_type' => ['nullable', 'string'],
-        ]);
-
-        $data = $request->all();
+        $data = $request->validated();
         if ($request->boolean('is_pix_document')) {
             $data['pix_key'] = $data['document'];
             $data['pix_key_type'] = $data['document_type'];

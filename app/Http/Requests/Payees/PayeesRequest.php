@@ -4,7 +4,7 @@ namespace App\Http\Requests\Payees;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePayeesRequest extends FormRequest
+class PayeesRequest extends FormRequest
 {
     public function authorize(): bool
     {
