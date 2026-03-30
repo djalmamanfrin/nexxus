@@ -17,7 +17,7 @@ class StorePayeesRequest extends FormRequest
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'document' => ['required', 'string'],
             'document_type' => ['required', 'string'],
-            'is_pix_document' => ['required', 'boolean'],
+            'is_pix_document' => ['nullable', 'boolean'],
             'pix_key' => ['nullable', 'string'],
             'pix_key_type' => ['nullable', 'string'],
         ];
