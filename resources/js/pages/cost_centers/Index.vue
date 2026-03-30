@@ -51,7 +51,9 @@ const breadcrumbs: BreadcrumbItem[] = [
             <AppButtonWithModal
                 label="Novo C. de Custo"
                 title="Novo centro de custo"
-                description="Preencha os dados para criar um novo centro de custo."
+                description="Cadastre centros de custo para organizar suas despesas
+                por categoria e entender melhor para onde seu dinheiro está indo.
+                Isso permite análises mais claras e decisões mais assertivas."
             >
                 <template #default="{ close }">
                     <AppCreateModal
