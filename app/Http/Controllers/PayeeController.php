@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Payees\StorePayeesRequest;
 use App\Http\Resources\PayeeResource;
 use App\Models\Payee;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Symfony\Component\HttpFoundation\Response;
 
 class PayeeController extends Controller
 {
@@ -34,21 +35,43 @@ class PayeeController extends Controller
         return response()->json($payees);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StorePayeesRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:255'],
+        $data = $request->validated();
+        if ($request->boolean('is_pix_document')) {
+            $data['pix_key'] = $data['document'];
+            $data['pix_key_type'] = $data['document_type'];
+        }
+
+        $payee = Payee::create($data);
+
+        return redirect()
+            ->route('payees.index')
+            ->with([
+            'success' => 'Beneficiário criado com sucesso',
+            'created' => [
+                'field' => 'payee_id',
+                'value' => $payee->id,
+                'label' => $payee->name,
+            ],
         ]);
-
-        $validated = $request->only('name');
-        $payee = Payee::create($validated);
-
-        return response()->json([
-            'field' => 'payee_id',
-            'value' => $payee->id,
-            'label' => $payee->name,
-        ], Response::HTTP_CREATED);
     }
+
+//    public function store(Request $request): JsonResponse
+//    {
+//        $request->validate([
+//            'name' => ['required', 'string', 'min:3', 'max:255'],
+//        ]);
+//
+//        $validated = $request->only('name');
+//        $payee = Payee::create($validated);
+//
+//        return response()->json([
+//            'field' => 'payee_id',
+//            'value' => $payee->id,
+//            'label' => $payee->name,
+//        ], Response::HTTP_CREATED);
+//    }
 
     public function update(Request  $request, Payee $payee)
     {
