@@ -1,7 +1,7 @@
 <script setup>
 import { inject, onMounted, ref } from 'vue';
-import AppDate from '@/components/base/AppDate.vue';
 import { formatDateShort } from '@/lib/date.ts';
+import AppInputDate from '@/components/base/AppInputDate.vue';
 
 const filters = inject('filters');
 const registerFilter = inject('registerFilter');
@@ -15,7 +15,7 @@ const props = defineProps({
 });
 
 function openPicker() {
-    inputRef.value?.showPicker?.();
+    inputRef.value?.showPicker();
 }
 
 onMounted(() => {
@@ -28,5 +28,5 @@ onMounted(() => {
 </script>
 
 <template>
-    <AppDate v-model="filters[name]" :label="label" @click="openPicker" />
+    <AppInputDate v-model="filters[name]" :label="label" @click="openPicker" />
 </template>
