@@ -91,78 +91,88 @@ const handleSave = () => {
         });
     }
 };
+
+function getColor(color) {
+    const map = {
+        yellow: 'bg-yellow-100 text-yellow-800',
+        green: 'bg-green-100 text-green-800',
+        red: 'bg-red-100 text-red-800',
+    };
+
+    return map[color] || 'bg-gray-100 text-gray-800';
+}
 </script>
 
 <template>
-        <div class="content-box">
-            <FlashMessage />
-            <form @submit.prevent="search">
-                <AppFilterBar
-                    v-model:filters="filtersProxy"
-                    @change="search"
-                    @clear="clear"
-                >
-                    <slot name="filters" />
-                </AppFilterBar>
-            </form>
+    <div class="content-box">
+        <FlashMessage />
+        <form @submit.prevent="search">
+            <AppFilterBar
+                v-model:filters="filtersProxy"
+                @change="search"
+                @clear="clear"
+            >
+                <slot name="filters" />
+            </AppFilterBar>
+        </form>
 
-            <div class="my-4"></div>
+        <div class="my-4"></div>
 
-            <AppTable :columns="columns" :items="items">
-                <template #cell-attachments="{ item }">
-                    <span v-if="item.attachments?.length">
-                        {{ item.attachments[0].original_name }}
-                    </span>
-                    <span v-else>-</span>
-                </template>
-
-                <template #cell-status_name="{ item }">
-                    <span
-                        :class="[
-                            'rounded px-2 py-1 text-xs',
-                            `bg-${item.status?.color}-100 text-${item.status?.color}-800`,
-                        ]"
-                    >
-                        {{ item.status?.name || '-' }}
-                    </span>
-                </template>
-                <template #actions="{ item }">
-                    <AppButton
-                        @click="handleEdit(item)"
-                        title="Editar"
-                        variant="link"
-                        :icon="PencilIcon"
-                    />
-                    <AppButton
-                        @click="handleDelete(item)"
-                        title="Excluir"
-                        variant="link"
-                        :icon="Trash2Icon"
-                    />
-                </template>
-            </AppTable>
-        </div>
-
-        <SidebarDrawer :open="open" @close="open = false" @save="handleSave">
-            <template #title>
-                <slot name="title" />
+        <AppTable :columns="columns" :items="items">
+            <template #cell-attachments="{ item }">
+                <span v-if="item.attachments?.length">
+                    {{ item.attachments[0].original_name }}
+                </span>
+                <span v-else>-</span>
             </template>
 
-            <SidebarDrawerTabs>
-                <SidebarDrawerTab name="info" label="Informações" />
-                <SidebarDrawerTab
-                    v-if="$slots.file"
-                    name="arquivo"
-                    label="Arquivo"
+            <template #cell-status_name="{ item }">
+                <span
+                    :class="[
+                        'rounded px-2 py-1 text-xs',
+                        getColor(item.status?.color),
+                    ]"
+                >
+                    {{ item.status?.name || '-' }}
+                </span>
+            </template>
+            <template #actions="{ item }">
+                <AppButton
+                    @click="handleEdit(item)"
+                    title="Editar"
+                    variant="link"
+                    :icon="PencilIcon"
                 />
-            </SidebarDrawerTabs>
+                <AppButton
+                    @click="handleDelete(item)"
+                    title="Excluir"
+                    variant="link"
+                    :icon="Trash2Icon"
+                />
+            </template>
+        </AppTable>
+    </div>
 
-            <SidebarDrawerPanel name="info">
-                <slot name="form" :item="selectedItem" :form="dataForm" />
-            </SidebarDrawerPanel>
+    <SidebarDrawer :open="open" @close="open = false" @save="handleSave">
+        <template #title>
+            <slot name="title" />
+        </template>
 
-            <SidebarDrawerPanel v-if="$slots.file" name="arquivo">
-                <slot name="file" :item="selectedItem" :form="fileForm" />
-            </SidebarDrawerPanel>
-        </SidebarDrawer>
+        <SidebarDrawerTabs>
+            <SidebarDrawerTab name="info" label="Informações" />
+            <SidebarDrawerTab
+                v-if="$slots.file"
+                name="arquivo"
+                label="Arquivo"
+            />
+        </SidebarDrawerTabs>
+
+        <SidebarDrawerPanel name="info">
+            <slot name="form" :item="selectedItem" :form="dataForm" />
+        </SidebarDrawerPanel>
+
+        <SidebarDrawerPanel v-if="$slots.file" name="arquivo">
+            <slot name="file" :item="selectedItem" :form="fileForm" />
+        </SidebarDrawerPanel>
+    </SidebarDrawer>
 </template>
