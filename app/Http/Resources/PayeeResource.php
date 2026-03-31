@@ -12,8 +12,11 @@ class PayeeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'document' => $this->document->value(),
-            'document_formatted' => $this->document->formatted(),
+            'document' => [
+                'value' => $this->document->value(),
+                'formatted' => $this->document->formatted(),
+                'mask' => $this->document->mask(),
+            ],
             'active' => [
                 'label' => $this->is_pix_document ? 'Sim' : 'Não',
                 'color' => $this->is_pix_document ? 'green' : 'yellow',
