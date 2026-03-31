@@ -10,6 +10,10 @@ const props = defineProps({
         type: Number,
         default: 3,
     },
+    error: {
+        type: String,
+        default: '',
+    },
     autoResize: {
         type: Boolean,
         default: false,
@@ -50,5 +54,9 @@ const resize = () => {
             :placeholder="placeholder"
             class="w-full resize-none rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 dark:bg-gray-950"
         />
+
+        <span v-if="error" class="text-xs text-red-500">
+            {{ error }}
+        </span>
     </div>
 </template>
