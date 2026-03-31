@@ -13,7 +13,10 @@ class PayeeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'document' => $this->document,
-            'is_pix_document' => $this->is_pix_document,
+            'active' => [
+                'label' => $this->is_pix_document ? 'Sim' : 'Não',
+                'color' => $this->is_pix_document ? 'green' : 'yellow',
+            ],
             'document_type' => $this->document_type,
             'pix_key' => $this->pix_key,
             'pix_key_type' => $this->pix_key_type,

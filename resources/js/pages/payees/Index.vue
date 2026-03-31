@@ -33,7 +33,7 @@ const columns = [
     { key: 'name', label: 'Nome Fantasia' },
     { key: 'document', label: 'CNPJ/CPF' },
     { key: 'document_type', label: 'Tipo de documento' },
-    { key: 'is_pix_document', label: 'Pix documento?' },
+    { key: 'active.label', label: 'Pix documento?' },
     { key: 'pix_key', label: 'Chave pix' },
     { key: 'pix_key_type', label: 'Tipo de chave pix' },
     { key: 'created_at', label: 'Criado em', type: 'datetime' },
