@@ -37,6 +37,11 @@ final class CNPJ
         return DocumentType::CNPJ;
     }
 
+    public function mask(): string
+    {
+        return '99.999.999/9999-99';
+    }
+
     public function __toString(): string
     {
         return $this->formatted();

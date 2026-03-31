@@ -37,6 +37,11 @@ final class CPF
         return DocumentType::CPF;
     }
 
+    public function mask(): string
+    {
+        return '999.999.999-99';
+    }
+
     public function __toString(): string
     {
         return $this->formatted();
