@@ -110,11 +110,6 @@ const breadcrumbs: BreadcrumbItem[] = [
                         label="Name"
                     />
                     <AppSwitch v-model="form.is_active" label="Ativo" />
-                    <AppTextarea
-                        v-model="form.description"
-                        label="Descrição"
-                        placeholder="Uma descrição que ajuda a identificar o centro de custo"
-                    />
                 </AppFormLayout>
             </template>
         </CrudIndexPage>
