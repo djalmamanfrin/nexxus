@@ -7,6 +7,7 @@ import AppButton from '@/components/AppButton.vue';
 import AppInput from '@/components/base/AppInput.vue';
 import AppTextarea from '@/components/base/AppTextarea.vue';
 import AppSelect from '@/components/base/AppSelect.vue';
+import AppInputMoney from '@/components/base/AppInputMoney.vue';
 
 const emit = defineEmits(['created', 'cancel']); // mudar de cancel para close
 
@@ -104,13 +105,12 @@ watch(
             />
         </div>
         <div>
-            <AppInput
+            <AppInputMoney
                 v-model="form.budget"
                 :error="form.errors.budget"
                 label="Orçamento"
                 maxlength="12"
                 placeholder="R$ 25.000"
-                mask="currency"
             />
         </div>
         <div>

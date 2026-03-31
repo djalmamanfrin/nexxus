@@ -17,6 +17,7 @@ import { formatDateTime } from '@/lib/date';
 import AppUploadModal from '@/components/base/AppUploadModal.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
+import AppInputMoney from '@/components/base/AppInputMoney.vue';
 
 const props = defineProps<{
     expenses: {
@@ -111,11 +112,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                         :error="form.errors.reference"
                         label="Referencia"
                     />
-                    <AppInput
+                    <AppInputMoney
                         v-model="form.amount"
                         :error="form.errors.amount"
                         label="Valor"
-                        mask="currency"
                     />
 
                     <AppSelect

@@ -17,6 +17,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppUploadModal from '@/components/base/AppUploadModal.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
+import AppInputMoney from '@/components/base/AppInputMoney.vue';
 
 const props = defineProps<{
     payments: {
@@ -143,11 +144,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <!--                <input v-model="form.payment_type_id" class="form-input" />-->
                     <!--            </div>-->
 
-                    <AppInput
+                    <AppInputMoney
                         v-model="form.amount"
                         :error="form.errors.amount"
                         label="Valor"
-                        mask="currency"
                     />
 
                     <AppInputDate

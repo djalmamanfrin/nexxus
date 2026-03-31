@@ -13,6 +13,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppSelect from '@/components/base/AppSelect.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
+import AppInputMoney from '@/components/base/AppInputMoney.vue';
 
 const props = defineProps<{
     cost_centers: {
@@ -86,13 +87,12 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 url="/cost-center-types"
                                 label="Tipo"
                             />
-                            <AppInput
+                            <AppInputMoney
                                 v-model="form.budget"
                                 :error="form.errors.budget"
                                 label="Orçamento"
                                 maxlength="12"
                                 placeholder="R$ 25.000"
-                                mask="currency"
                             />
                             <AppTextarea
                                 v-model="form.description"
@@ -158,11 +158,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                         :error="form.errors.code"
                         label="Código"
                     />
-                    <AppInput
+                    <AppInputMoney
                         v-model="form.budget"
                         :error="form.errors.budget"
                         label="Orçamento"
-                        mask="currency"
                     />
                     <AppInputDate
                         v-model="form.start_date"
