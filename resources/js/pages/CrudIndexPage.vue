@@ -93,6 +93,7 @@ const handleSave = () => {
 };
 
 function getColor(color) {
+    console.log(color)
     const map = {
         yellow: 'bg-yellow-100 text-yellow-800',
         green: 'bg-green-100 text-green-800',
@@ -134,6 +135,16 @@ function getColor(color) {
                     ]"
                 >
                     {{ item.status?.name || '-' }}
+                </span>
+            </template>
+            <template #cell-active_label="{ item }">
+                <span
+                    :class="[
+                        'rounded px-2 py-1 text-xs',
+                        getColor(item.active?.color),
+                    ]"
+                >
+                    {{ item.active?.label || '-' }}
                 </span>
             </template>
             <template #actions="{ item }">
