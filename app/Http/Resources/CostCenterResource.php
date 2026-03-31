@@ -13,7 +13,7 @@ class CostCenterResource extends JsonResource
             'id' => $this->id,
             'code' => $this->code,
             'description' => $this->description,
-            'budget' => $this->budget,
+            'budget' => (float) $this->budget,
             'start_date' => $this->start_date?->toDateString(),
             'expected_end_date' => $this->expected_end_date?->toDateString(),
             'created_at' => $this->created_at?->toDateString(),
