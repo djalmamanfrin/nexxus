@@ -31,7 +31,7 @@ const { filters, search, clear } = useFilters(
 
 const columns = [
     { key: 'name', label: 'Nome Fantasia', align: 'left' },
-    { key: 'document_formatted', label: 'CNPJ/CPF' },
+    { key: 'document.formatted', label: 'CNPJ/CPF' },
     { key: 'active.label', label: 'Pix documento?' },
     { key: 'pix_key', label: 'Chave pix' },
     { key: 'pix_key_type', label: 'Tipo de chave pix' },
@@ -93,7 +93,8 @@ const breadcrumbs: BreadcrumbItem[] = [
             :mapToForm="
                 (item) => ({
                     name: item.name,
-                    document: item.document,
+                    document: item.document.value,
+                    document_mask: item.document.mask,
                     document_type: item.document_type,
                     is_pix_document: item.is_pix_document,
                     pix_key: item.pix_key,
