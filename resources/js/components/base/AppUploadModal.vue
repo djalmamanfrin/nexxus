@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import api from '@/lib/axios';
 import { router, useForm } from '@inertiajs/vue3';
 import { onUnmounted, ref } from 'vue';
 import { CirclePlus, Upload, RefreshCw, Loader2 } from 'lucide-vue-next';
@@ -47,30 +46,25 @@ const submit = async () => {
         form.setError('attachment', 'Arquivo não selecionado');
         return;
     }
-    try {
-        const response = await api.post(props.url, form.data(), {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        if (response.status === 201) {
+    form.post(props.url, {
+        forceFormData: true,
+
+        onSuccess: (page) => {
             open.value = false;
-            emit('created', {
-                label: response.data.label,
-                value: response.data.value,
-                field: response.data.field,
-            });
-            router.reload();
+
+            emit('created', page.props.created);
+
             if (form.attachmentPreview) {
                 URL.revokeObjectURL(form.attachmentPreview);
             }
+
             form.reset();
-        } else {
-            console.warn('Status code inesperado:', response.status);
-        }
-    } catch (error: any) {
-        console.error('Erro no upload:', error);
-    }
+        },
+
+        onError: (errors) => {
+            console.log(errors);
+        },
+    });
 };
 
 function handleFile(e: Event) {
@@ -126,6 +120,14 @@ onUnmounted(() => {
         @update:open="(value) => (open = value)"
     >
         <form @submit.prevent="submit" class="flex flex-col gap-6">
+            <div class="min-h-[20px] text-sm">
+                <span
+                    v-show="form.errors.attachment"
+                    class="block text-red-500"
+                >
+                    {{ form.errors.attachment }}
+                </span>
+            </div>
             <div class="flex justify-center">
                 <div
                     class="relative max-h-[500px] overflow-hidden overflow-y-auto rounded-lg"
