@@ -41,6 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // 🔸 422
         $exceptions->render(function (ValidationException $e) {
+            Logger::warning('Validation Exception', $e->errors());
             return back()->withErrors($e->errors());
         });
 
