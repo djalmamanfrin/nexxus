@@ -52,11 +52,6 @@ class ExpenseController extends Controller
         return response()->json($expensesEligible);
     }
 
-    public function show(Expense $expense)
-    {
-        return Inertia::render('expenses/Show', ['expense' => $expense]);
-    }
-
     public function store(Request $request, AttachFileAction $action): JsonResponse
     {
         $request->validate([
