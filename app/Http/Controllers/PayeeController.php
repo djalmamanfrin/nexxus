@@ -45,8 +45,7 @@ class PayeeController extends Controller
 
         $payee = Payee::create($data);
 
-        return redirect()
-            ->route('payees.index')
+        return back()
             ->with([
             'success' => 'Beneficiário criado com sucesso',
             'created' => [
