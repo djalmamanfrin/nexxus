@@ -16,10 +16,10 @@ class UpdateCostCenterRequest extends FormRequest
         return [
             'work_id' => ['required', 'integer'],
             'code' => ['required', 'string'],
-            'description' => ['required', 'string'],
             'budget' => ['nullable', 'numeric'],
             'start_date' => ['nullable', 'date'],
             'expected_end_date' => ['nullable', 'date'],
+            'description' => ['nullable', 'string'],
         ];
     }
 }
