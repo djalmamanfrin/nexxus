@@ -12,6 +12,7 @@ defineProps<{
     <AppInput
         v-model="form.document"
         :error="form.errors.document"
+        :mask="form.document_mask"
         label="CNPJ/CPF"
     />
     <AppSwitch
