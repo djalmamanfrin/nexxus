@@ -22,6 +22,12 @@ const props = defineProps({
     },
 });
 
+defineExpose({
+    focus: () => inputRef.value?.focus(),
+    blur: () => inputRef.value?.blur(),
+    showPicker: () => inputRef.value?.showPicker?.(),
+});
+
 const emit = defineEmits(['update:modelValue']);
 const internalValue = ref('');
 const formatCurrency = (value) => {
