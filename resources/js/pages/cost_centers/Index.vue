@@ -107,7 +107,6 @@ const breadcrumbs: BreadcrumbItem[] = [
             :items="props.cost_centers"
             :columns="columns"
             :base-url="url"
-            :breadcrumbs="breadcrumbs"
             v-model:filters="filters"
             :search="search"
             :clear="clear"
