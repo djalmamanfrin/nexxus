@@ -37,7 +37,7 @@ const activeValues = [
 
 const columns = [
     { key: 'name', label: 'Obra' },
-    { key: 'is_active', label: 'Ativo', type: 'boolean' },
+    { key: 'active.label', label: 'Status', type: 'boolean' },
     { key: 'created_at', label: 'Criado em', type: 'datetime' },
 ];
 
