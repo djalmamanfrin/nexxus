@@ -16,6 +16,7 @@ import CreateWork from '@/pages/payees/CreateWork.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppUploadModal from '@/components/base/AppUploadModal.vue';
+import AppInputDate from '@/components/base/AppInputDate.vue';
 
 const props = defineProps<{
     payments: {
@@ -149,11 +150,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                         mask="currency"
                     />
 
-                    <AppInput
+                    <AppInputDate
                         v-model="form.paid_at"
                         :error="form.errors.paid_at"
                         label="Pago em"
-                        type="datetime-local"
                     />
                 </AppFormLayout>
             </template>

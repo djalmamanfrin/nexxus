@@ -16,6 +16,7 @@ import AppLabel from '@/components/base/AppLabel.vue';
 import { formatDateTime } from '@/lib/date';
 import AppUploadModal from '@/components/base/AppUploadModal.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
+import AppInputDate from '@/components/base/AppInputDate.vue';
 
 const props = defineProps<{
     expenses: {
@@ -137,17 +138,15 @@ const breadcrumbs: BreadcrumbItem[] = [
                         description="Como deseja nomear?"
                     />
 
-                    <AppInput
+                    <AppInputDate
                         v-model="form.due_at"
                         :error="form.errors.due_at"
                         label="Vencimento em"
-                        type="datetime-local"
                     />
-                    <AppInput
+                    <AppInputDate
                         v-model="form.competence_date"
                         :error="form.errors.competence_date"
                         label="Competencia"
-                        type="datetime-local"
                     />
                 </AppFormLayout>
             </template>
