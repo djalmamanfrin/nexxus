@@ -12,6 +12,7 @@ import AppCreateModal from '@/components/AppCreateModal.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppSelect from '@/components/base/AppSelect.vue';
+import AppInputDate from '@/components/base/AppInputDate.vue';
 
 const props = defineProps<{
     cost_centers: {
@@ -64,7 +65,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                             work_id: null,
                             budget: null,
                             cost_center_type_id: null,
-                            description: null
+                            description: null,
                         }"
                     >
                         <template #fields="{ form }">
@@ -163,17 +164,15 @@ const breadcrumbs: BreadcrumbItem[] = [
                         label="Orçamento"
                         mask="currency"
                     />
-                    <AppInput
+                    <AppInputDate
                         v-model="form.start_date"
                         :error="form.errors.start_date"
                         label="Início em"
-                        type="datetime-local"
                     />
-                    <AppInput
+                    <AppInputDate
                         v-model="form.expected_end_date"
                         :error="form.errors.expected_end_date"
                         label="Expectativa de término em"
-                        type="datetime-local"
                     />
                     <AppTextarea
                         v-model="form.description"
