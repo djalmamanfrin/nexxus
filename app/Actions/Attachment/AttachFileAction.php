@@ -3,6 +3,7 @@
 namespace App\Actions\Attachment;
 
 use App\Models\Attachment;
+use App\Support\Logger;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\ValidationException;
 use RuntimeException;
@@ -14,10 +15,12 @@ class AttachFileAction
         $hash = hash_file('sha256', $file->getRealPath());
         $attachment = Attachment::where('hash', $hash)->first();
         if ($attachment) {
-            throw ValidationException::withMessages([
-                'message' => 'Este comprovante já foi utilizado.',
+            Logger::error('Attachment already used in another payment', [
                 'model_id' => $attachment->attachable_id,
                 'model_type' => $attachment->attachable_type,
+            ]);
+            throw ValidationException::withMessages([
+                'attachment' => "Este comprovante já foi utilizado em outro pagamento.",
             ]);
         }
 
