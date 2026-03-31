@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\WorkResource;
 use App\Models\Work;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +21,7 @@ class WorkController extends Controller
             ->withQueryString();
 
         return Inertia::render('works/Index', [
-            'works' => $works,
+            'works' => WorkResource::collection($works),
             'search_by' => $request->search_by,
             'is_active' => $request->is_active,
         ]);
