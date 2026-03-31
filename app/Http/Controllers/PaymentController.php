@@ -61,7 +61,7 @@ class PaymentController extends Controller
         return back()->with([
             'success' => 'Pagamento anexado com sucesso',
             'created' => [
-                'field' => 'work_id',
+                'field' => 'payment_id',
                 'value' => $payment->id,
                 'label' => $attachment->original_name,
             ],
