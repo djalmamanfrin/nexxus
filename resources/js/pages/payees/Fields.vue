@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppInput from '@/components/base/AppInput.vue';
 import AppSwitch from '@/components/base/AppSwitch.vue';
+import AppInputDocument from '@/components/base/AppInputDocument.vue';
 
 defineProps<{
     form: any;
@@ -9,11 +10,10 @@ defineProps<{
 
 <template>
     <AppInput v-model="form.name" :error="form.errors.name" label="Name" />
-    <AppInput
+    <AppInputDocument
+        label="CNPJ/CPF"
         v-model="form.document"
         :error="form.errors.document"
-        :mask="form.document_mask"
-        label="CNPJ/CPF"
     />
     <AppSwitch
         v-model="form.is_pix_document"
