@@ -8,13 +8,13 @@ use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
 use App\Models\ExpenseStatus;
 use App\Models\Payment;
-use App\Support\Logger;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
-use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class ExpenseController extends Controller
 {
@@ -52,7 +52,10 @@ class ExpenseController extends Controller
         return response()->json($expensesEligible);
     }
 
-    public function store(Request $request, AttachFileAction $action): JsonResponse
+    /**
+     * @throws Throwable
+     */
+    public function store(Request $request, AttachFileAction $action): RedirectResponse
     {
         $request->validate([
             'attachment' => ['required', 'file', 'image', 'max:5120'],
@@ -69,11 +72,14 @@ class ExpenseController extends Controller
             return $expense;
         });
 
-        return response()->json([
-            'field' => 'expense_id',
-            'value' => $expense->id,
-            'label' => $attachment->original_name,
-        ], Response::HTTP_CREATED);
+        return back()->with([
+            'success' => 'Despesa anexado com sucesso',
+            'created' => [
+                'field' => 'expense_id',
+                'value' => $expense->id,
+                'label' => $attachment->original_name,
+            ],
+        ]);
     }
 
     public function update(UpdateExpenseRequest  $request, Expense $expense)
