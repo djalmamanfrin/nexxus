@@ -51,8 +51,7 @@ const submit = async () => {
 
         onSuccess: (page) => {
             open.value = false;
-
-            emit('created', page.props.created);
+            emit('created', page.props.flash.created);
 
             if (form.attachmentPreview) {
                 URL.revokeObjectURL(form.attachmentPreview);
