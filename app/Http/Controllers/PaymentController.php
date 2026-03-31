@@ -41,7 +41,7 @@ class PaymentController extends Controller
     /**
      * @throws Throwable
      */
-    public function store(Request $request, AttachFileAction $action): JsonResponse
+    public function store(Request $request, AttachFileAction $action): RedirectResponse
     {
         $request->validate([
             'attachment' => ['required', 'file', 'image', 'max:5120'],
@@ -58,11 +58,14 @@ class PaymentController extends Controller
             return $payment;
         });
 
-        return response()->json([
-            'field' => 'payment_id',
-            'value' => $payment->id,
-            'label' => $attachment->original_name,
-        ], Response::HTTP_CREATED);
+        return back()->with([
+            'success' => 'Pagamento anexado com sucesso',
+            'created' => [
+                'field' => 'work_id',
+                'value' => $payment->id,
+                'label' => $attachment->original_name,
+            ],
+        ]);
     }
 
     public function update(UpdatePaymentRequest $request, Payment $payment): RedirectResponse
