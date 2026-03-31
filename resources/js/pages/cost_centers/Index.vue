@@ -176,6 +176,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     />
                     <AppTextarea
                         v-model="form.description"
+                        :error="form.errors.description"
                         label="Descrição"
                         placeholder="Uma descrição que ajuda a identificar o centro de custo"
                     />
