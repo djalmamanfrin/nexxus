@@ -38,7 +38,7 @@ class PayeesRequest extends FormRequest
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'document' => ['required', 'string', new DocumentRule()],
             'document_type' => ['required', 'string'],
-            'is_pix_document' => ['nullable', 'boolean'],
+            'is_pix_document' => ['required', 'boolean'],
             'pix_key' => ['nullable', 'string'],
             'pix_key_type' => ['nullable', 'string'],
         ];

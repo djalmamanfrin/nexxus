@@ -64,7 +64,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                         :initialData="{
                             name: null,
                             document: null,
-                            is_pix_document: null,
+                            is_pix_document: 0,
                             pix_key: null,
                         }"
                     >
