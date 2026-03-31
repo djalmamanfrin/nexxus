@@ -130,7 +130,9 @@ export interface Payee {
 export type BreadcrumbItemType = BreadcrumbItem;
 
 // TODO:
-//  5. Update de arquivos nao gera mensagem de sucesso porque uso JsonResponse e n InertiaResponse
+//  1. Colocar asteriscos nos campos obrigatórios
+//  2. Revisar AppSelectWithModal porque mudei como o método retornar o store
+//  . Criar select com pesquisa para muitas opcoes do cost center
 //  . Criar select com pesquisa para muitas opcoes do payee (talvez)
 //  . Criar o filtro Pagamentos para o EditFields das despesas
 //  . Exibir no filtro de pagamento no fluxo de despenas apenas pagamentos sem despesas associadas com status 1
