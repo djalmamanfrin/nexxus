@@ -65,10 +65,8 @@ const breadcrumbs: BreadcrumbItem[] = [
                         :initialData="{
                             name: null,
                             document: null,
-                            document_type: null,
                             is_pix_document: null,
                             pix_key: null,
-                            pix_key_type: null,
                         }"
                     >
                         <template #fields="{ form }">

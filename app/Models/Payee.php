@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\DocumentCast;
 use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
@@ -45,6 +46,10 @@ class Payee extends Model
         'document_type',
         'pix_key',
         'pix_key_type'
+    ];
+
+    protected $casts = [
+        'document' => DocumentCast::class,
     ];
 
     public function expenses(): HasMany
