@@ -30,9 +30,8 @@ const { filters, search, clear } = useFilters(
 );
 
 const columns = [
-    { key: 'name', label: 'Nome Fantasia' },
-    { key: 'document', label: 'CNPJ/CPF' },
-    { key: 'document_type', label: 'Tipo de documento' },
+    { key: 'name', label: 'Nome Fantasia', align: 'left' },
+    { key: 'document_formatted', label: 'CNPJ/CPF' },
     { key: 'active.label', label: 'Pix documento?' },
     { key: 'pix_key', label: 'Chave pix' },
     { key: 'pix_key_type', label: 'Tipo de chave pix' },
