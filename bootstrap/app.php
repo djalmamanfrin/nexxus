@@ -11,6 +11,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -49,28 +50,17 @@ return Application::configure(basePath: dirname(__DIR__))
             return back()->withErrors($e->errors());
         });
 
-        // 🔸 HTTP (404, 403...)
-        $exceptions->render(function (HttpException $e) {
-            $message = match ($e->getStatusCode()) {
-                403 => 'Você não tem permissão para isso.',
-                404 => 'Recurso não encontrado.',
-                default => 'Erro na requisição.',
-            };
-
-            return back()->with('flash', [
-                'type' => 'error',
-                'message' => $message
-            ]);
-        });
-
         $exceptions->render(function (AuthenticationException $e) {
             return redirect()->guest(route('login'));
         });
 
-        $exceptions->render(function () {
-            return back()->with('flash', [
-                'type' => 'error',
-                'message' => 'Erro interno. Tente novamente.'
-            ]);
+        $exceptions->render(function (\Throwable $e) {
+            $status = $e instanceof HttpException ? $e->getStatusCode() : 500;
+
+            if (app()->bound('sentry')) {
+                app('sentry')->captureException($e);
+            }
+
+            return Inertia::render('Error', ['status' => $status]);
         });
     })->create();
