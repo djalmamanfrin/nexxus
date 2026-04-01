@@ -49,7 +49,11 @@ return Application::configure(basePath: dirname(__DIR__))
             return redirect()->guest(route('login'));
         });
 
-        $exceptions->render(function (\Throwable $e) {
+        $exceptions->render(function (Throwable $e) {
+            if (!app()->environment('production')) {
+                return null;
+            }
+
             $status = $e instanceof HttpException ? $e->getStatusCode() : 500;
 
             if (app()->bound('sentry')) {
