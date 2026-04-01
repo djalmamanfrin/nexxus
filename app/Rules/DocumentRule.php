@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Domain\Documents\DocumentFactory;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Throwable;
 
 class DocumentRule implements ValidationRule
 {
@@ -11,7 +12,7 @@ class DocumentRule implements ValidationRule
     {
         try {
             DocumentFactory::make($value);
-        } catch (\InvalidArgumentException $e) {
+        } catch (Throwable $e) {
             $fail($e->getMessage());
         }
     }
