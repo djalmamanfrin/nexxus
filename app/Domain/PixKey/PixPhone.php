@@ -2,7 +2,6 @@
 
 namespace App\Domain\PixKey;
 
-use App\Enums\PixKeyType;
 use Illuminate\Validation\ValidationException;
 
 final class PixPhone extends AbstractPixKey

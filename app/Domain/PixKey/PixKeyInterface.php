@@ -2,8 +2,6 @@
 
 namespace App\Domain\PixKey;
 
-use App\Enums\PixKeyType;
-
 interface PixKeyInterface
 {
     public static function matches(string $value): bool;

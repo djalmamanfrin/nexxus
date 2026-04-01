@@ -2,8 +2,8 @@
 
 namespace App\Domain\PixKey;
 
-use App\Enums\PixKeyType;
 use Illuminate\Validation\ValidationException;
+
 final class PixEmail extends AbstractPixKey
 {
     public function __construct(string $value)

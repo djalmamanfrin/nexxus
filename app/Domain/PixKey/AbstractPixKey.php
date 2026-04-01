@@ -2,8 +2,6 @@
 
 namespace App\Domain\PixKey;
 
-use App\Enums\PixKeyType;
-
 abstract class AbstractPixKey implements PixKeyInterface
 {
 
