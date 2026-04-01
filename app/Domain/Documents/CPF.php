@@ -2,28 +2,18 @@
 
 namespace App\Domain\Documents;
 
-use InvalidArgumentException;
+use Illuminate\Validation\ValidationException;
 
-final class CPF
+final class CPF extends AbstractDocument
 {
-    private string $value;
-
     public function __construct(string $value)
     {
-        $value = preg_replace('/\D/', '', $value);
-
-        if (!self::isValid($value)) {
-            throw new InvalidArgumentException('CPF inválido');
-        }
-
-        $this->value = $value;
+        parent::__construct(DocumentType::CPF, $value);
     }
-
-    public function value(): string
+    public static function matches(string $value): bool
     {
-        return $this->value;
+        return strlen($value) === 11;
     }
-
     public function formatted(): string
     {
         return preg_replace(
@@ -42,32 +32,35 @@ final class CPF
         return '999.999.999-99';
     }
 
-    public function __toString(): string
+    public function validate(string $value): void
     {
-        return $this->formatted();
-    }
+        if (strlen($value) !== 11) {
+            throw ValidationException::withMessages([
+                'document' => 'O CPF deve conter 11 dígitos.',
+            ]);
+        }
 
-    public static function isValid(string $cpf): bool
-    {
-        if (strlen($cpf) !== 11 || preg_match('/(\d)\1{10}/', $cpf)) {
-            return false;
+        if (preg_match('/(\d)\1{10}/', $value)) {
+            throw ValidationException::withMessages([
+                'document' => 'CPF inválido. Não utilize números repetidos.',
+            ]);
         }
 
         for ($t = 9; $t < 11; $t++) {
             $sum = 0;
 
             for ($i = 0; $i < $t; $i++) {
-                $sum += $cpf[$i] * (($t + 1) - $i);
+                $sum += $value[$i] * (($t + 1) - $i);
             }
 
             $digit = ((10 * $sum) % 11) % 10;
 
-            if ($cpf[$t] != $digit) {
-                return false;
+            if ($value[$t] != $digit) {
+                throw ValidationException::withMessages([
+                    'document' => 'CPF inválido. Verifique os números informados.',
+                ]);
             }
         }
-
-        return true;
     }
 }
 
