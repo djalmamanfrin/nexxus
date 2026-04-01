@@ -119,7 +119,15 @@ const handleClick = () => {
                 @input="handleInput"
                 :placeholder="placeholder"
                 :class="icon ? 'pl-10' : ''"
-                class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 dark:bg-gray-950"
+                class="
+                    w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm
+                    focus:outline-none focus:ring-2 focus:ring-indigo-600
+                    disabled:bg-gray-100
+                    disabled:text-gray-400
+                    disabled:cursor-not-allowed
+                    disabled:opacity-70
+                    dark:bg-gray-950 dark:disabled:bg-gray-800
+                "
             />
         </div>
         <span v-if="error" class="text-xs text-red-500">
