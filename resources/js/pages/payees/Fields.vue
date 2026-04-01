@@ -1,11 +1,35 @@
 <script setup lang="ts">
+import { watch } from 'vue';
 import AppInput from '@/components/base/AppInput.vue';
 import AppSwitch from '@/components/base/AppSwitch.vue';
 import AppInputDocument from '@/components/base/AppInputDocument.vue';
 
-defineProps<{
+const props = defineProps<{
     form: any;
 }>();
+
+watch(
+    () => props.form.is_pix_document,
+    (value) => {
+        if (value) {
+            props.form.pix_key = props.form.document;
+            props.form.pix_key_type = props.form.document_type;
+        } else {
+            props.form.pix_key = null;
+            props.form.pix_key_type = null;
+        }
+    },
+);
+
+watch(
+    () => props.form.document,
+    () => {
+        if (props.form.is_pix_document) {
+            props.form.pix_key = props.form.document;
+            props.form.pix_key_type = props.form.document_type;
+        }
+    },
+);
 </script>
 
 <template>
@@ -18,13 +42,16 @@ defineProps<{
     <AppSwitch
         v-model="form.is_pix_document"
         :error="form.errors.is_pix_document"
-        label="Usar documento como PIX"
+        :label="
+            form.is_pix_document
+                ? 'Documento como PIX ativo'
+                : 'Usar documento como PIX'
+        "
     />
-    <div v-if="!form.is_pix_document">
-        <AppInput
-            v-model="form.pix_key"
-            label="Chave pix"
-            :error="form.errors.pix_key"
-        />
-    </div>
+    <AppInput
+        v-model="form.pix_key"
+        label="Chave pix"
+        :error="form.errors.pix_key"
+        :disabled="form.is_pix_document"
+    />
 </template>
