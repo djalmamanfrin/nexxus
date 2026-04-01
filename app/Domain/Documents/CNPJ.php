@@ -2,28 +2,19 @@
 
 namespace App\Domain\Documents;
 
+use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 
-final class CNPJ
+final class CNPJ extends AbstractDocument
 {
-    private string $value;
-
     public function __construct(string $value)
     {
-        $value = preg_replace('/\D/', '', $value);
-
-        if (!self::isValid($value)) {
-            throw new InvalidArgumentException('CNPJ inválido');
-        }
-
-        $this->value = $value;
+        parent::__construct(DocumentType::CNPJ, $value);
     }
-
-    public function value(): string
+    public static function matches(string $value): bool
     {
-        return $this->value;
+        return strlen($value) === 14;
     }
-
     public function formatted(): string
     {
         return preg_replace(
@@ -36,21 +27,24 @@ final class CNPJ
     {
         return DocumentType::CNPJ;
     }
-
     public function mask(): string
     {
         return '99.999.999/9999-99';
     }
-
-    public function __toString(): string
+    public function validate(string $value): void
     {
-        return $this->formatted();
-    }
+        $value = preg_replace('/\D/', '', $value);
 
-    public static function isValid(string $cnpj): bool
-    {
-        if (strlen($cnpj) !== 14 || preg_match('/(\d)\1{13}/', $cnpj)) {
-            return false;
+        if (strlen($value) !== 14) {
+            throw ValidationException::withMessages([
+                'document' => 'O CNPJ deve conter 14 dígitos.',
+            ]);
+        }
+
+        if (preg_match('/(\d)\1{13}/', $value)) {
+            throw ValidationException::withMessages([
+                'document' => 'CNPJ inválido. Não utilize números repetidos.',
+            ]);
         }
 
         $weights = [
@@ -62,16 +56,16 @@ final class CNPJ
             $sum = 0;
 
             for ($i = 0; $i < $t; $i++) {
-                $sum += $cnpj[$i] * $weights[$t - 12][$i];
+                $sum += $value[$i] * $weights[$t - 12][$i];
             }
 
             $digit = $sum % 11 < 2 ? 0 : 11 - ($sum % 11);
 
-            if ($cnpj[$t] != $digit) {
-                return false;
+            if ($value[$t] != $digit) {
+                throw ValidationException::withMessages([
+                    'document' => 'CNPJ inválido. Verifique os números informados.',
+                ]);
             }
         }
-
-        return true;
     }
 }
