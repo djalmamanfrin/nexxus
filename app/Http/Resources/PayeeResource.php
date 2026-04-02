@@ -14,11 +14,6 @@ class PayeeResource extends JsonResource
         $payees = [
             'id' => $this->id,
             'name' => $this->name,
-            'document' => [
-                'value' => $this->document->value(),
-                'formatted' => $this->document->formatted(),
-                'mask' => $this->document->mask(),
-            ],
             'active' => [
                 'label' => $this->is_pix_document ? 'Sim' : 'Não',
                 'color' => $this->is_pix_document ? 'green' : 'yellow',
@@ -27,6 +22,14 @@ class PayeeResource extends JsonResource
             'pix_key_type' => $this->pix_key_type,
             'created_at' => $this->created_at?->toDateString(),
         ];
+
+        if ($this->document instanceof ValidatorCastInterface) {
+            $payees['document'] = [
+                'value' => $this->document->value(),
+                'formatted' => $this->document->formatted(),
+                'mask' => $this->document->mask(),
+            ];
+        }
 
         if ($this->pix_key instanceof ValidatorCastInterface) {
             $payees['pix_key'] = [
