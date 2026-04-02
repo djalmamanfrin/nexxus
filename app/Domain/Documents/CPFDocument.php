@@ -24,9 +24,9 @@ class CPFDocument extends AbstractValidator
             $this->value
         );
     }
-    public function type(): DocumentType
+    public function type(): ValidatorType
     {
-        return DocumentType::CPF;
+        return ValidatorType::CPF;
     }
 
     public function mask(): string
