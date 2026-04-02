@@ -2,13 +2,15 @@
 
 namespace App\Domain\PixKey;
 
+use App\Domain\AbstractValidator;
+use App\Domain\ValidatorType;
 use Illuminate\Validation\ValidationException;
 
-final class PixPhone extends AbstractPixKey
+final class PixPhone extends AbstractValidator
 {
     public function __construct(string $value)
     {
-        parent::__construct(PixKeyType::PHONE, $value);
+        parent::__construct(ValidatorType::PHONE, $value);
     }
 
     public static function matches(string $value): bool
@@ -54,7 +56,7 @@ final class PixPhone extends AbstractPixKey
         return $numbers;
     }
 
-    protected function isValid(string $value): void
+    public function validate(string $value): void
     {
         if (!str_starts_with($value, '55')) {
             throw ValidationException::withMessages(['pix_key' => 'Telefone deve começar com 55']);
