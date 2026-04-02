@@ -2,6 +2,7 @@
 
 namespace App\Domain\PixKey;
 
+use App\Domain\ValidatorInterface;
 use Illuminate\Validation\ValidationException;
 
 class PixKeyFactory
@@ -9,8 +10,10 @@ class PixKeyFactory
     private static array $candidates = [
         PixEmail::class,
         PixPhone::class,
+        PixCpf::class,
+        PixCnpj::class,
     ];
-    public static function make(string $value): PixKeyInterface
+    public static function make(string $value): ValidatorInterface
     {
         foreach (self::$candidates as $class) {
             if ($class::matches($value)) {
