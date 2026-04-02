@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Documents;
+namespace App\Domain;
 
-interface DocumentValidateInterface
+interface ValidatorInterface
 {
     public static function matches(string $value): bool;
     public function validate(string $value): void;

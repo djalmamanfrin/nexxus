@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Documents;
+namespace App\Domain;
 
-interface DocumentCastInterface
+interface ValidatorCastInterface
 {    public function value(): string;
     public function formatted(): string;
-    public function type(): DocumentType;
+    public function type(): ValidatorType;
     public function mask(): string;
 }

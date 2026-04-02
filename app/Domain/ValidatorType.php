@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\PixKey;
+namespace App\Domain;
 
-enum PixKeyType: string
+enum ValidatorType: string
 {
     case EMAIL = 'email';
     case PHONE = 'phone';

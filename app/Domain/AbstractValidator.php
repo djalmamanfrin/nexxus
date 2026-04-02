@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Domain\Documents;
+namespace App\Domain;
 
-abstract class AbstractDocument implements DocumentValidateInterface, DocumentCastInterface
+abstract class AbstractValidator implements ValidatorInterface, ValidatorCastInterface
 {
     protected string $value;
-    private DocumentType $type;
+    private ValidatorType $type;
 
-    public function __construct(DocumentType $type, string $value)
+    public function __construct(ValidatorType $type, string $value)
     {
         $value = $this->sanitize($value);
         $this->validate($value);
@@ -28,7 +28,7 @@ abstract class AbstractDocument implements DocumentValidateInterface, DocumentCa
         return $this->value;
     }
 
-    public function type(): DocumentType
+    public function type(): ValidatorType
     {
         return $this->type;
     }
