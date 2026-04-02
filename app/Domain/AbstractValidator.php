@@ -18,7 +18,7 @@ abstract class AbstractValidator implements ValidatorInterface, ValidatorCastInt
     public abstract function validate(string $value): void;
     public abstract function mask(): string;
 
-    public function sanitize(string $value): string
+    protected function sanitize(string $value): string
     {
         return preg_replace('/\D/', '', $value);
     }
