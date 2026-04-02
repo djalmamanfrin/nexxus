@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Casts\DocumentCast;
 use App\Casts\PixKeyCast;
+use App\Domain\Documents\CNPJDocument;
+use App\Domain\PixKey\PixCnpj;
+use App\Domain\ValidatorCastInterface;
 use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
@@ -72,6 +75,8 @@ class Payee extends Model
 
     public function getIsPixDocumentAttribute(): bool
     {
-        return $this->pix_key && $this->pix_key === $this->document;
+        return $this->pix_key instanceof PixCnpj
+            && $this->document instanceof CNPJDocument
+            && $this->pix_key->value() === $this->document->value();
     }
 }
