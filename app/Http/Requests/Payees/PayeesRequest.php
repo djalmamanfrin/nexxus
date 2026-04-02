@@ -42,10 +42,11 @@ class PayeesRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'document' => ['required', 'string', new DocumentRule()],
-            'document_type' => ['required', 'string'],
-            'is_pix_document' => ['required', 'boolean'],
             'pix_key' => ['nullable', 'string', new PixKeyRule()],
-            'pix_key_type' => ['nullable', 'string'],
+
+            'document_type' => ['required', 'in:cpf,cnpj'],
+            'pix_key_type' => ['nullable', 'in:cpf,cnpj,email,phone'],
+            'is_pix_document' => ['boolean'],
         ];
     }
 
