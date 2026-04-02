@@ -2,14 +2,15 @@
 
 namespace App\Domain\Documents;
 
+use App\Domain\AbstractValidator;
+use App\Domain\ValidatorType;
 use Illuminate\Validation\ValidationException;
-use InvalidArgumentException;
 
-final class CNPJ extends AbstractDocument
+class CNPJDocument extends AbstractValidator
 {
     public function __construct(string $value)
     {
-        parent::__construct(DocumentType::CNPJ, $value);
+        parent::__construct(ValidatorType::CNPJ, $value);
     }
     public static function matches(string $value): bool
     {
@@ -23,9 +24,9 @@ final class CNPJ extends AbstractDocument
             $this->value
         );
     }
-    public function type(): DocumentType
+    public function type(): ValidatorType
     {
-        return DocumentType::CNPJ;
+        return ValidatorType::CNPJ;
     }
     public function mask(): string
     {

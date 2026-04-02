@@ -2,19 +2,23 @@
 
 namespace App\Domain\Documents;
 
-
+use App\Domain\ValidatorInterface;
 use Illuminate\Validation\ValidationException;
 
 class DocumentFactory
 {
-    public static function make(string $value): CPF|CNPJ
+    private static array $candidates = [
+        CNPJDocument::class,
+        CPFDocument::class,
+    ];
+    public static function make(string $value): ValidatorInterface
     {
-        $numbers = preg_replace('/\D/', '', $value);
+        foreach (self::$candidates as $class) {
+            if ($class::matches($value)) {
+                return new $class($value);
+            }
+        }
 
-        return match (strlen($numbers)) {
-            11 => new CPF($numbers),
-            14 => new CNPJ($numbers),
-            default => throw ValidationException::withMessages(['document' => 'Documento inválido']),
-        };
+        throw ValidationException::withMessages(['document' => 'Documento inválido']);
     }
 }

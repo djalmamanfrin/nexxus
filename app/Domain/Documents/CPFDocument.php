@@ -2,13 +2,15 @@
 
 namespace App\Domain\Documents;
 
+use App\Domain\AbstractValidator;
+use App\Domain\ValidatorType;
 use Illuminate\Validation\ValidationException;
 
-final class CPF extends AbstractDocument
+class CPFDocument extends AbstractValidator
 {
     public function __construct(string $value)
     {
-        parent::__construct(DocumentType::CPF, $value);
+        parent::__construct(ValidatorType::CPF, $value);
     }
     public static function matches(string $value): bool
     {
