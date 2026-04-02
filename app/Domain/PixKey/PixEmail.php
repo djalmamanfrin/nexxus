@@ -2,22 +2,29 @@
 
 namespace App\Domain\PixKey;
 
+use App\Domain\AbstractValidator;
+use App\Domain\ValidatorType;
 use Illuminate\Validation\ValidationException;
 
-final class PixEmail extends AbstractPixKey
+final class PixEmail extends AbstractValidator
 {
     public function __construct(string $value)
     {
-        parent::__construct(PixKeyType::EMAIL, $value);
+        parent::__construct(ValidatorType::EMAIL, $value);
     }
-
+    public function mask(): string
+    {
+        return '';
+    }
+    protected function sanitize(string $value): string
+    {
+        return strtolower(trim($value));
+    }
     public static function matches(string $value): bool
     {
         return !empty($value) && filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
     }
-
-
-    protected function isValid(string $value): void
+    public function validate(string $value): void
     {
         if (empty($value)) {
             throw ValidationException::withMessages(['pix_key' => 'Email vazio']);
