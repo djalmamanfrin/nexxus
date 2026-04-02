@@ -34,6 +34,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereWorkId($value)
+ * @property string $code
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter filter($filters)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereCode($value)
  * @mixin \Eloquent
  */
 class CostCenter extends Model

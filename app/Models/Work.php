@@ -29,6 +29,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Work whereUuid($value)
  * @property string $ulid
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Work whereUlid($value)
+ * @property int $is_active
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Work filter($filters)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Work whereIsActive($value)
  * @mixin \Eloquent
  */
 class Work extends Model

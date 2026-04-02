@@ -38,6 +38,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payee whereUuid($value)
  * @property string $ulid
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payee whereUlid($value)
+ * @property-read bool $is_pix_document
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payee filter($filters)
  * @mixin \Eloquent
  */
 class Payee extends Model

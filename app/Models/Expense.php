@@ -51,6 +51,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property-read int|null $attachments_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereExpenseStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereUlid($value)
+ * @property-read \App\Models\ExpenseStatus $status
  * @mixin \Eloquent
  */
 class Expense extends Model
