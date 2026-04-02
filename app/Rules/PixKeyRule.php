@@ -10,12 +10,9 @@ class PixKeyRule implements ValidationRule
 {
     public function validate($attribute, $value, $fail): void
     {
-
-        dd($attribute, $value);
         try {
             PixKeyFactory::make($value);
         } catch (Throwable $e) {
-            dd($e->getMessage());
             $fail($e->getMessage());
         }
     }
