@@ -33,8 +33,7 @@ const columns = [
     { key: 'name', label: 'Nome Fantasia', align: 'left' },
     { key: 'document.formatted', label: 'CNPJ/CPF' },
     { key: 'active.label', label: 'Pix documento?' },
-    { key: 'pix_key', label: 'Chave pix' },
-    { key: 'pix_key_type', label: 'Tipo de chave pix' },
+    { key: 'pix_key.formatted', label: 'Chave pix' },
     { key: 'created_at', label: 'Criado em', type: 'datetime' },
 ];
 
