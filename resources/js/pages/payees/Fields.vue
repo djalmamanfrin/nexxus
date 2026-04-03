@@ -15,6 +15,8 @@ watch(
             props.form.pix_key = props.form.document;
             props.form.pix_key_type = props.form.document_type;
         } else {
+            // TODO: caso o usuario ative e desative na sequencia o valor
+            //  anterior n é restabelecido provavelmente pq aqui seto null
             props.form.pix_key = null;
             props.form.pix_key_type = null;
         }
