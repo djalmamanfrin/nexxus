@@ -1,6 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
-import { formatDateTimeLocal, parseDateTimeLocal } from '@/lib/date.ts';
+import { ref } from 'vue';
 import AppLabel from '@/components/base/AppLabel.vue';
 
 const props = defineProps({
@@ -8,7 +7,6 @@ const props = defineProps({
     modelValue: [String, Number],
     placeholder: String,
     icon: Function,
-    mask: String,
     error: {
         type: String,
         default: '',
@@ -20,7 +18,14 @@ const props = defineProps({
     width: {
         default: 'w-40',
     },
+    required: {
+        type: Boolean,
+        default: true,
+    },
 });
+
+const emit = defineEmits(['update:modelValue']);
+const inputRef = ref(null);
 
 defineExpose({
     focus: () => inputRef.value?.focus(),
@@ -28,82 +33,14 @@ defineExpose({
     showPicker: () => inputRef.value?.showPicker?.(),
 });
 
-const emit = defineEmits(['update:modelValue']);
-const internalValue = ref('');
-const formatCurrency = (value) => {
-    const numbers = String(value).replace(/\D/g, '');
-    const amount = Number(numbers) / 100;
-
-    return amount.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-    });
-};
-
-const parseCurrency = (value) => {
-    return value.replace(/\D/g, '');
-};
-
-watch(
-    () => props.modelValue,
-    (value) => {
-        if (props.mask === 'currency') {
-            if (!value) {
-                internalValue.value = '';
-                return;
-            }
-
-            const numeric = Number(value);
-            internalValue.value = String(Math.round(numeric * 100));
-        }
-    },
-    { immediate: true },
-);
-
-const displayValue = computed(() => {
-    if (props.mask === 'currency') {
-        if (!internalValue.value) return '';
-        return formatCurrency(internalValue.value);
-    }
-
-    if (props.type === 'datetime-local') {
-        return formatDateTimeLocal(props.modelValue);
-    }
-
-    return props.modelValue;
-});
-
 const handleInput = (e) => {
-    const raw = e.target.value;
-
-    if (props.mask === 'currency') {
-        const parsed = parseCurrency(raw);
-        const decimal = parsed ? Number(parsed) / 100 : null;
-
-        internalValue.value = parsed;
-        emit('update:modelValue', decimal);
-        return;
-    }
-
-    if (props.type === 'datetime-local') {
-        emit('update:modelValue', parseDateTimeLocal(raw));
-        return;
-    }
-
-    emit('update:modelValue', raw);
-};
-
-const inputRef = ref(null);
-const handleClick = () => {
-    if (props.type === 'datetime-local' || props.type === 'date') {
-        inputRef.value?.showPicker?.();
-    }
+    emit('update:modelValue', e.target.value);
 };
 </script>
 
 <template>
-    <div @click="handleClick" class="flex w-full flex-col gap-1" :class="width">
-        <AppLabel v-if="label" :label="label" />
+    <div class="flex w-full flex-col gap-1" :class="width">
+        <AppLabel v-if="label" :label="label" :required="required" />
         <div class="relative">
             <component
                 v-if="icon"
@@ -115,19 +52,19 @@ const handleClick = () => {
                 ref="inputRef"
                 v-bind="$attrs"
                 :type="type"
-                :value="displayValue"
+                :value="modelValue"
                 @input="handleInput"
                 :placeholder="placeholder"
-                :class="icon ? 'pl-10' : ''"
-                class="
-                    w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm
-                    focus:outline-none focus:ring-2 focus:ring-indigo-600
-                    disabled:bg-gray-100
-                    disabled:text-gray-400
-                    disabled:cursor-not-allowed
-                    disabled:opacity-70
-                    dark:bg-gray-950 dark:disabled:bg-gray-800
-                "
+                :class="[
+                    'w-full rounded-md border px-3 py-2 text-sm',
+                    'focus:outline-none focus:ring-2 focus:ring-indigo-600',
+                    'disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 disabled:opacity-70',
+                    'dark:bg-gray-950 dark:disabled:bg-gray-800',
+                    icon ? 'pl-10' : '',
+                    error
+                        ? 'border-red-500 focus:ring-red-500'
+                        : 'border-gray-300',
+                ]"
             />
         </div>
         <span v-if="error" class="text-xs text-red-500">
