@@ -3,8 +3,6 @@ import AppInput from '@/components/base/AppInput.vue';
 import AppInputMoney from '@/components/base/AppInputMoney.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
 import AppTextarea from '@/components/base/AppTextarea.vue';
-import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
-import CreateWork from '@/pages/works/CreateWork.vue';
 
 defineProps<{
     form: any;
@@ -12,17 +10,6 @@ defineProps<{
 </script>
 
 <template>
-    <AppSelectWithModal
-        v-model="form.work_id"
-        showCreate
-        @created="({ field, value }) => (form[field] = value)"
-        :createComponent="CreateWork"
-        url="works/options"
-        label="Obra"
-        name="work_id"
-        title="Nova Obra"
-        description="Como deseja nomear?"
-    />
     <AppInput v-model="form.code" :error="form.errors.code" label="Código" />
     <AppInputMoney
         v-model="form.budget"
