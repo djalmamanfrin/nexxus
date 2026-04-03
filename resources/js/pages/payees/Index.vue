@@ -4,11 +4,8 @@ import FilterText from '@/components/filters/FilterText.vue';
 import { useFilters } from '@/composables/useFilters';
 import CrudIndexPage from '@/pages/CrudIndexPage.vue';
 import AppFormLayout from '@/components/base/AppFormLayout.vue';
-import AppInput from '@/components/base/AppInput.vue';
-import AppSwitch from '@/components/base/AppSwitch.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
-import CreatePayee from '@/pages/payees/CreatePayee.vue';
 import AppCreateModal from '@/components/AppCreateModal.vue';
 import Fields from '@/pages/payees/Fields.vue';
 
@@ -93,10 +90,9 @@ const breadcrumbs: BreadcrumbItem[] = [
                 (item) => ({
                     name: item.name,
                     document: item.document.value,
-                    document_mask: item.document.mask,
                     document_type: item.document_type,
                     is_pix_document: item.is_pix_document,
-                    pix_key: item.pix_key,
+                    pix_key: item.pix_key.value,
                     pix_key_type: item.pix_key_type,
                 })
             "
