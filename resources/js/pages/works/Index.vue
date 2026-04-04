@@ -171,6 +171,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                             :error="form.errors.code"
                             label="Código"
                             maxlength="5"
+                            :uppercase="true"
                         />
 
                         <AppSwitch v-model="form.is_active" label="Ativo" />
