@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\DateValueCast;
 use App\Casts\DocumentCast;
 use App\Casts\PixKeyCast;
 use App\Domain\Documents\CNPJDocument;
@@ -57,6 +58,7 @@ class Payee extends Model
     protected $casts = [
         'document' => DocumentCast::class,
         'pix_key' => PixKeyCast::class,
+        'created_at' => DateValueCast::class,
     ];
 
     public function expenses(): HasMany

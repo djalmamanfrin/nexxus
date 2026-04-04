@@ -19,7 +19,7 @@ class PayeeResource extends JsonResource
             ],
             'document_type' => $this->document_type,
             'pix_key_type' => $this->pix_key_type,
-            'created_at' => $this->created_at?->toDateString(),
+            'created_at' => $this->created_at,
         ];
 
         if ($this->document instanceof ValidatorCastInterface) {

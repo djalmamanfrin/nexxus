@@ -27,7 +27,7 @@ const columns = [
     { key: 'document.formatted', label: 'CNPJ/CPF' },
     { key: 'active.label', label: 'Pix documento?', type: 'badge', color: 'active.color' },
     { key: 'pix_key.formatted', label: 'Chave pix' },
-    { key: 'created_at', label: 'Criado em' },
+    { key: 'created_at.formatted', label: 'Criado em' },
 ];
 
 const workSchema = {
