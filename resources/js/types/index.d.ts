@@ -130,9 +130,15 @@ export interface Payee {
 export type BreadcrumbItemType = BreadcrumbItem;
 
 // TODO:
-//  1. Colocar asteriscos nos campos obrigatórios
+//  1. Removar btn de criar CC e criar fluxo na tab de obra
 //  2. Revisar AppSelectWithModal porque mudei como o método retornar o store
 //  . Criar select com pesquisa para muitas opcoes do cost center
 //  . Criar select com pesquisa para muitas opcoes do payee (talvez)
 //  . Criar o filtro Pagamentos para o EditFields das despesas
 //  . Exibir no filtro de pagamento no fluxo de despenas apenas pagamentos sem despesas associadas com status 1
+
+
+// Testes feitos
+// 1. Modais de criação ok exceto CC
+// 2. Todas as telas de Edição OK
+// 3.
