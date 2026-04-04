@@ -6,6 +6,7 @@ use App\Http\Requests\CostCenters\StoreCostCenterRequest;
 use App\Http\Requests\UpdateCostCenterRequest;
 use App\Http\Resources\CostCenterResource;
 use App\Models\CostCenter;
+use App\Support\Logger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -43,16 +44,8 @@ class CostCenterController extends Controller
 
     public function store(StoreCostCenterRequest $request): RedirectResponse
     {
-        $costCenter = CostCenter::create($request->validated());
-
-        return back()->with([
-            'success' => 'Centro de custo criada com sucesso',
-            'created' => [
-                'field' => 'work_id',
-                'value' => $costCenter->id,
-                'label' => $costCenter->code,
-            ],
-        ]);
+        CostCenter::create($request->validated());
+        return back()->with(['success' => 'Centro de custo criada com sucesso']);
     }
 
     public function update(UpdateCostCenterRequest  $request, CostCenter $costCenter)
@@ -66,8 +59,6 @@ class CostCenterController extends Controller
     public function destroy(CostCenter $costCenter): RedirectResponse
     {
         $costCenter->delete();
-        return redirect()
-            ->route('cost-centers.index')
-            ->with('success', 'Centro de custo apagado com sucesso!');
+        return back()->with('success', 'Centro de custo apagado com sucesso!');
     }
 }
