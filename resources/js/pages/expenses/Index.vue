@@ -20,6 +20,8 @@ import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import CrudTable from '@/components/crud/CrudTable.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
+import Fields from '@/pages/cost_centers/Fields.vue';
+import AppCreateModal from '@/components/AppCreateModal.vue';
 
 const props = defineProps<{
     expenses: {
@@ -34,7 +36,12 @@ const props = defineProps<{
 const columns = [
     { key: 'attachments', label: 'Imagem', align: 'left', type: 'attachment' },
     { key: 'amount.formatted', label: 'Valor' },
-    { key: 'status.name', label: 'Status', type: 'badge', color: 'status.color' },
+    {
+        key: 'status.name',
+        label: 'Status',
+        type: 'badge',
+        color: 'status.color',
+    },
     { key: 'cost_center.label', label: 'C. de Custo' },
     { key: 'due_at', label: 'Vencimento' },
     { key: 'created_at', label: 'Criado em' },
@@ -165,20 +172,45 @@ const breadcrumbs: BreadcrumbItem[] = [
                             name="payee_id"
                         />
 
-                        <AppSelectWithModal
+                        <AppSelect
                             v-model="form.cost_center_id"
-                            showCreate
-                            @created="
-                                ({ field, value }) => (form[field] = value)
-                            "
-                            :createComponent="CreateCostCenter"
                             url="cost-centers/options"
-                            label="C. de Custo"
+                            label="Centro de Custo"
                             name="cost_center_id"
-                            width="w-56"
-                            title="Novo C. de Custo"
-                            description="Como deseja nomear?"
                         />
+
+                        <!--                        <AppSelectWithModal-->
+                        <!--                            v-model="form.cost_center_id"-->
+                        <!--                            showCreate-->
+                        <!--                            @created="-->
+                        <!--                                ({ field, value }) => (form[field] = value)-->
+                        <!--                            "-->
+                        <!--                            url="cost-centers/options"-->
+                        <!--                            label="C. de Custo"-->
+                        <!--                            name="cost_center_id"-->
+                        <!--                            width="w-56"-->
+                        <!--                            title="Novo C. de Custo"-->
+                        <!--                            description="Como deseja nomear?"-->
+                        <!--                        >-->
+                        <!--                            <template #create>-->
+                        <!--                                <AppCreateModal-->
+                        <!--                                    url="cost-centers"-->
+                        <!--                                    @success="close"-->
+                        <!--                                    :initialData="{-->
+                        <!--                                        expense_id: item.id,-->
+                        <!--                                        work_id: null,-->
+                        <!--                                        cost_center_type_id: null,-->
+                        <!--                                        code: '',-->
+                        <!--                                        budget: 0,-->
+                        <!--                                        description: '',-->
+                        <!--                                    }"-->
+                        <!--                                >-->
+                        <!--                                    <template #fields="{ form }">-->
+                        <!--                                        <Fields :form="form" />-->
+                        <!--                                    </template>-->
+                        <!--                                </AppCreateModal>-->
+                        <!--                            </template>-->
+                        <!--                        </AppSelectWithModal>-->
 
                         <AppInputDate
                             v-model="form.due_at"
