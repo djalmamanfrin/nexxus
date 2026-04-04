@@ -104,12 +104,12 @@ const breadcrumbs: BreadcrumbItem[] = [
             >
                 <template #default="{ close }">
                     <AppCreateModal
-                        :url="url"
+                        :url="baseUrl"
                         @success="close"
                         :initialData="{
                             name: null,
                             document: null,
-                            is_pix_document: 0,
+                            is_pix_document: Boolean(0),
                             pix_key: null,
                         }"
                     >
