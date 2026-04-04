@@ -40,9 +40,13 @@ class WorkController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:60'],
+            'code' => ['nullable', 'string', 'size:5'],
         ]);
 
-        $validated['code'] = Work::abbreviate($validated['name']);
+        if (empty($validated['code'])) {
+            $validated['code'] = Work::abbreviate($validated['name']);
+        }
+
         $work = Work::create($validated);
 
         return back()->with([
@@ -73,12 +77,11 @@ class WorkController extends Controller
 
     public function update(Request  $request, Work $work)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
+            'code' => ['required', 'string', 'size:5'],
             'is_active' => ['required', 'boolean'],
         ]);
-
-        $validated = $request->only('name', 'is_active');
         $work->update($validated);
 
         return back()->with('success', 'Obra atualizada com sucesso');
