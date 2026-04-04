@@ -111,33 +111,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
-        <template #header-actions>
-            <AppButtonWithModal
-                label="Novo C. de Custo"
-                title="Novo centro de custo"
-                description="Cadastre centros de custo para organizar suas despesas
-                por categoria e entender melhor para onde seu dinheiro está indo.
-                Isso permite análises mais claras e decisões mais assertivas."
-            >
-                <template #default="{ close }">
-                    <AppCreateModal
-                        :url="baseUrl"
-                        @success="close"
-                        :initialData="{
-                            code: null,
-                            work_id: null,
-                            budget: null,
-                            cost_center_type_id: null,
-                            description: null,
-                        }"
-                    >
-                        <template #fields="{ form }">
-                            <Fields :form="form" />
-                        </template>
-                    </AppCreateModal>
-                </template>
-            </AppButtonWithModal>
-        </template>
         <div class="content-box">
             <FlashMessage />
 
