@@ -3,8 +3,7 @@
 namespace App\Models;
 
 use App\Casts\DateValueCast;
-use App\Domain\VO\DateValue;
-use App\Support\Logger;
+use App\Domain\VO\CurrencyValue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -59,7 +58,7 @@ class CostCenter extends Model
         'start_date' => DateValueCast::class,
         'expected_end_date' => DateValueCast::class,
         'created_at' => DateValueCast::class,
-        'budget' => 'decimal:2'
+        'budget' => 'decimal:2' // Laravel n lida bem com cast decimal
     ];
 
     public function work(): BelongsTo
