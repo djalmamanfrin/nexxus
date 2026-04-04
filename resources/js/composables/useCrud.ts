@@ -88,6 +88,7 @@ export function useCrud(schema: any) {
 
     return {
         open,
+        baseUrl,
         filters,
         search,
         clear,

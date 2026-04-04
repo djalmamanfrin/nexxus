@@ -24,8 +24,6 @@ const props = defineProps<{
     search_by?: string;
 }>();
 
-const url = '/works';
-
 const activeValues = [
     { label: 'Sim', value: 1 },
     { label: 'Não', value: 0 },
@@ -65,6 +63,7 @@ const workSchema = {
 
 const {
     open,
+    baseUrl,
     filters,
     search,
     clear,
@@ -95,7 +94,7 @@ const breadcrumbs: BreadcrumbItem[] = [
             <AppButtonWithModal label="Nova Obra">
                 <template #default="{ close }">
                     <AppCreateModal
-                        :url="url"
+                        :url="baseUrl"
                         @success="close"
                         :initialData="{ name: null }"
                     >
