@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\DateValueCast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -52,8 +53,9 @@ class CostCenter extends Model
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'expected_end_date' => 'date',
+        'start_date' => DateValueCast::class,
+        'expected_end_date' => DateValueCast::class,
+        'created_at' => DateValueCast::class,
         'budget' => 'decimal:2'
     ];
 

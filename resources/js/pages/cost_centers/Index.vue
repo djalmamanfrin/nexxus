@@ -37,7 +37,9 @@ const columns = [
     { key: 'work.name', label: 'Obra', align: 'left' },
     { key: 'code', label: 'Código' },
     { key: 'budget.value', label: 'Orçamento' },
-    { key: 'created_at', label: 'Criado em' },
+    { key: 'start_date.formatted', label: 'Início' },
+    { key: 'expected_end_date.formatted', label: 'Término' },
+    { key: 'created_at.formatted', label: 'Criado em' },
 ];
 
 const workSchema = {
@@ -63,8 +65,8 @@ const workSchema = {
             work_id: item.work?.id ?? null,
             code: item.code,
             budget: Number(item.budget.value),
-            start_date: item.start_date,
-            expected_end_date: item.expected_end_date,
+            start_date: item.start_date.value,
+            expected_end_date: item.expected_end_date.value,
             description: item.description,
         }),
     },

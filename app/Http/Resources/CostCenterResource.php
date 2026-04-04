@@ -18,9 +18,9 @@ class CostCenterResource extends JsonResource
                 'value' => $this->budget,
                 'currency' => Format::money($this->budget),
             ],
-            'start_date' => $this->start_date?->toDateString(),
-            'expected_end_date' => $this->expected_end_date?->toDateString(),
-            'created_at' => $this->created_at?->toDateString(),
+            'start_date' => $this->start_date,
+            'expected_end_date' => $this->expected_end_date,
+            'created_at' => $this->created_at,
             'work' => $this->whenLoaded('work', function () {
                 return [
                     'id' => $this->work_id,
