@@ -15,7 +15,7 @@ const map = {
     <span
         :class="[
             'rounded px-2 py-1 text-xs',
-            map[color] || 'bg-gray-100 text-gray-800',
+            map[color] || 'bg-gray-200 text-gray-800',
         ]"
     >
         {{ label }}
