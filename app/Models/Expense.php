@@ -75,6 +75,7 @@ class Expense extends Model
         'amount' => 'decimal:2',
         'due_at' => DateValueCast::class,
         'competence_date' => DateValueCast::class,
+        'created_at' => DateValueCast::class,
     ];
 
     public function payee(): BelongsTo
