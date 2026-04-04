@@ -34,8 +34,8 @@ const props = defineProps<{
 const columns = [
     { key: 'attachments', label: 'Imagem', align: 'left', type: 'attachment' },
     { key: 'amount.formatted', label: 'Valor' },
-    { key: 'status.name', label: 'Status' },
-    { key: 'cost_center.code', label: 'C. de Custo' },
+    { key: 'status.name', label: 'Status', type: 'badge', color: 'status.color' },
+    { key: 'cost_center.label', label: 'C. de Custo' },
     { key: 'due_at', label: 'Vencimento' },
     { key: 'created_at', label: 'Criado em' },
 ];

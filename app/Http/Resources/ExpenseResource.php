@@ -25,6 +25,7 @@ class ExpenseResource extends JsonResource
                 return [
                     'id' => $this->cost_center_id,
                     'code' => $this->costCenter?->code,
+                    'label' => $this->costCenter?->work?->code . ' - ' . $this->costCenter?->code,
                 ];
             }),
             'payee' => $this->whenLoaded('payee', function () {
