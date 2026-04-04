@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\DateValueCast;
 use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
@@ -72,8 +73,8 @@ class Expense extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'due_at' => 'date',
-        'competence_date' => 'date'
+        'due_at' => DateValueCast::class,
+        'competence_date' => DateValueCast::class,
     ];
 
     public function payee(): BelongsTo
