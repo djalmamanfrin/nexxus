@@ -43,7 +43,8 @@ const columns = [
         color: 'status.color',
     },
     { key: 'cost_center.label', label: 'C. de Custo' },
-    { key: 'due_at', label: 'Vencimento' },
+    { key: 'due_at.formatted', label: 'Vencimento' },
+    { key: 'competence_date.formatted', label: 'Competência' },
     { key: 'created_at', label: 'Criado em' },
 ];
 
@@ -71,8 +72,8 @@ const workSchema = {
             amount: Number(item.amount.value),
             payee_id: item.payee?.id ?? null,
             cost_center_id: item.cost_center?.id ?? null,
-            due_at: item.due_at,
-            competence_date: item.competence_date,
+            due_at: item.due_at.value,
+            competence_date: item.competence_date.value,
         }),
     },
     tabs: [
@@ -221,6 +222,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                             v-model="form.competence_date"
                             :error="form.errors.competence_date"
                             label="Competencia"
+                            type="month"
                         />
                     </AppFormLayout>
                 </template>
