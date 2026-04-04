@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLabel from '@/components/base/AppLabel.vue';
-import { formatDateTime } from '@/lib/date';
+import { formatDate } from '@/lib/date';
 
 defineProps<{
     item: any;
@@ -12,7 +12,7 @@ defineProps<{
         <div class="flex items-center justify-between pt-2">
             <AppLabel label="Criado em:" />
             <p class="text-sm text-gray-500">
-                {{ formatDateTime(item.created_at) }}
+                {{ formatDate(item.created_at.formatted) }}
             </p>
         </div>
         <div class="grid grid-cols-1 gap-4">
@@ -20,7 +20,11 @@ defineProps<{
         </div>
 
         <div class="flex items-center justify-between pt-2">
-            <AppLabel label="Campos obrigatórios " :required="true" class="text-xs" />
+            <AppLabel
+                label="Campos obrigatórios "
+                :required="true"
+                class="text-xs"
+            />
         </div>
     </div>
 </template>
