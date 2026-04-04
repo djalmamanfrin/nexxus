@@ -36,7 +36,12 @@ const props = defineProps<{
 const columns = [
     { key: 'attachments', label: 'Imagem', align: 'left', type: 'attachment' },
     { key: 'amount.formatted', label: 'Valor' },
-    { key: 'status.name', label: 'Status', type: 'badge', color: 'status.color' },
+    {
+        key: 'status.name',
+        label: 'Status',
+        type: 'badge',
+        color: 'status.color',
+    },
     { key: 'paid_at', label: 'Pago em' },
     { key: 'created_at', label: 'Criado em' },
 ];
@@ -62,7 +67,7 @@ const workSchema = {
         map: (item: any) => ({
             expense_id: item.expense_id ?? null,
             bank_account_id: item.bank_account_id ?? null,
-            amount: item.amount,
+            amount: Number(item.amount.value),
             paid_at: item.paid_at,
         }),
     },
