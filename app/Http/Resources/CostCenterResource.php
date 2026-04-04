@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Domain\VO\CurrencyValue;
 use App\Support\Format;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,10 +23,7 @@ class CostCenterResource extends JsonResource
                 'name' => $this->is_concluded ? 'Concluído' : 'Pendente',
                 'color' => $this->is_concluded ? 'green' : 'gray',
             ],
-            'budget' => [
-                'value' => $this->budget,
-                'currency' => Format::money($this->budget),
-            ],
+            'budget' => new CurrencyValue($this->budget),
             'work' => $this->whenLoaded('work', function () {
                 return [
                     'id' => $this->work_id,
