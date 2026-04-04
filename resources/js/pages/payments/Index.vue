@@ -18,6 +18,14 @@ import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppUploadModal from '@/components/base/AppUploadModal.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
 import AppInputMoney from '@/components/base/AppInputMoney.vue';
+import { PencilIcon, Trash2Icon } from 'lucide-vue-next';
+import { useCrud } from '@/composables/useCrud';
+import { computed } from 'vue';
+import AppFilterBar from '@/components/filters/AppFilterBar.vue';
+import AppSwitch from '@/components/base/AppSwitch.vue';
+import CrudTable from '@/components/crud/CrudTable.vue';
+import FlashMessage from '@/components/FlashMessage.vue';
+import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 
 const props = defineProps<{
     payments: {
@@ -29,23 +37,63 @@ const props = defineProps<{
     status?: string | number | null;
 }>();
 
-const url = '/payments';
+const columns = [
+    { key: 'attachments', label: 'Imagem', align: 'left', type: 'attachment' },
+    { key: 'amount', label: 'Valor' },
+    { key: 'status.name', label: 'Status', type: 'badge', color: 'status.color' },
+    { key: 'paid_at', label: 'Pago em' },
+    { key: 'created_at', label: 'Criado em' },
+];
 
-const { filters, search, clear } = useFilters(
-    {
+const workSchema = {
+    entity: 'payments',
+    filters: {
         search_by: props.search_by || '',
         status: props.status || null,
     },
-    url,
-);
+    actions: [
+        { name: 'edit', title: 'Editar', icon: PencilIcon },
+        { name: 'delete', title: 'Excluir', icon: Trash2Icon },
+    ],
+    form: {
+        initial: {
+            expense_id: null,
+            bank_account_id: null,
+            amount: null,
+            paid_at: null,
+        },
 
-const columns = [
-    { key: 'attachments', label: 'Imagem', align: 'left' },
-    { key: 'amount', label: 'Valor', type: 'money' },
-    { key: 'status.name', label: 'Status' },
-    { key: 'paid_at', label: 'Pago em', type: 'datetime' },
-    { key: 'created_at', label: 'Criado em', type: 'datetime' },
-];
+        map: (item: any) => ({
+            expense_id: item.expense_id ?? null,
+            bank_account_id: item.bank_account_id ?? null,
+            amount: item.amount,
+            paid_at: item.paid_at,
+        }),
+    },
+    tabs: [
+        { name: 'form', label: 'Informações' },
+        { name: 'file', label: 'Anexos' },
+    ],
+};
+
+const {
+    open,
+    baseUrl,
+    filters,
+    search,
+    clear,
+    selectedItem,
+    tabs,
+    actions,
+    handleAction,
+    handleSave,
+} = useCrud(workSchema);
+
+const emit = defineEmits(['update:filters']);
+const filtersProxy = computed({
+    get: () => filters,
+    set: (value) => emit('update:filters', value),
+});
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -58,109 +106,114 @@ const breadcrumbs: BreadcrumbItem[] = [
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
         <template #header-actions>
-            <AppUploadModal label="Novo pagamento" :url="url" />
+            <AppUploadModal label="Novo pagamento" :url="baseUrl" />
         </template>
-        <CrudIndexPage
-            :items="props.payments"
-            :columns="columns"
-            :base-url="url"
-            v-model:filters="filters"
-            :search="search"
-            :clear="clear"
-            :initialForm="{
-                expense_id: null,
-                bank_account_id: null,
-                payment_status_id: null,
-                payment_type_id: null,
-                amount: null,
-                paid_at: null,
-            }"
-            :mapToForm="
-                (item) => ({
-                    expense_id: item.expense_id ?? null,
-                    bank_account_id: item.bank_account_id ?? null,
-                    amount: item.amount,
-                    paid_at: item.paid_at,
-                })
-            "
-        >
-            <template #filters>
-                <FilterText
-                    label="Buscar pagamneto"
-                    name="search_by"
-                    placeholder="CPF, CNPJ ou texto"
-                />
-                <FilterTabs
-                    v-if="statuses?.length"
-                    label="Status"
-                    name="status"
-                    :tabs="statuses"
-                />
+        <div class="content-box">
+            <FlashMessage />
 
-                <!--                    <FilterSelect-->
-                <!--                        :options="statuses"-->
-                <!--                        :selectedValue="status"-->
-                <!--                        label="Status"-->
-                <!--                        name="status"-->
-                <!--                        width="w-56"-->
-                <!--                    />-->
-            </template>
-
-            <template #title> Pagamento </template>
-
-            <template #form="{ item, form }">
-                <AppFormLayout :item="item">
-                    <AppSelect
-                        v-model="form.bank_account_id"
-                        url="bank-accounts"
-                        label="Conta Bancária"
-                        name="bank_id"
+            <form @submit.prevent="search">
+                <AppFilterBar
+                    v-model:filters="filtersProxy"
+                    @change="search"
+                    @clear="clear"
+                >
+                    <FilterText
+                        label="Buscar pagamneto"
+                        name="search_by"
+                        placeholder="CPF, CNPJ ou texto"
+                    />
+                    <FilterTabs
+                        v-if="statuses?.length"
+                        label="Status"
+                        name="status"
+                        :tabs="statuses"
                     />
 
-                    <AppSelectWithUpload
-                        v-model="form.expense_id"
-                        @created="({ field, value }) => (form[field] = value)"
-                        :url="`/expenses/${item.id}/payment-options`"
-                        label="Despesa"
-                        name="expense_id"
-                        width="w-56"
+                    <!--                    <FilterSelect-->
+                    <!--                        :options="statuses"-->
+                    <!--                        :selectedValue="status"-->
+                    <!--                        label="Status"-->
+                    <!--                        name="status"-->
+                    <!--                        width="w-56"-->
+                    <!--                    />-->
+                </AppFilterBar>
+            </form>
+
+            <div class="my-4"></div>
+
+            <CrudTable
+                :items="props.payments"
+                :columns="columns"
+                :actions="actions"
+                @action="handleAction"
+            />
+            <CrudDrawer
+                v-model:open="open"
+                :tabs="tabs"
+                :item="selectedItem"
+                @save="handleSave"
+            >
+                <template #title> Pagamento </template>
+
+                <template #form="{ item, form }">
+                    <AppFormLayout :item="item">
+                        <AppSelect
+                            v-model="form.bank_account_id"
+                            url="bank-accounts"
+                            label="Conta Bancária"
+                            name="bank_id"
+                        />
+
+                        <AppSelectWithUpload
+                            v-model="form.expense_id"
+                            @created="
+                                ({ field, value }) => (form[field] = value)
+                            "
+                            :url="`/expenses/${item.id}/payment-options`"
+                            label="Despesa"
+                            name="expense_id"
+                            width="w-56"
+                        />
+
+                        <!--            <AppSelectWithModal-->
+                        <!--                v-model="form.payment_status_id"-->
+                        <!--                showCreate-->
+                        <!--                @created="handleCreated"-->
+                        <!--                :createComponent="CreateStatus"-->
+                        <!--                url="payment-statuses"-->
+                        <!--                label="Status"-->
+                        <!--                name="status"-->
+                        <!--                width="w-56"-->
+                        <!--                title="Novo status"-->
+                        <!--                description="Como deseja nomear?"-->
+                        <!--            />-->
+
+                        <!--            <div>-->
+                        <!--                <label class="form-label">Tipo</label>-->
+                        <!--                <input v-model="form.payment_type_id" class="form-input" />-->
+                        <!--            </div>-->
+
+                        <AppInputMoney
+                            v-model="form.amount"
+                            :error="form.errors.amount"
+                            label="Valor"
+                        />
+
+                        <AppInputDate
+                            v-model="form.paid_at"
+                            :error="form.errors.paid_at"
+                            label="Pago em"
+                        />
+                    </AppFormLayout>
+                </template>
+
+                <template #file="{ item, form }">
+                    <AppFileInput
+                        :attachments="item?.attachments"
+                        :form="form"
                     />
-
-                    <!--            <AppSelectWithModal-->
-                    <!--                v-model="form.payment_status_id"-->
-                    <!--                showCreate-->
-                    <!--                @created="handleCreated"-->
-                    <!--                :createComponent="CreateStatus"-->
-                    <!--                url="payment-statuses"-->
-                    <!--                label="Status"-->
-                    <!--                name="status"-->
-                    <!--                width="w-56"-->
-                    <!--                title="Novo status"-->
-                    <!--                description="Como deseja nomear?"-->
-                    <!--            />-->
-
-                    <!--            <div>-->
-                    <!--                <label class="form-label">Tipo</label>-->
-                    <!--                <input v-model="form.payment_type_id" class="form-input" />-->
-                    <!--            </div>-->
-
-                    <AppInputMoney
-                        v-model="form.amount"
-                        :error="form.errors.amount"
-                        label="Valor"
-                    />
-
-                    <AppInputDate
-                        v-model="form.paid_at"
-                        :error="form.errors.paid_at"
-                        label="Pago em"
-                    />
-                </AppFormLayout>
-            </template>
-
-            <template #file="{ item, form }">
-                <AppFileInput :attachments="item?.attachments" :form="form" />
-            </template>
-        </CrudIndexPage>
+                </template>
+            </CrudDrawer>
+        </div>
     </AppLayout>
 </template>
