@@ -6,6 +6,7 @@ use App\Http\Requests\CostCenters\StoreCostCenterRequest;
 use App\Http\Requests\UpdateCostCenterRequest;
 use App\Http\Resources\CostCenterResource;
 use App\Models\CostCenter;
+use App\Models\CostCenterStatus;
 use App\Support\Logger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +27,9 @@ class CostCenterController extends Controller
 
         return Inertia::render('cost_centers/Index', [
             'cost_centers' => CostCenterResource::collection($costCenters),
+            'statuses' => CostCenterStatus::select('id as value', 'name as label', 'color')->get(),
             'search_by' => $request->search_by,
+            'status' => $request->status,
         ]);
     }
 
