@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Domain\VO\CurrencyValue;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,6 +20,9 @@ class WorkResource extends JsonResource
                 'color' => $this->is_active ? 'green' : 'red',
             ],
             'created_at' => $this->created_at,
+            'cost_centers' => [
+                'data' => CostCenterResource::collection($this->whenLoaded('costCenters'))
+            ],
         ];
     }
 }
