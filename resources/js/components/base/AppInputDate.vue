@@ -2,7 +2,7 @@
     <div @click="handleClick" :class="width">
         <AppInput
             ref="inputRef"
-            type="date"
+            :type="type"
             :label="label"
             :model-value="modelValue"
             :error="error"
@@ -19,6 +19,10 @@ const props = defineProps({
     modelValue: {
         type: String,
         default: null,
+    },
+    type: {
+        type: String,
+        default: 'date',
     },
     label: String,
     error: String,
