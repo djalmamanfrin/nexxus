@@ -23,7 +23,7 @@ class ExpenseResource extends JsonResource
                 'value' => $this->competence_date?->value('Y-m'),
                 'formatted' => $this->competence_date?->formatted('m/Y'),
             ],
-            'created_at' => $this->created_at?->toDateString(),
+            'created_at' => $this->created_at,
             'cost_center' => $this->whenLoaded('costCenter', function () {
                 return [
                     'id' => $this->cost_center_id,
