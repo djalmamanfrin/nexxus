@@ -110,7 +110,7 @@ const breadcrumbs: BreadcrumbItem[] = [
             >
                 <template #default="{ close }">
                     <AppCreateModal
-                        :url="url"
+                        :url="baseUrl"
                         @success="close"
                         :initialData="{
                             code: null,
