@@ -40,12 +40,12 @@ const { filters, search, clear } = useFilters(
 );
 
 const columns = [
-    { key: 'attachments', label: 'Imagem', align: 'left' },
-    { key: 'amount', label: 'Valor', type: 'money' },
+    { key: 'attachments', label: 'Imagem', align: 'left', type: 'attachment' },
+    { key: 'amount.formatted', label: 'Valor' },
     { key: 'status.name', label: 'Status' },
     { key: 'cost_center.code', label: 'C. de Custo' },
-    { key: 'due_at', label: 'Vencimento', type: 'date' },
-    { key: 'created_at', label: 'Criado em', type: 'datetime' },
+    { key: 'due_at', label: 'Vencimento'},
+    { key: 'created_at', label: 'Criado em' },
 ];
 
 const breadcrumbs: BreadcrumbItem[] = [
