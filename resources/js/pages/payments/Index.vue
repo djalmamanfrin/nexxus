@@ -1,14 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useCrud } from '@/composables/useCrud';
 import { type BreadcrumbItem, Payment } from '@/types';
 import FilterText from '@/components/filters/FilterText.vue';
-import { useFilters } from '@/composables/useFilters';
 import { SelectOption } from '@/types/select';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
-import EditFields from '@/pages/payments/EditFields.vue';
-import CrudIndexPage from '@/pages/CrudIndexPage.vue';
 import AppFileInput from '@/components/base/AppFileInput.vue';
 import AppFormLayout from '@/components/base/AppFormLayout.vue';
-import AppInput from '@/components/base/AppInput.vue';
 import AppSelect from '@/components/base/AppSelect.vue';
 import AppSelectWithUpload from '@/components/base/AppSelectWithUpload.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -16,8 +14,6 @@ import AppUploadModal from '@/components/base/AppUploadModal.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
 import AppInputMoney from '@/components/base/AppInputMoney.vue';
 import { PencilIcon, Trash2Icon } from 'lucide-vue-next';
-import { useCrud } from '@/composables/useCrud';
-import { computed } from 'vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import CrudTable from '@/components/crud/CrudTable.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
