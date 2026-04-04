@@ -19,7 +19,7 @@ class CostCenterController extends Controller
     public function index(Request $request)
     {
         $costCenters = CostCenter::query()
-            ->with(['work', 'type'])
+            ->with(['work', 'status', 'type'])
             ->filter($request->all())
             ->latest()
             ->paginate(10)
