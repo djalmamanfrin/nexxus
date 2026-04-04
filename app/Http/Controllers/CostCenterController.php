@@ -31,11 +31,14 @@ class CostCenterController extends Controller
 
     public function options(): JsonResponse
     {
-        $paymentStatus = CostCenter::query()
-            ->select('id as value', 'code as label')
-            ->get();
+        $costCenters = CostCenter::with('work')
+            ->get()
+            ->map(fn ($cc) => [
+                'value' => $cc->id,
+                'label' => "{$cc->work->name} - {$cc->code}",
+            ]);
 
-        return response()->json($paymentStatus);
+        return response()->json($costCenters);
     }
 
     public function store(StoreCostCenterRequest $request): RedirectResponse
