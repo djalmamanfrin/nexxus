@@ -66,6 +66,7 @@ class Payment extends Model
 
     protected $casts = [
         'paid_at' => DateValueCast::class,
+        'created_at' => DateValueCast::class,
         'amount' => 'decimal:2'
     ];
 

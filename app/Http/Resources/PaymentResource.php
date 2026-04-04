@@ -20,7 +20,7 @@ class PaymentResource extends JsonResource
             'transaction_id' => $this->transaction_id,
             'end_to_end_id' => $this->end_to_end_id,
             'paid_at' => $this->paid_at,
-            'created_at' => $this->created_at->format('d/m/Y H:i:s'),
+            'created_at' => $this->created_at,
             'bank_account' => $this->whenLoaded('bankAccount', function () {
                 return [
                     'id' => $this->bank_account_id,

@@ -39,7 +39,7 @@ const columns = [
         color: 'status.color',
     },
     { key: 'paid_at.formatted', label: 'Pago em' },
-    { key: 'created_at', label: 'Criado em' },
+    { key: 'created_at.formatted', label: 'Criado em' },
 ];
 
 const workSchema = {
