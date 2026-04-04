@@ -18,7 +18,7 @@ class UpdateCostCenterRequest extends FormRequest
             'code' => ['required', 'string'],
             'budget' => ['nullable', 'numeric'],
             'start_date' => ['nullable', 'date'],
-            'expected_end_date' => ['nullable', 'date'],
+            'expected_end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'description' => ['nullable', 'string'],
         ];
     }
