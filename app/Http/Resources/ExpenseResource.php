@@ -18,9 +18,12 @@ class ExpenseResource extends JsonResource
                 'formatted' => Format::money($this->amount),
             ],
             'description' => $this->description,
-            'due_at' => $this->due_at?->toDateString(),
+            'due_at' => $this->due_at,
+            'competence_date' => [
+                'value' => $this->competence_date?->value('Y-m'),
+                'formatted' => $this->competence_date?->formatted('m/Y'),
+            ],
             'created_at' => $this->created_at?->toDateString(),
-            'competence_date' => $this->competence_date?->toDateString(),
             'cost_center' => $this->whenLoaded('costCenter', function () {
                 return [
                     'id' => $this->cost_center_id,
