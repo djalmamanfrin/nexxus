@@ -1,17 +1,20 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useCrud } from '@/composables/useCrud';
 import { type BreadcrumbItem, Work } from '@/types';
 import FilterText from '@/components/filters/FilterText.vue';
-import { useFilters } from '@/composables/useFilters';
-import CrudIndexPage from '@/pages/CrudIndexPage.vue';
 import AppFormLayout from '@/components/base/AppFormLayout.vue';
 import AppInput from '@/components/base/AppInput.vue';
-import AppTextarea from '@/components/base/AppTextarea.vue';
 import AppSwitch from '@/components/base/AppSwitch.vue';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import CreateWork from '@/pages/payees/CreateWork.vue';
+import { PencilIcon, Trash2Icon } from 'lucide-vue-next';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppCreateModal from '@/components/AppCreateModal.vue';
+import CrudTable from '@/components/crud/CrudTable.vue';
+import FlashMessage from '@/components/FlashMessage.vue';
+import CrudDrawer from '@/components/crud/CrudDrawer.vue';
+import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 
 const props = defineProps<{
     works: {
@@ -23,13 +26,6 @@ const props = defineProps<{
 
 const url = '/works';
 
-const { filters, search, clear } = useFilters(
-    {
-        search_by: props.search_by || '',
-    },
-    url,
-);
-
 const activeValues = [
     { label: 'Sim', value: 1 },
     { label: 'Não', value: 0 },
@@ -40,6 +36,49 @@ const columns = [
     { key: 'active.label', label: 'Status', type: 'boolean' },
     { key: 'created_at', label: 'Criado em', type: 'datetime' },
 ];
+
+const workSchema = {
+    entity: 'works',
+    filters: {
+        search_by: props.search_by || '',
+    },
+    actions: [
+        { name: 'edit', title: 'Editar', icon: PencilIcon },
+        { name: 'delete', title: 'Excluir', icon: Trash2Icon },
+    ],
+    form: {
+        initial: {
+            name: null,
+            is_active: null,
+        },
+
+        map: (item: any) => ({
+            name: item.name,
+            is_active: Boolean(item.is_active),
+        }),
+    },
+    tabs: [
+        { name: 'form', label: 'Informações' },
+        { name: 'cost_centers', label: 'Centro de Custo' },
+    ],
+};
+
+const {
+    open,
+    filters,
+    search,
+    clear,
+    selectedItem,
+    tabs,
+    actions,
+    handleAction,
+    handleSave,
+} = useCrud(workSchema);
+
+const filtersProxy = computed({
+    get: () => filters,
+    set: (value) => emit('update:filters', value),
+});
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -54,7 +93,11 @@ const breadcrumbs: BreadcrumbItem[] = [
         <template #header-actions>
             <AppButtonWithModal label="Nova Obra">
                 <template #default="{ close }">
-                    <AppCreateModal :url="url" @success="close" :initialData="{ name: null}">
+                    <AppCreateModal
+                        :url="url"
+                        @success="close"
+                        :initialData="{ name: null }"
+                    >
                         <template #fields="{ form }">
                             <AppInput
                                 v-model="form.name"
@@ -68,50 +111,61 @@ const breadcrumbs: BreadcrumbItem[] = [
             </AppButtonWithModal>
         </template>
 
-        <CrudIndexPage
-            :items="props.works"
-            :columns="columns"
-            :base-url="url"
-            v-model:filters="filters"
-            :search="search"
-            :clear="clear"
-            :initialForm="{
-                name: null,
-                is_active: null,
-            }"
-            :mapToForm="
-                (item) => ({
-                    name: item.name,
-                    is_active: item.is_active,
-                })
-            "
-        >
-            <template #filters>
-                <FilterText
-                    label="Buscar Obra"
-                    name="search_by"
-                    placeholder="Pesquise pelo nome ou algo na descrição"
-                />
-                <FilterTabs
-                    v-if="activeValues?.length"
-                    label="Ativo"
-                    name="is_active"
-                    :tabs="activeValues"
-                />
-            </template>
+        <div class="content-box">
+            <FlashMessage />
 
-            <template #title> Obra </template>
-
-            <template #form="{ item, form }">
-                <AppFormLayout :item="item">
-                    <AppInput
-                        v-model="form.name"
-                        :error="form.errors.name"
-                        label="Name"
+            <form @submit.prevent="search">
+                <AppFilterBar
+                    v-model:filters="filtersProxy"
+                    @change="search"
+                    @clear="clear"
+                >
+                    <FilterText
+                        label="Buscar Obra"
+                        name="search_by"
+                        placeholder="Pesquise pelo nome ou algo na descrição"
                     />
-                    <AppSwitch v-model="form.is_active" label="Ativo" />
-                </AppFormLayout>
-            </template>
-        </CrudIndexPage>
+                    <FilterTabs
+                        v-if="activeValues?.length"
+                        label="Ativo"
+                        name="is_active"
+                        :tabs="activeValues"
+                    />
+                </AppFilterBar>
+            </form>
+
+            <div class="my-4"></div>
+
+            <CrudTable
+                :items="props.works"
+                :columns="columns"
+                :actions="actions"
+                @action="handleAction"
+            />
+            <CrudDrawer
+                v-model:open="open"
+                :tabs="tabs"
+                :item="selectedItem"
+                @save="handleSave"
+            >
+                <template #title> Obra </template>
+
+                <template #form="{ form, item }">
+                    <AppFormLayout :item="item">
+                        <AppInput
+                            v-model="form.name"
+                            :error="form.errors.name"
+                            label="Nome"
+                        />
+
+                        <AppSwitch v-model="form.is_active" label="Ativo" />
+                    </AppFormLayout>
+                </template>
+
+                <template #cost_centers="{ form, item }">
+                    <!-- upload futuro -->
+                </template>
+            </CrudDrawer>
+        </div>
     </AppLayout>
 </template>
