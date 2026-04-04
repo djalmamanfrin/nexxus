@@ -51,7 +51,7 @@ const columns = [
     { key: 'created_at.formatted', label: 'Criado em' },
 ];
 
-const workSchema = {
+const costCenterSchema = {
     entity: 'cost-centers',
     filters: {
         search_by: props.search_by || '',
@@ -93,7 +93,7 @@ const {
     actions,
     handleAction,
     handleSave,
-} = useCrud(workSchema);
+} = useCrud(costCenterSchema);
 
 const emit = defineEmits(['update:filters']);
 const filtersProxy = computed({
