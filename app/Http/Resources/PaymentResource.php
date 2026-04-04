@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Format;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -11,7 +12,10 @@ class PaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'amount' => $this->amount,
+            'amount' => [
+                'value' => $this->amount,
+                'formatted' => Format::money($this->amount),
+            ],
             'payment_method' => $this->payment_method,
             'transaction_id' => $this->transaction_id,
             'end_to_end_id' => $this->end_to_end_id,
