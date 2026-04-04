@@ -15,6 +15,11 @@ return new class extends Migration
                 ->constrained('works')
                 ->cascadeOnDelete();
 
+            $table->foreignId('cost_center_status_id')
+                ->default(1)
+                ->constrained('cost_center_statuses')
+                ->cascadeOnDelete();
+
             $table->foreignId('cost_center_type_id')
                 ->default(1)
                 ->constrained('cost_center_types')
