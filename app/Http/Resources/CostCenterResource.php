@@ -14,13 +14,18 @@ class CostCenterResource extends JsonResource
             'id' => $this->id,
             'code' => $this->code,
             'description' => $this->description,
+            'start_date' => $this->start_date,
+            'expected_end_date' => $this->expected_end_date,
+            'created_at' => $this->created_at,
+            'status' => [
+                'id' => $this->is_concluded,
+                'name' => $this->is_concluded ? 'Concluído' : 'Pendente',
+                'color' => $this->is_concluded ? 'green' : 'gray',
+            ],
             'budget' => [
                 'value' => $this->budget,
                 'currency' => Format::money($this->budget),
             ],
-            'start_date' => $this->start_date,
-            'expected_end_date' => $this->expected_end_date,
-            'created_at' => $this->created_at,
             'work' => $this->whenLoaded('work', function () {
                 return [
                     'id' => $this->work_id,
