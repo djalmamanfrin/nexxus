@@ -38,7 +38,7 @@ const columns = [
         type: 'badge',
         color: 'status.color',
     },
-    { key: 'paid_at', label: 'Pago em' },
+    { key: 'paid_at.formatted', label: 'Pago em' },
     { key: 'created_at', label: 'Criado em' },
 ];
 
@@ -64,7 +64,7 @@ const workSchema = {
             expense_id: item.expense_id ?? null,
             bank_account_id: item.bank_account_id ?? null,
             amount: Number(item.amount.value),
-            paid_at: item.paid_at,
+            paid_at: item.paid_at.value,
         }),
     },
     tabs: [
