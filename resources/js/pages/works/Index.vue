@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useCrud } from '@/composables/useCrud';
 import { type BreadcrumbItem, Work } from '@/types';
 import FilterText from '@/components/filters/FilterText.vue';
@@ -15,6 +15,7 @@ import CrudTable from '@/components/crud/CrudTable.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
+import Fields from '@/pages/cost_centers/Fields.vue';
 
 const props = defineProps<{
     works: {
@@ -94,6 +95,19 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '',
     },
 ];
+
+watch(
+    () => props.works.data,
+    (newWorks) => {
+        if (!selectedItem.value) return;
+
+        const updated = newWorks.find((w) => w.id === selectedItem.value.id);
+
+        if (updated) {
+            selectedItem.value = updated;
+        }
+    },
+);
 </script>
 
 <template>
@@ -179,7 +193,40 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </template>
 
                 <template #cost_centers="{ form, item }">
-                    <!-- upload futuro -->
+                    <AppButtonWithModal
+                        label="Novo C. de Custo"
+                        title="Novo centro de custo"
+                        description="Cadastre centros de custo para organizar suas despesas
+                por categoria e entender melhor para onde seu dinheiro está indo.
+                Isso permite análises mais claras e decisões mais assertivas."
+                    >
+                        <template #default="{ close }">
+                            <AppCreateModal
+                                url="cost-centers"
+                                @success="close"
+                                :initialData="{
+                                    code: null,
+                                    work_id: item.id,
+                                    budget: null,
+                                    cost_center_type_id: null,
+                                    description: null,
+                                }"
+                            >
+                                <template #fields="{ form }">
+                                    <Fields :form="form" />
+                                </template>
+                            </AppCreateModal>
+                        </template>
+                    </AppButtonWithModal>
+                    <div class="my-4"></div>
+                    <CrudTable
+                        :items="item.cost_centers"
+                        :columns="[
+                            { key: 'code', label: 'Código' },
+                            { key: 'budget.formatted', label: 'Orçamento' },
+                        ]"
+                        :actions="[]"
+                    />
                 </template>
             </CrudDrawer>
         </div>
