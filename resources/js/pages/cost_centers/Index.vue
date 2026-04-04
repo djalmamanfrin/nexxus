@@ -63,6 +63,7 @@ const costCenterSchema = {
     form: {
         initial: {
             work_id: null,
+            cost_center_type_id: null,
             code: null,
             budget: null,
             start_date: null,
@@ -72,6 +73,7 @@ const costCenterSchema = {
 
         map: (item: any) => ({
             work_id: item.work?.id ?? null,
+            cost_center_type_id: item.type?.id ?? null,
             code: item.code,
             budget: Number(item.budget.value),
             start_date: item.start_date.value,
