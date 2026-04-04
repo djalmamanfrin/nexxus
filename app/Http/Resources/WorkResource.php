@@ -13,6 +13,7 @@ class WorkResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'code' => $this->code,
+            'is_active' => $this->is_active,
             'active' => [
                 'label' => $this->is_active ? 'Ativo' : 'Inativo',
                 'color' => $this->is_active ? 'green' : 'red',
