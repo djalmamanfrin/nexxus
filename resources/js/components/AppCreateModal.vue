@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
     initialData: () => ({}),
 });
 
-const emit = defineEmits(['success']);
+const emit = defineEmits(['success', 'created']);
 
 const form = useForm({
     ...props.initialData,
