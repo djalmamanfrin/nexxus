@@ -11,7 +11,6 @@ interface Props {
     modelValue?: string | number;
     url: string;
     width?: string;
-    createComponent: any;
     title?: string;
     description?: string;
 }
@@ -55,7 +54,6 @@ const handleCreated = (item: SelectOption) => {
             />
         </div>
 
-        <!-- Select -->
         <AppSelect
             :modelValue="modelValue"
             :url="url"
@@ -64,15 +62,14 @@ const handleCreated = (item: SelectOption) => {
             @selected="emit('selected', $event)"
         />
 
-        <!-- Modal -->
         <AppFormModal
             :open="showModal"
             :title="title"
             :description="description"
             @update:open="showModal = $event"
         >
-            <component
-                :is="createComponent"
+            <slot
+                name="create"
                 @created="handleCreated"
                 @cancel="showModal = false"
             />
