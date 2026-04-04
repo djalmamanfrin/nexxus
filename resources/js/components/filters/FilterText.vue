@@ -54,6 +54,7 @@ onUnmounted(() => {
     <AppInput
         v-model="localValue"
         :label="label"
+        :required="false"
         :placeholder="placeholder"
         :icon="icon"
         :width="width"
