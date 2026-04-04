@@ -45,7 +45,7 @@ const columns = [
     { key: 'cost_center.label', label: 'C. de Custo' },
     { key: 'due_at.formatted', label: 'Vencimento' },
     { key: 'competence_date.formatted', label: 'Competência' },
-    { key: 'created_at', label: 'Criado em' },
+    { key: 'created_at.formatted', label: 'Criado em' },
 ];
 
 const workSchema = {
