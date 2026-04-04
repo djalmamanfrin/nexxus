@@ -224,8 +224,13 @@ watch(
                         :columns="[
                             { key: 'code', label: 'Código' },
                             { key: 'budget.formatted', label: 'Orçamento' },
+                            {
+                                key: 'status.name',
+                                label: 'Status',
+                                type: 'badge',
+                                color: 'status.color',
+                            },
                         ]"
-                        :actions="[]"
                     />
                 </template>
             </CrudDrawer>
