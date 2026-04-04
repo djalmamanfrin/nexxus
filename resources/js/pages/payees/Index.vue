@@ -59,8 +59,7 @@ const workSchema = {
         }),
     },
     tabs: [
-        { name: 'form', label: 'Informações' },
-        { name: 'cost_centers', label: 'Centro de Custo' },
+        { name: 'form', label: 'Informações' }
     ],
 };
 
