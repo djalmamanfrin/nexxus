@@ -42,6 +42,7 @@ class WorkController extends Controller
             'name' => ['required', 'string', 'min:3', 'max:60'],
         ]);
 
+        $validated['code'] = Work::abbreviate($validated['name']);
         $work = Work::create($validated);
 
         return back()->with([
