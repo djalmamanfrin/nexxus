@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             ExpenseStatusSeeder::class,
             PaymentTypeSeeder::class,
             BankSeeder::class,
+            CostCenterStatusSeeder::class,
             CostCenterTypeSeeder::class,
             ExpenseCategorySeeder::class,
         ]);
