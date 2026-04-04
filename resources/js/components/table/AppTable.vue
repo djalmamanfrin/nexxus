@@ -2,7 +2,8 @@
 import Pagination from '@/components/Pagination.vue';
 import { formatDate, formatDateTime } from '@/lib/date';
 import { formatMoney } from '@/lib/money';
-import AppBadge from '@/components/base/AppBadge.vue';
+import AppBadge from '@/components/table/AppBadge.vue';
+import AppAttachment from '@/components/table/AppAttachment.vue';
 export interface Column {
     key: string;
     label: string;
@@ -23,23 +24,6 @@ const getValue = (obj: any, path: string) => {
     if (!obj || !path) return null;
 
     return path.split('.').reduce((acc, key) => acc?.[key], obj);
-};
-
-const formatValue = (item: any, column: Column) => {
-    const value = getValue(item, column.key);
-
-    switch (column.type) {
-        case 'money':
-            return value ? formatMoney(value) : '-';
-        case 'date':
-            return value ? formatDate(value) : '-';
-        case 'datetime':
-            return value ? formatDateTime(value) : '-';
-        case 'boolean':
-            return value ? 'Sim' : 'Não';
-        default:
-            return value ?? '-';
-    }
 };
 const getSlotName = (key: string) => {
     return `cell-${key.replace(/\./g, '_')}`;
@@ -90,13 +74,14 @@ const getAlignClass = (align: string) => {
                         class="table-row-body"
                         :class="getAlignClass(column.align)"
                     >
+                        <AppAttachment v-if="column.type === 'attachment'" :attachments="item[column.key]"/>
                         <AppBadge
-                            v-if="column.type === 'badge'"
+                            v-else-if="column.type === 'badge'"
                             :color="getValue(item, column.color)"
                             :label="getValue(item, column.key)"
                         />
                         <slot v-else :name="getSlotName(column.key)" :item="item">
-                            {{ formatValue(item, column) }}
+                            {{ getValue(item, column.key) }}
                         </slot>
                     </td>
                     <td
