@@ -2,6 +2,7 @@
 import Pagination from '@/components/Pagination.vue';
 import { formatDate, formatDateTime } from '@/lib/date';
 import { formatMoney } from '@/lib/money';
+import AppBadge from '@/components/base/AppBadge.vue';
 export interface Column {
     key: string;
     label: string;
@@ -16,10 +17,6 @@ const props = defineProps<{
         meta?: any;
     };
 }>();
-
-// =======================
-// HELPERS
-// =======================
 
 // dot notation: status.name
 const getValue = (obj: any, path: string) => {
@@ -93,7 +90,12 @@ const getAlignClass = (align: string) => {
                         class="table-row-body"
                         :class="getAlignClass(column.align)"
                     >
-                        <slot :name="getSlotName(column.key)" :item="item">
+                        <AppBadge
+                            v-if="column.type === 'badge'"
+                            :color="getValue(item, column.color)"
+                            :label="getValue(item, column.key)"
+                        />
+                        <slot v-else :name="getSlotName(column.key)" :item="item">
                             {{ formatValue(item, column) }}
                         </slot>
                     </td>
