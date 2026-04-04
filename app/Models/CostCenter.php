@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Casts\DateValueCast;
+use App\Domain\VO\DateValue;
+use App\Support\Logger;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -87,5 +89,18 @@ class CostCenter extends Model
                         ->orWhere('description', 'like', "%$search%");
                 });
         });
+    }
+
+    public function getIsConcludedAttribute(): bool
+    {
+        return $this->isConcluded();
+    }
+
+    private function isConcluded(): bool
+    {
+        return filled($this->code)
+            && $this->budget > 0
+            && $this->start_date?->value() !== null
+            && $this->expected_end_date?->value() !== null;
     }
 }
