@@ -15,6 +15,15 @@ import AppSelect from '@/components/base/AppSelect.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
 import AppInputMoney from '@/components/base/AppInputMoney.vue';
 import Fields from '@/pages/cost_centers/Fields.vue';
+import { PencilIcon, Trash2Icon } from 'lucide-vue-next';
+import { useCrud } from '@/composables/useCrud';
+import { computed } from 'vue';
+import AppFilterBar from '@/components/filters/AppFilterBar.vue';
+import AppSwitch from '@/components/base/AppSwitch.vue';
+import FilterTabs from '@/components/filters/FilterTabs.vue';
+import CrudTable from '@/components/crud/CrudTable.vue';
+import FlashMessage from '@/components/FlashMessage.vue';
+import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 
 const props = defineProps<{
     cost_centers: {
@@ -24,21 +33,62 @@ const props = defineProps<{
     search_by?: string;
 }>();
 
-const url = '/cost-centers';
+const columns = [
+    { key: 'work.name', label: 'Obra', align: 'left' },
+    { key: 'code', label: 'Código' },
+    { key: 'budget.value', label: 'Orçamento' },
+    { key: 'created_at', label: 'Criado em' },
+];
 
-const { filters, search, clear } = useFilters(
-    {
+const workSchema = {
+    entity: 'cost-centers',
+    filters: {
         search_by: props.search_by || '',
     },
-    url,
-);
+    actions: [
+        { name: 'edit', title: 'Editar', icon: PencilIcon },
+        { name: 'delete', title: 'Excluir', icon: Trash2Icon },
+    ],
+    form: {
+        initial: {
+            work_id: null,
+            code: null,
+            budget: null,
+            start_date: null,
+            expected_end_date: null,
+            description: null,
+        },
 
-const columns = [
-    { key: 'work.name', label: 'Obra' },
-    { key: 'code', label: 'Código' },
-    { key: 'budget', label: 'Orçamento', type: 'money' },
-    { key: 'created_at', label: 'Criado em', type: 'datetime' },
-];
+        map: (item: any) => ({
+            work_id: item.work?.id ?? null,
+            code: item.code,
+            budget: Number(item.budget.value),
+            start_date: item.start_date,
+            expected_end_date: item.expected_end_date,
+            description: item.description,
+        }),
+    },
+    tabs: [{ name: 'form', label: 'Informações' }],
+};
+
+const {
+    open,
+    baseUrl,
+    filters,
+    search,
+    clear,
+    selectedItem,
+    tabs,
+    actions,
+    handleAction,
+    handleSave,
+} = useCrud(workSchema);
+
+const emit = defineEmits(['update:filters']);
+const filtersProxy = computed({
+    get: () => filters,
+    set: (value) => emit('update:filters', value),
+});
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -77,47 +127,45 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </template>
             </AppButtonWithModal>
         </template>
-        <CrudIndexPage
-            :items="props.cost_centers"
-            :columns="columns"
-            :base-url="url"
-            v-model:filters="filters"
-            :search="search"
-            :clear="clear"
-            :initialForm="{
-                work_id: null,
-                code: null,
-                budget: null,
-                start_date: null,
-                expected_end_date: null,
-                description: null,
-            }"
-            :mapToForm="
-                (item) => ({
-                    work_id: item.work?.id ?? null,
-                    code: item.code,
-                    budget: item.budget,
-                    start_date: item.start_date,
-                    expected_end_date: item.expected_end_date,
-                    description: item.description,
-                })
-            "
-        >
-            <template #filters>
-                <FilterText
-                    label="Buscar despesa"
-                    name="search_by"
-                    placeholder="CPF, CNPJ ou texto"
-                />
-            </template>
+        <div class="content-box">
+            <FlashMessage />
 
-            <template #title> Centro de Custo </template>
+            <form @submit.prevent="search">
+                <AppFilterBar
+                    v-model:filters="filtersProxy"
+                    @change="search"
+                    @clear="clear"
+                >
+                    <FilterText
+                        label="Buscar despesa"
+                        name="search_by"
+                        placeholder="CPF, CNPJ ou texto"
+                    />
+                </AppFilterBar>
+            </form>
 
-            <template #form="{ item, form }">
-                <AppFormLayout :item="item">
-                    <Fields :form="form" />
-                </AppFormLayout>
-            </template>
-        </CrudIndexPage>
+            <div class="my-4"></div>
+
+            <CrudTable
+                :items="props.cost_centers"
+                :columns="columns"
+                :actions="actions"
+                @action="handleAction"
+            />
+            <CrudDrawer
+                v-model:open="open"
+                :tabs="tabs"
+                :item="selectedItem"
+                @save="handleSave"
+            >
+                <template #title> Centro de Custo </template>
+
+                <template #form="{ item, form }">
+                    <AppFormLayout :item="item">
+                        <Fields :form="form" />
+                    </AppFormLayout>
+                </template>
+            </CrudDrawer>
+        </div>
     </AppLayout>
 </template>
