@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\DateValueCast;
 use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
@@ -43,6 +44,10 @@ class Work extends Model
         'name',
         'code',
         'is_active',
+    ];
+
+    protected $casts = [
+        'created_at' => DateValueCast::class,
     ];
 
     public function costCenters(): HasMany

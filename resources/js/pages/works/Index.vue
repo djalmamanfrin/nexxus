@@ -38,7 +38,7 @@ const columns = [
         type: 'badge',
         color: 'active.color',
     },
-    { key: 'created_at', label: 'Criado em', type: 'datetime' },
+    { key: 'created_at.formatted', label: 'Criado em' },
 ];
 
 const workSchema = {

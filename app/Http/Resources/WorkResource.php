@@ -18,7 +18,7 @@ class WorkResource extends JsonResource
                 'label' => $this->is_active ? 'Ativo' : 'Inativo',
                 'color' => $this->is_active ? 'green' : 'red',
             ],
-            'created_at' => $this->created_at?->toDateString(),
+            'created_at' => $this->created_at,
         ];
     }
 }
