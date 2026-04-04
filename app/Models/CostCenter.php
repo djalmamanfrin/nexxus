@@ -46,6 +46,7 @@ class CostCenter extends Model
 {
     protected $fillable = [
         'work_id',
+        'cost_center_status_id',
         'cost_center_type_id',
         'code',
         'description',
@@ -64,6 +65,11 @@ class CostCenter extends Model
     public function work(): BelongsTo
     {
         return $this->belongsTo(Work::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(CostCenterStatus::class, 'cost_center_status_id');
     }
 
     public function type(): BelongsTo
@@ -89,18 +95,9 @@ class CostCenter extends Model
                         ->orWhere('description', 'like', "%$search%");
                 });
         });
-    }
 
-    public function getIsConcludedAttribute(): bool
-    {
-        return $this->isConcluded();
-    }
-
-    private function isConcluded(): bool
-    {
-        return filled($this->code)
-            && $this->budget > 0
-            && $this->start_date?->value() !== null
-            && $this->expected_end_date?->value() !== null;
+        $query->when($filters['status'] ?? null, function ($query, $status) {
+            $query->where('cost_center_status_id', $status);
+        });
     }
 }
