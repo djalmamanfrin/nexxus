@@ -24,6 +24,7 @@ import FilterTabs from '@/components/filters/FilterTabs.vue';
 import CrudTable from '@/components/crud/CrudTable.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
+import { SelectOption } from '@/types/select';
 
 const props = defineProps<{
     cost_centers: {
@@ -31,13 +32,20 @@ const props = defineProps<{
         links: { url: string | null; label: string; active: boolean }[];
     };
     search_by?: string;
+    statuses?: SelectOption[];
+    status?: string;
 }>();
 
 const columns = [
     { key: 'work.name', label: 'Obra', align: 'left' },
     { key: 'code', label: 'Código' },
     { key: 'budget.value', label: 'Orçamento' },
-    { key: 'status.name', label: 'Status', type: 'badge', color: 'status.color' },
+    {
+        key: 'status.name',
+        label: 'Status',
+        type: 'badge',
+        color: 'status.color',
+    },
     { key: 'start_date.formatted', label: 'Início' },
     { key: 'expected_end_date.formatted', label: 'Término' },
     { key: 'created_at.formatted', label: 'Criado em' },
@@ -143,6 +151,13 @@ const breadcrumbs: BreadcrumbItem[] = [
                         label="Buscar despesa"
                         name="search_by"
                         placeholder="CPF, CNPJ ou texto"
+                    />
+
+                    <FilterTabs
+                        v-if="statuses?.length"
+                        label="Status"
+                        name="is_active"
+                        :tabs="statuses"
                     />
                 </AppFilterBar>
             </form>
