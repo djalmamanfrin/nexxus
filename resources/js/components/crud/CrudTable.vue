@@ -5,10 +5,7 @@ import AppButton from '@/components/AppButton.vue';
 defineProps<{
     items: Object;
     columns: Column[];
-    actions: {
-        type: Array;
-        default: () => [];
-    };
+    actions?: Array;
 }>();
 
 const emit = defineEmits(['action']);
@@ -22,7 +19,7 @@ function handleAction(action, item) {
     <AppTable :columns="columns" :items="items">
         <slot />
 
-        <template #actions="{ item }">
+        <template v-if="actions?.length" #actions="{ item }">
             <AppButton
                 v-for="action in actions"
                 :key="action.name"
