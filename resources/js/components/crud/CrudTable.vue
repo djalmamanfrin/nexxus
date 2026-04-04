@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppTable from '@/components/base/AppTable.vue';
+import AppTable from '@/components/table/AppTable.vue';
 import AppButton from '@/components/AppButton.vue';
 
 defineProps<{
