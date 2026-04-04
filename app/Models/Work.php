@@ -50,6 +50,11 @@ class Work extends Model
         return $this->hasMany(CostCenter::class);
     }
 
+    public function setCodeAttribute(?string $value): void
+    {
+        $this->attributes['code'] = $value ? strtoupper(trim($value)) : null;
+    }
+
     public function scopeFilter($query, $filters): void
     {
         $query->when($filters['search_by'] ?? null, function ($query, $search) {
