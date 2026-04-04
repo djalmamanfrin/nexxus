@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\DateValueCast;
 use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -64,7 +65,7 @@ class Payment extends Model
     ];
 
     protected $casts = [
-        'paid_at' => 'datetime',
+        'paid_at' => DateValueCast::class,
         'amount' => 'decimal:2'
     ];
 
