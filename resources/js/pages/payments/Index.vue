@@ -61,8 +61,8 @@ const workSchema = {
         },
 
         map: (item: any) => ({
-            expense_id: item.expense_id ?? null,
-            bank_account_id: item.bank_account_id ?? null,
+            expense_id: item.expense?.id ?? null,
+            bank_account_id: item.bank_account?.id ?? null,
             amount: Number(item.amount.value),
             paid_at: item.paid_at.value,
         }),
