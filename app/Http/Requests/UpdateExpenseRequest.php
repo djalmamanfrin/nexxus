@@ -11,6 +11,15 @@ class UpdateExpenseRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->competence_date) {
+            $this->merge([
+                'competence_date' => $this->competence_date . '-01',
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [
