@@ -31,7 +31,13 @@ const activeValues = [
 
 const columns = [
     { key: 'name', label: 'Obra', align: 'left' },
-    { key: 'active.label', label: 'Status', type: 'badge', color: 'active.color' },
+    { key: 'code', label: 'Código', type: 'badge' },
+    {
+        key: 'active.label',
+        label: 'Status',
+        type: 'badge',
+        color: 'active.color',
+    },
     { key: 'created_at', label: 'Criado em', type: 'datetime' },
 ];
 
@@ -47,11 +53,13 @@ const workSchema = {
     form: {
         initial: {
             name: null,
+            code: null,
             is_active: null,
         },
 
         map: (item: any) => ({
             name: item.name,
+            code: item.code,
             is_active: Boolean(item.is_active),
         }),
     },
@@ -156,6 +164,13 @@ const breadcrumbs: BreadcrumbItem[] = [
                             v-model="form.name"
                             :error="form.errors.name"
                             label="Nome"
+                        />
+
+                        <AppInput
+                            v-model="form.code"
+                            :error="form.errors.code"
+                            label="Código"
+                            maxlength="5"
                         />
 
                         <AppSwitch v-model="form.is_active" label="Ativo" />
