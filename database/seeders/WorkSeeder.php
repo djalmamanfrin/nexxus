@@ -11,9 +11,8 @@ class WorkSeeder extends Seeder
     public function run(): void
     {
         collect([
-            ['ulid' => Str::ulid(), 'name' => 'Construção Residencial Alpha', 'is_active' => true],
-            ['ulid' => Str::ulid(), 'name' => 'Papelaria Mega', 'is_active' => true],
-            ['ulid' => Str::ulid(), 'name' => 'Reforma Comercial Beta', 'is_active' => false],
+            ['ulid' => Str::ulid(), 'name' => 'Papelaria Mega', 'code' => 'PAPMG', 'is_active' => true],
+            ['ulid' => Str::ulid(), 'name' => 'Reforma Comercial Beta', 'code' => 'RCBET', 'is_active' => false],
         ])->each(fn ($work) => Work::create($work));
     }
 }
