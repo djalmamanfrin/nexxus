@@ -18,11 +18,13 @@ class CostCenterResource extends JsonResource
             'start_date' => $this->start_date,
             'expected_end_date' => $this->expected_end_date,
             'created_at' => $this->created_at,
-            'status' => [
-                'id' => $this->is_concluded,
-                'name' => $this->is_concluded ? 'Concluído' : 'Pendente',
-                'color' => $this->is_concluded ? 'green' : 'gray',
-            ],
+            'status' => $this->whenLoaded('status', function () {
+                return [
+                    'id' => $this->status?->id,
+                    'name' => $this->status?->name,
+                    'color' => $this->status?->color,
+                ];
+            }),
             'budget' => new CurrencyValue($this->budget),
             'work' => $this->whenLoaded('work', function () {
                 return [
@@ -32,7 +34,7 @@ class CostCenterResource extends JsonResource
             }),
             'type' => $this->whenLoaded('type', function () {
                 return [
-                    'id' => $this->type_id,
+                    'id' => $this->type->id,
                     'name' => $this->type?->name,
                 ];
             }),
