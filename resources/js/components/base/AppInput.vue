@@ -7,6 +7,10 @@ const props = defineProps({
     modelValue: [String, Number],
     placeholder: String,
     icon: Function,
+    uppercase: {
+        type: Boolean,
+        default: false,
+    },
     error: {
         type: String,
         default: '',
@@ -34,7 +38,13 @@ defineExpose({
 });
 
 const handleInput = (e) => {
-    emit('update:modelValue', e.target.value);
+    let value = e.target.value;
+    if (props.uppercase) {
+        value = value
+            .replace(/\s+/g, '')
+            .toUpperCase();
+    }
+    emit('update:modelValue', value);
 };
 </script>
 
