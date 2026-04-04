@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { router, useForm } from '@inertiajs/vue3';
-import AppTable, { Column } from '@/components/base/AppTable.vue';
+import AppTable, { Column } from '@/components/table/AppTable.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import SidebarDrawer from '@/components/ui/sidebar/SidebarDrawer.vue';
 import SidebarDrawerTabs from '@/components/ui/sidebar/SidebarDrawerTabs.vue';
