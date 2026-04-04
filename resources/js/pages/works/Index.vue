@@ -75,6 +75,7 @@ const {
     handleSave,
 } = useCrud(workSchema);
 
+const emit = defineEmits(['update:filters']);
 const filtersProxy = computed({
     get: () => filters,
     set: (value) => emit('update:filters', value),
