@@ -2,6 +2,7 @@
 import Pagination from '@/components/Pagination.vue';
 import AppBadge from '@/components/table/AppBadge.vue';
 import AppAttachment from '@/components/table/AppAttachment.vue';
+import TextLink from '@/components/TextLink.vue';
 export interface Column {
     key: string;
     label: string;
@@ -36,6 +37,14 @@ const getAlignClass = (align: string) => {
         default:
             return 'text-center';
     }
+};
+
+const getHref = (column, item) => {
+    if (typeof column.href === 'function') {
+        return column.href(item);
+    }
+
+    return column.href;
 };
 </script>
 
@@ -72,13 +81,27 @@ const getAlignClass = (align: string) => {
                         class="table-row-body"
                         :class="getAlignClass(column.align)"
                     >
-                        <AppAttachment v-if="column.type === 'attachment'" :attachments="item[column.key]"/>
+                        <AppAttachment
+                            v-if="column.type === 'attachment'"
+                            :attachments="item[column.key]"
+                        />
                         <AppBadge
                             v-else-if="column.type === 'badge'"
                             :color="getValue(item, column.color)"
                             :label="getValue(item, column.key)"
                         />
-                        <slot v-else :name="getSlotName(column.key)" :item="item">
+                        <TextLink
+                            :href="getHref(column, item)"
+                            v-else-if="column.type === 'link'"
+                            :label="getValue(item, column.key)"
+                        >
+                            {{ getValue(item, column.key) }}
+                        </TextLink>
+                        <slot
+                            v-else
+                            :name="getSlotName(column.key)"
+                            :item="item"
+                        >
                             {{ getValue(item, column.key) }}
                         </slot>
                     </td>
