@@ -15,7 +15,7 @@ import {
     Contact,
     DollarSign,
     HomeIcon,
-    Wallet,
+    LucideFolderTree,
 } from 'lucide-vue-next';
 
 const items: NavItem[] = [
@@ -23,6 +23,16 @@ const items: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: HomeIcon,
+    },
+    {
+        title: 'Obras',
+        href: '/works',
+        icon: Building2,
+    },
+    {
+        title: 'C. de Custos',
+        href: '/cost-centers',
+        icon: LucideFolderTree,
     },
     {
         title: 'Pagamentos',
@@ -33,16 +43,6 @@ const items: NavItem[] = [
         title: 'Despesas',
         href: '/expenses',
         icon: CircleDollarSignIcon,
-    },
-    {
-        title: 'Obras',
-        href: '/works',
-        icon: Building2,
-    },
-    {
-        title: 'C. de Custos',
-        href: '/cost-centers',
-        icon: Wallet,
     },
     {
         title: 'Beneficiários',
