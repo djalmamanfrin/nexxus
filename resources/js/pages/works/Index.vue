@@ -222,7 +222,12 @@ watch(
                     <CrudTable
                         :items="item.cost_centers"
                         :columns="[
-                            { key: 'code', label: 'Código' },
+                            {
+                              key: 'code',
+                              label: 'Código',
+                              type: 'link',
+                              href: (item) => `/cost-centers?search_by=${item.code}`
+                            },
                             { key: 'budget.formatted', label: 'Orçamento' },
                             {
                                 key: 'status.name',
