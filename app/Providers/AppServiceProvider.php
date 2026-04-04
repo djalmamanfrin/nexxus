@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\CostCenter;
 use App\Models\Expense;
 use App\Models\Payment;
 use App\Observers\CostCenterObserver;
@@ -19,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        Expense::observe(CostCenterObserver::class);
+        CostCenter::observe(CostCenterObserver::class);
         Expense::observe(ExpenseObserver::class);
         Payment::observe(PaymentObserver::class);
     }
