@@ -11,9 +11,9 @@ class DateValue implements JsonSerializable
         protected ?Carbon $date
     ) {}
 
-    public function value(): ?string
+    public function value(string $format = 'Y-m-d'): ?string
     {
-        return $this->date?->toDateTimeString();
+        return $this->date?->format($format);
     }
 
     public function formatted(string $format = 'd/m/Y'): ?string
