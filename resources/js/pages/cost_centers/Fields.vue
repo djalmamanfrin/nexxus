@@ -3,6 +3,7 @@ import AppInput from '@/components/base/AppInput.vue';
 import AppInputMoney from '@/components/base/AppInputMoney.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
 import AppTextarea from '@/components/base/AppTextarea.vue';
+import AppSelect from '@/components/base/AppSelect.vue';
 
 defineProps<{
     form: any;
@@ -15,6 +16,12 @@ defineProps<{
         v-model="form.budget"
         :error="form.errors.budget"
         label="Orçamento"
+    />
+    <AppSelect
+        v-model="form.cost_center_type_id"
+        url="cost-center-types"
+        label="Tipo de Centro de Custo"
+        name="cost_center_type_id"
     />
     <AppInputDate
         v-model="form.start_date"
