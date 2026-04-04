@@ -14,13 +14,13 @@ class PayeeSeeder extends Seeder
             [
                 'ulid' => Str::ulid(),
                 'name' => 'Fornecedor de Materiais Ltda',
-                'document' => '12345678000190',
+                'document' => '99005029000123',
                 'document_type' => 'cnpj'
             ],
             [
                 'ulid' => Str::ulid(),
                 'name' => 'João da Silva',
-                'document' => '12345678900',
+                'document' => '90509006078',
                 'document_type' => 'cpf'
             ]
         ])->each(fn ($payee) => Payee::create($payee));
