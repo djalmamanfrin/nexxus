@@ -16,19 +16,17 @@ import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import Fields from '@/pages/cost_centers/Fields.vue';
+import { SelectOption } from '@/types/select';
 
 const props = defineProps<{
     works: {
         data: Work[];
         links: { url: string | null; label: string; active: boolean }[];
     };
+    active_status: SelectOption[];
+    is_active?: string;
     search_by?: string;
 }>();
-
-const activeValues = [
-    { label: 'Sim', value: 1 },
-    { label: 'Não', value: 0 },
-];
 
 const columns = [
     { key: 'name', label: 'Obra', align: 'left' },
@@ -45,7 +43,8 @@ const columns = [
 const workSchema = {
     entity: 'works',
     filters: {
-        search_by: props.search_by || '',
+        search_by: props.search_by || null,
+        is_active: props.is_active || null,
     },
     actions: [
         { name: 'edit', title: 'Editar', icon: PencilIcon },
@@ -148,10 +147,10 @@ watch(
                         placeholder="Pesquise pelo nome ou algo na descrição"
                     />
                     <FilterTabs
-                        v-if="activeValues?.length"
+                        v-if="active_status?.length"
                         label="Ativo"
                         name="is_active"
-                        :tabs="activeValues"
+                        :tabs="active_status"
                     />
                 </AppFilterBar>
             </form>
