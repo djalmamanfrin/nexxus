@@ -3,6 +3,7 @@
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CostCenterController;
 use App\Http\Controllers\CostCenterTypeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseStatusController;
 use App\Http\Controllers\PayeeController;
@@ -24,9 +25,7 @@ Route::get('/', function () {
 Route::group(['middleware' => 'auth', 'verified'], function () {
 
     // Dashboard
-    Route::get('dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('bank-accounts', BankAccountController::class)
         ->only(['index']);
