@@ -55,6 +55,7 @@ const costCenterSchema = {
     entity: 'cost-centers',
     filters: {
         search_by: props.search_by || '',
+        status: props.status || '',
     },
     actions: [
         { name: 'edit', title: 'Editar', icon: PencilIcon },
@@ -131,7 +132,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <FilterTabs
                         v-if="statuses?.length"
                         label="Status"
-                        name="is_active"
+                        name="status"
                         :tabs="statuses"
                     />
                 </AppFilterBar>
