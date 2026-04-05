@@ -5,74 +5,135 @@ namespace App\Http\Controllers;
 use App\Models\CostCenter;
 use App\Models\Expense;
 use App\Models\Payment;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // ========================
-        // EXPENSES BY WORK
-        // ========================
-        $expensesByWork = Expense::query()
-            ->join('cost_centers', 'expenses.cost_center_id', '=', 'cost_centers.id')
-            ->join('works', 'cost_centers.work_id', '=', 'works.id')
-            ->select(
-                'works.name',
-                DB::raw('SUM(expenses.amount) as total')
-            )
-            ->groupBy('works.name')
-            ->get();
+        $workId = $request->get('work_id');
+        $start = $request->get('start_date');
+        $end   = $request->get('end_date');
 
-        $expensesByCostCenter = Expense::query()
-        ->join('cost_centers', 'expenses.cost_center_id', '=', 'cost_centers.id')
-        ->select(
-            'cost_centers.code as name',
-            DB::raw('SUM(expenses.amount) as total')
-        )
-        ->groupBy('cost_centers.code')
-        ->get();
+        $cacheKey = 'dashboard:' . md5(json_encode($request->all()));
 
-        // ========================
-        // BUDGET BY WORK
-        // ========================
-        $budgetByWork = CostCenter::query()
-            ->join('works', 'cost_centers.work_id', '=', 'works.id')
-            ->select(
-                'works.name',
-                DB::raw('SUM(cost_centers.budget) as total')
-            )
-            ->groupBy('works.name')
-            ->get();
+        $data = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($workId, $start, $end) {
 
-        // ========================
-        // EXPENSES BY MONTH
-        // ========================
-        $expensesByMonth = Expense::query()
-            ->select(
-                DB::raw("DATE_FORMAT(competence_date, '%Y-%m') as month"),
-                DB::raw('SUM(amount) as total')
-            )
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
+            // ========================
+            // BASE QUERY
+            // ========================
+            $expenseBase = Expense::query()
+                ->join('cost_centers', 'expenses.cost_center_id', '=', 'cost_centers.id')
+                ->join('works', 'cost_centers.work_id', '=', 'works.id');
 
-        // ========================
-        // TOTALS
-        // ========================
-        $totals = [
-            'expenses' => Expense::query()->sum('amount'),
-            'payments' => Payment::query()->sum('amount'),
-            'budget'   => CostCenter::query()->sum('budget'),
-        ];
+            if ($workId) {
+                $expenseBase->where('works.id', $workId);
+            }
 
-        return Inertia::render('dashboard/Index', [
-            'expensesByWork' => $expensesByWork,
-            'budgetByWork' => $budgetByWork,
-            'expensesByCostCenter' => $expensesByCostCenter,
-            'expensesByMonth' => $expensesByMonth,
-            'totals' => $totals,
-        ]);
+            if ($start && $end) {
+                $expenseBase->whereBetween('expenses.competence_date', [$start, $end]);
+            }
+
+            // ========================
+            // EXPENSES BY WORK
+            // ========================
+            $expensesByWork = Expense::query()
+                ->join('cost_centers', 'expenses.cost_center_id', '=', 'cost_centers.id')
+                ->join('works', 'cost_centers.work_id', '=', 'works.id')
+                ->select('works.id', 'works.name', DB::raw('SUM(expenses.amount) as total'))
+                ->groupBy('works.id', 'works.name')
+                ->get();
+
+            // ========================
+            // ORÇADO VS REAL
+            // ========================
+            $budgetVsReal = CostCenter::query()
+                ->join('works', 'cost_centers.work_id', '=', 'works.id')
+                ->leftJoin('expenses', 'expenses.cost_center_id', '=', 'cost_centers.id')
+                ->select(
+                    'works.name',
+                    DB::raw('SUM(cost_centers.budget) as budget'),
+                    DB::raw('SUM(expenses.amount) as expenses')
+                )
+                ->groupBy('works.name')
+                ->get();
+
+            // ========================
+            // EXPENSES BY MONTH
+            // ========================
+            $expensesByMonth = (clone $expenseBase)
+                ->select(
+                    DB::raw("DATE_FORMAT(expenses.competence_date, '%Y-%m') as month"),
+                    DB::raw('SUM(expenses.amount) as total')
+                )
+                ->groupBy('month')
+                ->orderBy('month')
+                ->get();
+
+            // ========================
+            // COST CENTER
+            // ========================
+            $expensesByCostCenter = (clone $expenseBase)
+                ->select(
+                    'cost_centers.code as name',
+                    DB::raw('SUM(expenses.amount) as total')
+                )
+                ->groupBy('cost_centers.code')
+                ->get();
+
+            // ========================
+            // PAYEE (FIX)
+            // ========================
+            $expensesByPayee = (clone $expenseBase)
+                ->leftJoin('payees', 'expenses.payee_id', '=', 'payees.id')
+                ->select(
+                    DB::raw('COALESCE(payees.name, "Sem payee") as name'),
+                    DB::raw('SUM(expenses.amount) as total')
+                )
+                ->groupBy('name')
+                ->get();
+
+            // ========================
+            // TOTALS
+            // ========================
+            $totalExpenses = (clone $expenseBase)->sum('expenses.amount');
+            $totalBudget = CostCenter::query()->sum('budget');
+
+            // ========================
+            // BURN RATE
+            // ========================
+            $months = max(1, (clone $expenseBase)->distinct(DB::raw("DATE_FORMAT(expenses.competence_date, '%Y-%m')"))->count());
+            $burnRate = $totalExpenses / $months;
+
+            // ========================
+            // FORECAST
+            // ========================
+            $remaining = $totalBudget - $totalExpenses;
+            $monthsToEnd = $burnRate > 0 ? ($remaining / $burnRate) : 0;
+
+            return [
+                'filters' => [
+                    'work_id' => $workId,
+                    'start_date' => $start,
+                    'end_date' => $end,
+                ],
+                'expensesByWork' => $expensesByWork,
+                'budgetVsReal' => $budgetVsReal,
+                'expensesByCostCenter' => $expensesByCostCenter,
+                'expensesByMonth' => $expensesByMonth,
+                'expensesByPayee' => $expensesByPayee,
+                'totals' => [
+                    'expenses' => $totalExpenses,
+                    'budget' => $totalBudget,
+                    'burn_rate' => $burnRate,
+                    'forecast_months' => $monthsToEnd,
+                ],
+            ];
+        });
+
+        return Inertia::render('dashboard/Index', $data);
     }
 }
