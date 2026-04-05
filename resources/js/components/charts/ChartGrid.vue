@@ -8,6 +8,7 @@ defineProps<{
         data: any;
         options?: any;
         cols?: string;
+        color?: string;
     }[];
 }>();
 </script>

@@ -189,6 +189,7 @@ const budgetProgress = computed(() => [
 ]);
 
 const charts = computed(() => [
+    // ================= BAR =================
     {
         title: 'Despesas por Obra',
         component: BarChart,
@@ -204,12 +205,26 @@ const charts = computed(() => [
         data: budgetChart.value,
         options: defaultOptions,
     },
+    // ================= LINE =================
     {
         title: 'Evolução Mensal',
         component: LineChart,
         data: monthChart.value,
         options: defaultOptions,
         cols: 'lg:col-span-2',
+    },
+    // ================= PIE =================
+    {
+        title: 'Distribuição por Centro de Custo',
+        component: PieChart,
+        data: costCenterChart.value,
+        options: defaultOptions,
+    },
+    {
+        title: 'Payees',
+        component: PieChart,
+        data: payeeChart.value,
+        options: defaultOptions,
     },
 ]);
 </script>
@@ -233,28 +248,6 @@ const charts = computed(() => [
             <BudgetProgress title="Uso do Orçamento" :items="budgetProgress" />
             <!-- ================= GRIDS ================= -->
             <ChartGrid :items="charts" />
-
-            <!-- ================= PIE ================= -->
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <div
-                    class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-                >
-                    <h3 class="chart-title">
-                        Distribuição por Centro de Custo
-                    </h3>
-                    <PieChart
-                        :data="costCenterChart"
-                        :options="defaultOptions"
-                    />
-                </div>
-                <div
-                    class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-                >
-                    <h3 class="mb-4">Payees</h3>
-                    <PieChart :data="payeeChart" :options="defaultOptions" />
-                </div>
-            </div>
-            <div class="my-4"></div>
         </div>
     </AppLayout>
 </template>
