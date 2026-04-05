@@ -5,18 +5,13 @@ namespace App\Http\Controllers;
 use App\Actions\Attachment\AttachFileAction;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Http\Resources\PaymentResource;
-use App\Models\Expense;
-use App\Models\ExpenseStatus;
 use App\Models\Payment;
 use App\Models\PaymentStatus;
-use App\Support\Logger;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
-use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class PaymentController extends Controller

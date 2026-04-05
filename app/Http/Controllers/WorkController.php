@@ -8,7 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Symfony\Component\HttpFoundation\Response;
 
 class WorkController extends Controller
 {
@@ -65,22 +64,6 @@ class WorkController extends Controller
             ],
         ]);
     }
-
-//    public function store(Request $request): JsonResponse
-//    {
-//        $request->validate([
-//            'name' => ['required', 'string', 'min:3', 'max:60'],
-//        ]);
-//
-//        $validated = $request->only('name');
-//        $work = Work::create($validated);
-//
-//        return response()->json([
-//            'field' => 'work_id',
-//            'value' => $work->id,
-//            'label' => $work->name,
-//        ], Response::HTTP_CREATED);
-//    }
 
     public function update(Request  $request, Work $work)
     {

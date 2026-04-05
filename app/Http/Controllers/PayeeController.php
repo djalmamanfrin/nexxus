@@ -56,22 +56,6 @@ class PayeeController extends Controller
         ]);
     }
 
-//    public function store(Request $request): JsonResponse
-//    {
-//        $request->validate([
-//            'name' => ['required', 'string', 'min:3', 'max:255'],
-//        ]);
-//
-//        $validated = $request->only('name');
-//        $payee = Payee::create($validated);
-//
-//        return response()->json([
-//            'field' => 'payee_id',
-//            'value' => $payee->id,
-//            'label' => $payee->name,
-//        ], Response::HTTP_CREATED);
-//    }
-
     public function update(PayeesRequest $request, Payee $payee)
     {
         $data = $request->validated();

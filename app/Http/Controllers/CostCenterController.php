@@ -7,12 +7,10 @@ use App\Http\Requests\UpdateCostCenterRequest;
 use App\Http\Resources\CostCenterResource;
 use App\Models\CostCenter;
 use App\Models\CostCenterStatus;
-use App\Support\Logger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Symfony\Component\HttpFoundation\Response;
 
 class CostCenterController extends Controller
 {
