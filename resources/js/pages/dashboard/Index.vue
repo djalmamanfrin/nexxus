@@ -150,18 +150,30 @@ const kpis = computed(() => [
     {
         title: 'Despesas',
         value: money(props.totals.expenses),
+        tooltip:
+            'Total de despesas registradas no período selecionado. ' +
+            'Representa o valor já comprometido.',
     },
     {
         title: 'Orçamentos',
         value: money(props.totals.budget),
+        tooltip:
+            'Soma dos orçamentos definidos para os centros de custo. ' +
+            'Usado como limite planejado de gastos.',
     },
     {
-        title: 'Gasto médio por periodo',
+        title: 'Gasto médio por período',
         value: money(props.totals.burn_rate),
+        tooltip:
+            'Valor médio de despesas por mês. ' +
+            'Indica a velocidade de consumo do orçamento.',
     },
     {
         title: 'Previsão',
         value: `${props.totals.forecast_months.toFixed(1)} meses`,
+        tooltip:
+            'Estimativa de quantos meses o orçamento atual ainda suporta, ' +
+            'com base no ritmo médio de gastos (burn rate).',
     },
 ]);
 
