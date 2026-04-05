@@ -1,25 +1,12 @@
 <script setup lang="ts">
 import { type BreadcrumbItem, CostCenter } from '@/types';
 import FilterText from '@/components/filters/FilterText.vue';
-import { useFilters } from '@/composables/useFilters';
-import CrudIndexPage from '@/pages/CrudIndexPage.vue';
 import AppFormLayout from '@/components/base/AppFormLayout.vue';
-import AppInput from '@/components/base/AppInput.vue';
-import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
-import CreateWork from '@/pages/works/CreateWork.vue';
-import AppTextarea from '@/components/base/AppTextarea.vue';
-import AppCreateModal from '@/components/AppCreateModal.vue';
-import AppLayout from '@/layouts/AppLayout.vue';
-import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
-import AppSelect from '@/components/base/AppSelect.vue';
-import AppInputDate from '@/components/base/AppInputDate.vue';
-import AppInputMoney from '@/components/base/AppInputMoney.vue';
 import Fields from '@/pages/cost_centers/Fields.vue';
 import { PencilIcon, Trash2Icon } from 'lucide-vue-next';
 import { useCrud } from '@/composables/useCrud';
 import { computed } from 'vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
-import AppSwitch from '@/components/base/AppSwitch.vue';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
 import CrudTable from '@/components/crud/CrudTable.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
