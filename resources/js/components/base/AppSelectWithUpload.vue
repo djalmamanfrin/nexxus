@@ -4,6 +4,7 @@ import { UploadCloudIcon } from 'lucide-vue-next';
 import AppSelect from './AppSelect.vue';
 import { SelectOption } from '@/types/select';
 import AppUploadModal from '@/components/base/AppUploadModal.vue';
+import AppLabel from '@/components/base/AppLabel.vue';
 
 interface Props {
     label?: string;
@@ -34,6 +35,8 @@ const handleCreated = (item: SelectOption) => {
 <template>
     <div class="flex w-full flex-col" :class="width">
         <div class="flex items-center justify-between">
+            <AppLabel :label="label" :required="required" />
+
             <AppUploadModal
                 @created="handleCreated"
                 url="expenses"
@@ -45,7 +48,6 @@ const handleCreated = (item: SelectOption) => {
         </div>
 
         <AppSelect
-            :label="label"
             :modelValue="modelValue"
             :url="url"
             :options="options.length ? options : undefined"
