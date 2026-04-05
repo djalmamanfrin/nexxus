@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import { useCrud } from '@/composables/useCrud';
-import { type BreadcrumbItem, Work } from '@/types';
+import { type BreadcrumbItem, CostCenter, Work } from '@/types';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFormLayout from '@/components/base/AppFormLayout.vue';
 import AppInput from '@/components/base/AppInput.vue';
@@ -222,10 +222,11 @@ watch(
                         :items="item.cost_centers"
                         :columns="[
                             {
-                              key: 'code',
-                              label: 'Código',
-                              type: 'link',
-                              href: (item) => `/cost-centers?search_by=${item.code}`
+                                key: 'type.code',
+                                label: 'Código',
+                                type: 'link',
+                                href: (item) =>
+                                    `/cost-centers?search_by=${item.code}`,
                             },
                             { key: 'budget.formatted', label: 'Orçamento' },
                             {
