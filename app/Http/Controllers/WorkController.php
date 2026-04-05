@@ -15,7 +15,9 @@ class WorkController extends Controller
     public function index(Request $request)
     {
         $works = Work::query()
-            ->with('costCenters')
+            ->with([
+                'costCenters.status',
+            ])
             ->filter($request->all())
             ->latest()
             ->paginate(10)
