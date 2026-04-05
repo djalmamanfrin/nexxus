@@ -13,7 +13,6 @@ class CostCenterResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'code' => $this->code,
             'description' => $this->description,
             'start_date' => $this->start_date,
             'expected_end_date' => $this->expected_end_date,
@@ -36,6 +35,7 @@ class CostCenterResource extends JsonResource
                 return [
                     'id' => $this->type->id,
                     'name' => $this->type?->name,
+                    'code' => $this->type?->code,
                 ];
             }),
         ];
