@@ -17,24 +17,10 @@ class StoreCostCenterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'work_id' => ['required', 'integer', 'exists:works,id'],
-            'cost_center_type_id' => ['required', 'integer', 'exists:cost_center_types,id'],
             'budget' => ['required', 'numeric', 'min:0.01', 'max:99999.99'],
             'start_date' => ['nullable', 'date'],
             'expected_end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
-            'description' => ['nullable', 'string'],
-            'code' => [
-                'required',
-                'string',
-                'min:3',
-                'max:12',
-                function ($attribute, $value, $fail) {
-                    if (str_word_count($value) > 1) {
-                        $fail('O status não deve conter espaços.');
-                    }
-                },
-                Rule::unique('cost_centers', 'code')
-            ]
+            'description' => ['nullable', 'string']
         ];
     }
 
