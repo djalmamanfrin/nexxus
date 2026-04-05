@@ -159,6 +159,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                             v-model="form.reference"
                             :error="form.errors.reference"
                             label="Referencia"
+                            :required="false"
                         />
                         <AppInputMoney
                             v-model="form.amount"
