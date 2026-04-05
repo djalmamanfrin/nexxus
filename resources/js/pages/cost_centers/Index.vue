@@ -77,10 +77,7 @@ const costCenterSchema = {
             description: item.description,
         }),
     },
-    tabs: [
-        { name: 'form', label: 'Informações' },
-        { name: 'cost_center_types', label: 'Tipos' },
-    ],
+    tabs: [{ name: 'form', label: 'Informações' }],
 };
 
 const {
@@ -156,37 +153,6 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <AppFormLayout :item="item">
                         <Fields :form="form" />
                     </AppFormLayout>
-                </template>
-                <template #cost_center_types="{ form, item }">
-                    <AppButtonWithModal
-                        label="Novo tipo de centro de custo"
-                        title="Novo tipo de centro de custo"
-                        description=""
-                    >
-                        <template #default="{ close }">
-                            <AppCreateModal
-                                url="cost-center-types"
-                                @success="close"
-                                :initialData="{
-                                    cost_center_type_id: item.id,
-                                    code: null,
-                                    name: null,
-                                }"
-                            >
-                                <template #fields="{ form }">
-                                    <TypeFields :form="form" />
-                                </template>
-                            </AppCreateModal>
-                        </template>
-                    </AppButtonWithModal>
-                    <div class="my-4"></div>
-                    <CrudTable
-                        :items="props.types"
-                        :columns="[
-                            { key: 'code', label: 'Código', type: 'badge' },
-                            { key: 'name', label: 'Nome' },
-                        ]"
-                    />
                 </template>
             </CrudDrawer>
         </div>
