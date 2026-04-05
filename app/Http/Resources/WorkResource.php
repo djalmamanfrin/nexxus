@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Domain\VO\CurrencyValue;
+use App\Models\CostCenter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
