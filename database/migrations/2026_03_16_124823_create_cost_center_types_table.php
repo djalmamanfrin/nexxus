@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code', 60)->unique();
-            $table->boolean('active')->default(true);
+            $table->boolean('is_active')->default(true);
             $table->text('description')->nullable();
             $table->timestamps();
         });
