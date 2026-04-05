@@ -5,6 +5,7 @@ defineProps<{
     items: {
         title: string;
         value: string | number;
+        tooltip?: string;
     }[];
 }>();
 </script>
@@ -16,6 +17,7 @@ defineProps<{
             :key="index"
             :title="item.title"
             :value="item.value"
+            :tooltip="item.tooltip"
         />
     </div>
     <div class="my-4"></div>
