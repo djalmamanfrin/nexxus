@@ -40,11 +40,7 @@ class ExpenseController extends Controller
         $expensesEligible = Expense::query()
             ->where('expense_status_id', '=', ExpenseStatus::DONE)
             ->where('amount', '=', $payment->amount)
-            ->where(function ($query) use ($payment) {
-                $query
-                    ->whereDoesntHave('payments')
-                    ->orWhere('id', $payment->expense_id);
-            })
+            ->orWhere('id', $payment->expense_id)
             ->get()
             ->map(fn ($expense) => [
                 'value' => $expense->id,
