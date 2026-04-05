@@ -20,7 +20,6 @@ class StoreCostCenterRequest extends FormRequest
             'budget' => ['required', 'numeric', 'min:0.01', 'max:99999.99'],
             'start_date' => ['nullable', 'date'],
             'expected_end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
-            'description' => ['nullable', 'string']
         ];
     }
 

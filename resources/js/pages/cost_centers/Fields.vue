@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AppInputMoney from '@/components/base/AppInputMoney.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
-import AppTextarea from '@/components/base/AppTextarea.vue';
 import AppSelect from '@/components/base/AppSelect.vue';
 
 defineProps<{
@@ -30,11 +29,5 @@ defineProps<{
         v-model="form.expected_end_date"
         :error="form.errors.expected_end_date"
         label="Expectativa de término em"
-    />
-    <AppTextarea
-        v-model="form.description"
-        :error="form.errors.description"
-        label="Descrição"
-        placeholder="Uma descrição que ajuda a identificar o centro de custo"
     />
 </template>
