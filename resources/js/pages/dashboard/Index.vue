@@ -156,7 +156,7 @@ const kpis = computed(() => [
         value: money(props.totals.budget),
     },
     {
-        title: 'Burn Rate',
+        title: 'Gasto médio por periodo',
         value: money(props.totals.burn_rate),
     },
     {
