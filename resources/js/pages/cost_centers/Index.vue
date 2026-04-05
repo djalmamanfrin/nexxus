@@ -77,7 +77,10 @@ const costCenterSchema = {
             description: item.description,
         }),
     },
-    tabs: [{ name: 'form', label: 'Informações' }],
+    tabs: [
+        { name: 'form', label: 'Informações' },
+        { name: 'cost_center_types', label: 'Tipos' },
+    ],
 };
 
 const {
@@ -153,6 +156,16 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <AppFormLayout :item="item">
                         <Fields :form="form" />
                     </AppFormLayout>
+                </template>
+                <template #cost_center_types="{ form, item }">
+                    <CrudTable
+                        :items="props.types"
+                        :columns="[
+                            { key: 'code', label: 'Código', type: 'badge' },
+                            { key: 'name', label: 'Nome' },
+                            { key: 'active.label', label: 'Ativo', type: 'badge', color: 'active.color' },
+                        ]"
+                    />
                 </template>
             </CrudDrawer>
         </div>
