@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AppInput from '@/components/base/AppInput.vue';
 import AppInputMoney from '@/components/base/AppInputMoney.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
 import AppTextarea from '@/components/base/AppTextarea.vue';
@@ -11,7 +10,6 @@ defineProps<{
 </script>
 
 <template>
-    <AppInput v-model="form.code" :error="form.errors.code" label="Código" />
     <AppInputMoney
         v-model="form.budget"
         :error="form.errors.budget"
