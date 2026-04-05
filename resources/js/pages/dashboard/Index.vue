@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { Head, router } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import BarChart from '@/components/charts/BarChart.vue';
 import LineChart from '@/components/charts/LineChart.vue';
@@ -8,40 +9,46 @@ import { defaultOptions } from '@/lib/charts/options';
 import { createDataset } from '@/lib/charts/dataset';
 
 const props = defineProps<{
-    expensesByWork: { name: string; total: number }[];
-    expensesByCostCenter: { name: string; total: number }[];
-    expensesByMonth: { month: string; total: number }[];
-    totals: {
-        expenses: number;
-        payments: number;
-        budget: number;
-    };
+    filters: any;
+    expensesByWork: any[];
+    budgetVsReal: any[];
+    expensesByCostCenter: any[];
+    expensesByMonth: any[];
+    expensesByPayee: any[];
+    totals: any;
 }>();
 
-// ============================
-// FORMAT
-// ============================
-
-const money = (value: number) =>
+const money = (v: number) =>
     new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL',
-    }).format(value);
+    }).format(v);
 
-// ============================
-// KPI
-// ============================
+// ================= FILTER =================
 
-const percentUsed = computed(() => {
-    if (!props.totals.budget) return 0;
-    return (props.totals.expenses / props.totals.budget) * 100;
-});
+const applyFilter = (filters) => {
+    router.get('/dashboard', filters, {
+        preserveState: true,
+        replace: true,
+    });
+};
 
-// ============================
-// CHARTS
-// ============================
+// ================= CLICK CHART =================
 
-// BAR
+const handleWorkClick = (_, elements) => {
+    if (!elements.length) return;
+
+    const index = elements[0].index;
+    const work = props.expensesByWork[index];
+
+    applyFilter({
+        ...props.filters,
+        work_id: work.id,
+    });
+};
+
+// ================= CHARTS =================
+
 const workChart = computed(() => ({
     labels: props.expensesByWork.map((i) => i.name),
     datasets: [
@@ -53,13 +60,28 @@ const workChart = computed(() => ({
     ],
 }));
 
-// LINE (com gradiente)
+const budgetChart = computed(() => ({
+    labels: props.budgetVsReal.map((i) => i.name),
+    datasets: [
+        createDataset(
+            'Orçado',
+            props.budgetVsReal.map((i) => i.budget),
+            'warning',
+        ),
+        createDataset(
+            'Real',
+            props.budgetVsReal.map((i) => i.expenses),
+            'danger',
+        ),
+    ],
+}));
+
 const monthChart = computed(() => ({
     labels: props.expensesByMonth.map((i) => i.month),
     datasets: [
         {
             ...createDataset(
-                'Despesas mensais',
+                'Mensal',
                 props.expensesByMonth.map((i) => i.total),
                 'success',
             ),
@@ -87,7 +109,6 @@ const monthChart = computed(() => ({
     ],
 }));
 
-// PIE
 const costCenterChart = computed(() => ({
     labels: props.expensesByCostCenter.map((i) => i.name),
     datasets: [
@@ -104,13 +125,45 @@ const costCenterChart = computed(() => ({
         },
     ],
 }));
+
+const payeeChart = computed(() => ({
+    labels: props.expensesByPayee.map((i) => i.name),
+    datasets: [
+        {
+            data: props.expensesByPayee.map((i) => i.total),
+            backgroundColor: [
+                '#3B82F6',
+                '#10B981',
+                '#F59E0B',
+                '#EF4444',
+                '#8B5CF6',
+                '#06B6D4',
+            ],
+        },
+    ],
+}));
+
+const percentUsed = computed(() => {
+    if (!props.totals.budget) return 0;
+    return (props.totals.expenses / props.totals.budget) * 100;
+});
 </script>
 
 <template>
+    <Head title="Obras" />
     <AppLayout>
-        <div class="space-y-6">
+        <div class="content-box">
+            <!-- ================= FILTER ================= -->
+            <div class="flex gap-3">
+                <input type="date" v-model="filters.start_date" class="input" />
+                <input type="date" v-model="filters.end_date" class="input" />
+                <button @click="applyFilter(filters)" class="btn">
+                    Filtrar
+                </button>
+            </div>
+            <div class="my-4"></div>
             <!-- ================= KPI ================= -->
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
                 <div
                     class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
                 >
@@ -128,20 +181,7 @@ const costCenterChart = computed(() => ({
                     class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
                 >
                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Pagamentos
-                    </p>
-                    <h2
-                        class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white"
-                    >
-                        {{ money(totals.payments) }}
-                    </h2>
-                </div>
-
-                <div
-                    class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-                >
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Orçamento
+                        Orçamentos
                     </p>
                     <h2
                         class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white"
@@ -149,8 +189,33 @@ const costCenterChart = computed(() => ({
                         {{ money(totals.budget) }}
                     </h2>
                 </div>
-            </div>
 
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+                >
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Burn Rate
+                    </p>
+                    <h2
+                        class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white"
+                    >
+                        {{ money(totals.burn_rate) }}
+                    </h2>
+                </div>
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+                >
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Previsão
+                    </p>
+                    <h2
+                        class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white"
+                    >
+                        {{ totals.forecast_months.toFixed(1) }} meses
+                    </h2>
+                </div>
+            </div>
+            <div class="my-4"></div>
             <!-- ================= PROGRESS ================= -->
             <div
                 class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
@@ -173,30 +238,51 @@ const costCenterChart = computed(() => ({
                     />
                 </div>
             </div>
-
+            <div class="my-4"></div>
             <!-- ================= GRIDS ================= -->
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <!-- BAR -->
                 <div
-                    class="h-[350px] rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+                    class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
                 >
                     <h3 class="chart-title">Despesas por Obra</h3>
-                    <BarChart :data="workChart" :options="defaultOptions" />
+                    <BarChart
+                        :data="workChart"
+                        :options="{
+                            ...defaultOptions,
+                            onClick: handleWorkClick,
+                        }"
+                    />
                 </div>
 
-                <!-- LINE -->
+                <!-- ================= ORÇADO VS REAL ================= -->
                 <div
-                    class="h-[350px] rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+                    class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+                >
+                    <h3 class="mb-4">Orçado vs Real</h3>
+                    <BarChart
+                        :data="budgetChart"
+                        :options="defaultOptions"
+                    />
+                </div>
+            </div>
+            <div class="my-4"></div>
+
+            <!-- LINE -->
+            <div class="grid grid-cols-1 gap-6">
+                <div
+                    class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
                 >
                     <h3 class="chart-title">Evolução Mensal</h3>
                     <LineChart :data="monthChart" :options="defaultOptions" />
                 </div>
             </div>
+            <div class="my-4"></div>
 
             <!-- ================= PIE ================= -->
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <div
-                    class="h-[350px] rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+                    class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
                 >
                     <h3 class="chart-title">
                         Distribuição por Centro de Custo
@@ -206,7 +292,17 @@ const costCenterChart = computed(() => ({
                         :options="defaultOptions"
                     />
                 </div>
+                <div
+                    class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+                >
+                    <h3 class="mb-4">Payees</h3>
+                    <PieChart
+                        :data="payeeChart"
+                        :options="defaultOptions"
+                    />
+                </div>
             </div>
+            <div class="my-4"></div>
         </div>
     </AppLayout>
 </template>
