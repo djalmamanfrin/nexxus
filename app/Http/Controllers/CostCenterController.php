@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CostCenters\StoreCostCenterRequest;
 use App\Http\Requests\UpdateCostCenterRequest;
 use App\Http\Resources\CostCenterResource;
+use App\Http\Resources\CostCenterTypeResource;
 use App\Models\CostCenter;
 use App\Models\CostCenterStatus;
+use App\Models\CostCenterType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,6 +27,7 @@ class CostCenterController extends Controller
 
         return Inertia::render('cost_centers/Index', [
             'cost_centers' => CostCenterResource::collection($costCenters),
+            'types' => CostCenterTypeResource::collection(CostCenterType::paginate()),
             'statuses' => CostCenterStatus::select('id as value', 'name as label', 'color')->get(),
             'search_by' => $request->search_by,
             'status' => $request->status,
