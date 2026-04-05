@@ -36,11 +36,11 @@ class CostCenterController extends Controller
 
     public function options(): JsonResponse
     {
-        $costCenters = CostCenter::with('work')
+        $costCenters = CostCenter::with('work', 'type')
             ->get()
             ->map(fn ($cc) => [
                 'value' => $cc->id,
-                'label' => "{$cc->work->name} - {$cc->code}",
+                'label' => "{$cc->work->name} - {$cc->type->code}",
             ]);
 
         return response()->json($costCenters);
