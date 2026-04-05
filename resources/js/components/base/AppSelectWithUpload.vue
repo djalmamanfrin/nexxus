@@ -24,8 +24,7 @@ const emit = defineEmits(['update:modelValue', 'created', 'selected']);
 const options = ref<SelectOption[]>([]);
 
 const handleCreated = (item: SelectOption) => {
-    console.log('handleCreated', item);
-    options.value.push(item);
+    options.value = [...options.value, item];
 
     emit('update:modelValue', item.value);
     emit('created', item);
