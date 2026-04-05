@@ -25,7 +25,6 @@ return new class extends Migration
                 ->constrained('cost_center_types')
                 ->cascadeOnDelete();
 
-            $table->text('description')->nullable();
             $table->date('start_date')->nullable();
             $table->date('expected_end_date')->nullable();
             $table->decimal('budget', 14, 2)->nullable();
