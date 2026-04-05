@@ -51,7 +51,11 @@ function normalize(value) {
         <!-- Filtros ativos -->
         <template v-for="(value, key) in filters" :key="key">
             <span
-                v-if="value"
+                v-if="
+                    value !== '' &&
+                    value !== null &&
+                    value !== undefined
+                "
                 class="inline-flex items-center gap-1 rounded bg-gray-200 px-2 py-1 dark:bg-gray-800"
             >
                 <span class="text-gray-500 dark:text-gray-400">
