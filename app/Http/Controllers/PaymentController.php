@@ -53,14 +53,7 @@ class PaymentController extends Controller
             return $payment;
         });
 
-        return back()->with([
-            'success' => 'Pagamento anexado com sucesso',
-            'created' => [
-                'field' => 'payment_id',
-                'value' => $payment->id,
-                'label' => $attachment->original_name,
-            ],
-        ]);
+        return back()->with(['success' => 'Pagamento anexado com sucesso']);
     }
 
     public function update(UpdatePaymentRequest $request, Payment $payment): RedirectResponse

@@ -53,16 +53,9 @@ class WorkController extends Controller
             $validated['code'] = Work::abbreviate($validated['name']);
         }
 
-        $work = Work::create($validated);
+        Work::create($validated);
 
-        return back()->with([
-            'success' => 'Obra criada com sucesso',
-            'created' => [
-                'field' => 'work_id',
-                'value' => $work->id,
-                'label' => $work->name,
-            ],
-        ]);
+        return back()->with(['success' => 'Obra criada com sucesso']);
     }
 
     public function update(Request  $request, Work $work)

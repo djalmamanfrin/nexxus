@@ -70,14 +70,7 @@ class ExpenseController extends Controller
             return $expense;
         });
 
-        return back()->with([
-            'success' => 'Despesa anexado com sucesso',
-            'created' => [
-                'field' => 'expense_id',
-                'value' => $expense->id,
-                'label' => $attachment->original_name,
-            ],
-        ]);
+        return back()->with(['success' => 'Despesa anexado com sucesso']);
     }
 
     public function update(UpdateExpenseRequest  $request, Expense $expense)

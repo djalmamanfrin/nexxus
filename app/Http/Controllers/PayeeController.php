@@ -43,16 +43,9 @@ class PayeeController extends Controller
             $data['pix_key_type'] = $data['document_type'];
         }
 
-        $payee = Payee::create($data);
+        Payee::create($data);
 
-        return back()
-            ->with([
-            'success' => 'Beneficiário criado com sucesso',
-            'created' => [
-                'field' => 'payee_id',
-                'value' => $payee->id,
-                'label' => $payee->name,
-            ],
+        return back()->with(['success' => 'Beneficiário criado com sucesso',
         ]);
     }
 
