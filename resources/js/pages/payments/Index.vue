@@ -167,7 +167,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 ({ field, value }) => (form[field] = value)
                             "
                             :url="`/expenses/${item.id}/payment-options`"
-                            label="Despesa"
+                            label="Despesa com mesmo valor"
                             name="expense_id"
                             width="w-56"
                         />
