@@ -169,8 +169,8 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 @success="close"
                                 :initialData="{
                                     cost_center_type_id: item.id,
-                                    name: null,
                                     code: null,
+                                    name: null,
                                 }"
                             >
                                 <template #fields="{ form }">
@@ -183,8 +183,8 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <CrudTable
                         :items="props.types"
                         :columns="[
+                            { key: 'code', label: 'Código', type: 'badge' },
                             { key: 'name', label: 'Nome' },
-                            { key: 'code', label: 'Código' },
                         ]"
                     />
                 </template>
