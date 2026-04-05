@@ -210,12 +210,22 @@ const charts = computed(() => [
             ...defaultOptions,
             onClick: handleWorkClick,
         },
+        icon: 'info',
+        tooltip:
+            'Apresenta o total de despesas agrupadas por obra no período ' +
+            'selecionado. Permite identificar quais projetos consomem mais ' +
+            'recursos e priorizar análises.',
     },
     {
         title: 'Orçado vs Real',
         component: BarChart,
         data: budgetChart.value,
         options: defaultOptions,
+        icon: 'info',
+        tooltip:
+            'Apresenta o total de despesas agrupadas por obra no período ' +
+            'selecionado. Permite identificar quais projetos consomem mais ' +
+            'recursos e priorizar análises.',
     },
     // ================= LINE =================
     {
@@ -224,6 +234,11 @@ const charts = computed(() => [
         data: monthChart.value,
         options: defaultOptions,
         cols: 'lg:col-span-2',
+        icon: 'info',
+        tooltip:
+            'Compara o valor orçado com o valor efetivamente gasto por obra. ' +
+            'Diferenças indicam desvios do planejamento e ajudam a identificar ' +
+            'excessos ou economias.',
     },
     // ================= PIE =================
     {
@@ -231,12 +246,21 @@ const charts = computed(() => [
         component: PieChart,
         data: costCenterChart.value,
         options: defaultOptions,
+        icon: 'info',
+        tooltip:
+            'Mostra a evolução das despesas ao longo do tempo, com base na ' +
+            'data de competência. Ajuda a identificar tendências, picos de ' +
+            'gasto e mudanças no comportamento financeiro.',
     },
     {
-        title: 'Payees',
+        title: 'Parceiros',
         component: PieChart,
         data: payeeChart.value,
         options: defaultOptions,
+        icon: 'info',
+        tooltip:
+            'Apresenta a distribuição de despesas por parceiro ou fornecedor. ' +
+            'Ajuda a identificar concentração de gastos e principais responsáveis pelos custos.',
     },
 ]);
 </script>

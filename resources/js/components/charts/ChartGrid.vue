@@ -9,6 +9,8 @@ defineProps<{
         options?: any;
         cols?: string;
         color?: string;
+        icon?: string;
+        tooltip?: string;
     }[];
 }>();
 </script>
@@ -20,6 +22,8 @@ defineProps<{
             :key="index"
             :title="item.title"
             :class="item.cols"
+            :icon="item.icon"
+            :tooltip="item.tooltip"
         >
             <component
                 :is="item.component"
