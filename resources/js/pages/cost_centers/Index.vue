@@ -112,6 +112,32 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
+        <template #header-actions>
+            <AppButtonWithModal
+                label="Novo tipo de centro de custo"
+                title="Novo tipo de custo da obra"
+                description="Os tipos são definidos globalmente e aplicados
+                    automaticamente, permitindo organizar despesas e acompanhar
+                    o orçamento de forma padronizada."
+            >
+                <template #default="{ close }">
+                    <AppCreateModal
+                        url="/cost-center-types"
+                        @success="close"
+                        :initialData="{
+                            name: null,
+                            code: null,
+                            is_active: Boolean(1),
+                            description: null,
+                        }"
+                    >
+                        <template #fields="{ form }">
+                            <TypeFields :form="form" />
+                        </template>
+                    </AppCreateModal>
+                </template>
+            </AppButtonWithModal>
+        </template>
         <div class="content-box">
             <FlashMessage />
 
@@ -163,7 +189,12 @@ const breadcrumbs: BreadcrumbItem[] = [
                         :columns="[
                             { key: 'code', label: 'Código', type: 'badge' },
                             { key: 'name', label: 'Nome' },
-                            { key: 'active.label', label: 'Ativo', type: 'badge', color: 'active.color' },
+                            {
+                                key: 'active.label',
+                                label: 'Ativo',
+                                type: 'badge',
+                                color: 'active.color',
+                            },
                         ]"
                     />
                 </template>
