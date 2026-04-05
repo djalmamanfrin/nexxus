@@ -8,5 +8,7 @@ defineProps<{
 </script>
 
 <template>
-    <Pie :data="data" :options="options" />
+    <div class="relative h-[350px] w-full">
+        <Pie :data="data" :options="options" />
+    </div>
 </template>

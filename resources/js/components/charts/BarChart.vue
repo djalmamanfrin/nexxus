@@ -8,5 +8,7 @@ defineProps<{
 </script>
 
 <template>
-    <Bar :data="data" :options="options" />
+    <div class="relative h-[350px] w-full">
+        <Bar :data="data" :options="options" />
+    </div>
 </template>
