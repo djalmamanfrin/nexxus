@@ -257,7 +257,14 @@ const charts = computed(() => [
             <!-- ================= KPI ================= -->
             <KpiGrid :items="kpis" />
             <!-- ================= PROGRESS ================= -->
-            <BudgetProgress title="Uso do Orçamento" :items="budgetProgress" />
+            <BudgetProgress
+                title="Uso do Orçamento"
+                :items="budgetProgress"
+                icon="info"
+                tooltip="Compara despesas e pagamentos com o orçamento total.
+                    Ajuda a entender quanto já foi consumido e o quanto ainda
+                    está disponível."
+            />
             <!-- ================= GRIDS ================= -->
             <ChartGrid :items="charts" />
         </div>

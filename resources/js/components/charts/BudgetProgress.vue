@@ -1,6 +1,11 @@
 <script setup lang="ts">
+import AppTooltip from '@/components/base/AppTooltip.vue';
+import AppLabel from '@/components/base/AppLabel.vue';
+
 defineProps<{
     title: string;
+    tooltip?: string;
+    icon?: string;
     items: {
         label: string;
         value: number; // percentual (0–100)
@@ -13,14 +18,11 @@ defineProps<{
     <div
         class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
     >
-        <!-- HEADER -->
-        <div class="mb-3">
-            <span class="text-sm text-gray-500 dark:text-gray-400">
-                {{ title }}
-            </span>
+        <div class="flex items-center justify-between gap-2 mb-4">
+            <AppLabel :label="title" />
+            <AppTooltip :icon="icon" :tooltip="tooltip" />
         </div>
 
-        <!-- BARRAS -->
         <div class="space-y-3">
             <div v-for="(item, index) in items" :key="index">
                 <div class="mb-1 flex justify-between text-xs">
