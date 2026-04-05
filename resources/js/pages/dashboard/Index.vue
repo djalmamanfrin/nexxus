@@ -9,6 +9,7 @@ import { defaultOptions } from '@/lib/charts/options';
 import { createDataset } from '@/lib/charts/dataset';
 import KpiGrid from '@/components/charts/KpiGrid.vue';
 import BudgetProgress from '@/components/charts/BudgetProgress.vue';
+import ChartGrid from '@/components/charts/ChartGrid.vue';
 
 const props = defineProps<{
     filters: any;
@@ -186,6 +187,22 @@ const budgetProgress = computed(() => [
         color: 'bg-green-500',
     },
 ]);
+
+const charts = computed(() => [
+    {
+        title: 'Despesas por Obra',
+        data: workChart.value,
+        options: {
+            ...defaultOptions,
+            onClick: handleWorkClick,
+        },
+    },
+    {
+        title: 'Orçado vs Real',
+        data: budgetChart.value,
+        options: defaultOptions,
+    },
+]);
 </script>
 
 <template>
@@ -206,30 +223,7 @@ const budgetProgress = computed(() => [
             <!-- ================= PROGRESS ================= -->
             <BudgetProgress title="Uso do Orçamento" :items="budgetProgress" />
             <!-- ================= GRIDS ================= -->
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <!-- BAR -->
-                <div
-                    class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-                >
-                    <h3 class="chart-title">Despesas por Obra</h3>
-                    <BarChart
-                        :data="workChart"
-                        :options="{
-                            ...defaultOptions,
-                            onClick: handleWorkClick,
-                        }"
-                    />
-                </div>
-
-                <!-- ================= ORÇADO VS REAL ================= -->
-                <div
-                    class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-                >
-                    <h3 class="mb-4">Orçado vs Real</h3>
-                    <BarChart :data="budgetChart" :options="defaultOptions" />
-                </div>
-            </div>
-            <div class="my-4"></div>
+            <ChartGrid :items="charts" />
 
             <!-- LINE -->
             <div class="grid grid-cols-1 gap-6">
