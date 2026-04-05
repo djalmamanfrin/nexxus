@@ -12,7 +12,7 @@ class WorkObserver
 {
     public function created(Work $work): void
     {
-        $types = CostCenterType::where('active', true)
+        $types = CostCenterType::where('is_active', true)
             ->select('id')
             ->get();
 
