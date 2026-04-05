@@ -11,7 +11,7 @@ const props = defineProps<{
     name: string;
     tabs: {
         type: SelectOption[];
-        default: () => [];
+        default: [];
     };
 }>();
 
