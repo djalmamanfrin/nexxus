@@ -18,15 +18,31 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const className = computed(() => cn('h-4 w-4', props.class));
+const iconComponents = icons as Record<string, any>;
+
+const normalizeIconName = (name: string) =>
+    name
+        .split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
 
 const icon = computed(() => {
-    const iconName = props.name.charAt(0).toUpperCase() + props.name.slice(1);
-    return (icons as Record<string, any>)[iconName];
+  if (!props.name) return null;
+
+  const normalizedIconName = normalizeIconName(props.name);
+  const iconComponent = iconComponents[normalizedIconName] || null;
+
+  if (!iconComponent) {
+    console.warn(`Icon "${normalizedIconName}" not found`);
+  }
+
+  return iconComponent;
 });
 </script>
 
 <template>
     <component
+        v-if="icon"
         :is="icon"
         :class="className"
         :size="size"
