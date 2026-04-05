@@ -81,6 +81,14 @@ class CostCenter extends Model
         return $this->hasMany(Expense::class);
     }
 
+    public static function associateWorkAndType(int $workId, int $typeId): void
+    {
+        self::firstOrCreate([
+            'work_id' => $workId,
+            'cost_center_type_id' => $typeId,
+        ]);
+    }
+
     public function scopeFilter($query, $filters): void
     {
         $query->when($filters['search_by'] ?? null, function ($query, $search) {
