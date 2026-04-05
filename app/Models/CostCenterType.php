@@ -30,7 +30,7 @@ class CostCenterType extends Model
     protected $fillable = [
         'name',
         'code',
-        'active'
+        'is_active'
     ];
 
     public function costCenters(): HasMany
