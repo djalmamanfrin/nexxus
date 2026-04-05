@@ -27,6 +27,10 @@ class WorkController extends Controller
             'works' => WorkResource::collection($works),
             'search_by' => $request->search_by,
             'is_active' => $request->is_active,
+            'active_status' => [
+                ['value' => 1, 'label' => 'Ativo'],
+                ['value' => 0, 'label' => 'Inativo'],
+            ],
         ]);
     }
 
