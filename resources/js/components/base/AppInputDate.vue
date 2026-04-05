@@ -40,7 +40,7 @@ const emit = defineEmits(['update:modelValue']);
 const inputRef = ref(null);
 
 function handleClick() {
-    inputRef.value?.inputRef?.showPicker?.();
+    inputRef.value?.showPicker?.();
 }
 
 function handleInput(value) {
