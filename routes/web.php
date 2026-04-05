@@ -57,7 +57,7 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
     Route::get('/cost-centers/options', [CostCenterController::class, 'options'])
         ->name('expenses.payment-options');
     Route::resource('cost-center-types', CostCenterTypeController::class)
-        ->only(['index']);
+        ->only(['index', 'store']);
 
     Route::resource('payees', PayeeController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
