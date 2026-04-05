@@ -10,10 +10,12 @@ interface Props {
     modelValue?: string | number;
     url: string;
     width?: string;
+    required?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     width: 'w-full',
+    required: true,
 });
 
 const emit = defineEmits(['update:modelValue', 'created', 'selected']);
@@ -31,15 +33,7 @@ const handleCreated = (item: SelectOption) => {
 
 <template>
     <div class="flex w-full flex-col" :class="width">
-        <!-- Label + botão -->
         <div class="flex items-center justify-between">
-            <label
-                v-if="label"
-                class="text-sm font-medium text-gray-600 dark:text-gray-300"
-            >
-                {{ label }}
-            </label>
-
             <AppUploadModal
                 @created="handleCreated"
                 url="expenses"
@@ -50,13 +44,14 @@ const handleCreated = (item: SelectOption) => {
             />
         </div>
 
-        <!-- Select -->
         <AppSelect
+            :label="label"
             :modelValue="modelValue"
             :url="url"
             :options="options.length ? options : undefined"
             @update:modelValue="emit('update:modelValue', $event)"
             @selected="emit('selected', $event)"
+            :required="required"
         />
     </div>
 </template>
