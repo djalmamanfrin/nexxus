@@ -10,10 +10,12 @@ interface Props {
     url?: string;
     options?: SelectOption[];
     width?: string;
+    required?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     width: 'w-full',
+    required: true,
 });
 
 const emit = defineEmits(['update:modelValue', 'selected']);
@@ -58,7 +60,7 @@ const onChange = (value: string) => {
 
 <template>
     <div class="flex w-full flex-col gap-1" :class="width">
-        <AppLabel v-if="label" :label="label" />
+        <AppLabel v-if="label" :label="label" :required="required" />
         <select
             :value="modelValue"
             @change="onChange($event.target.value)"
