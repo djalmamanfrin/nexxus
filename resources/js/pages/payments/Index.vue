@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useCrud } from '@/composables/useCrud';
 import { type BreadcrumbItem, Payment } from '@/types';
 import FilterText from '@/components/filters/FilterText.vue';
@@ -98,6 +98,19 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '',
     },
 ];
+
+watch(
+    () => props.payments.data,
+    (newPayments) => {
+        if (!selectedItem.value) return;
+
+        const updated = newPayments.find((w) => w.id === selectedItem.value.id);
+
+        if (updated) {
+            selectedItem.value = updated;
+        }
+    },
+);
 </script>
 
 <template>
