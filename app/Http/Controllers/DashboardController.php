@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $data = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($workId, $start, $end) {
 
             // ========================
-            // BASE QUERY
+            // EXPENSE BASE QUERY
             // ========================
             $expenseBase = Expense::query()
                 ->join('cost_centers', 'expenses.cost_center_id', '=', 'cost_centers.id')
@@ -99,8 +99,11 @@ class DashboardController extends Controller
             // ========================
             // TOTALS
             // ========================
-            $totalExpenses = (clone $expenseBase)->sum('expenses.amount');
             $totalBudget = CostCenter::query()->sum('budget');
+            $totalExpenses = (clone $expenseBase)->sum('expenses.amount');
+            $totalPayments = (clone $expenseBase)
+                ->join('payments', 'payments.expense_id', '=', 'expenses.id')
+                ->sum('payments.amount');
 
             // ========================
             // BURN RATE
@@ -126,6 +129,7 @@ class DashboardController extends Controller
                 'expensesByMonth' => $expensesByMonth,
                 'expensesByPayee' => $expensesByPayee,
                 'totals' => [
+                    'payments' => $totalPayments,
                     'expenses' => $totalExpenses,
                     'budget' => $totalBudget,
                     'burn_rate' => $burnRate,

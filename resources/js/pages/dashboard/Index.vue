@@ -8,6 +8,7 @@ import PieChart from '@/components/charts/PieChart.vue';
 import { defaultOptions } from '@/lib/charts/options';
 import { createDataset } from '@/lib/charts/dataset';
 import KpiGrid from '@/components/charts/KpiGrid.vue';
+import BudgetProgress from '@/components/charts/BudgetProgress.vue';
 
 const props = defineProps<{
     filters: any;
@@ -144,11 +145,6 @@ const payeeChart = computed(() => ({
     ],
 }));
 
-const percentUsed = computed(() => {
-    if (!props.totals.budget) return 0;
-    return (props.totals.expenses / props.totals.budget) * 100;
-});
-
 const kpis = computed(() => [
     {
         title: 'Despesas',
@@ -165,6 +161,29 @@ const kpis = computed(() => [
     {
         title: 'Previsão',
         value: `${props.totals.forecast_months.toFixed(1)} meses`,
+    },
+]);
+
+const budget = computed(() => props.totals.budget || 0);
+const percentExpenses = computed(() => {
+    if (!budget.value) return 0;
+    return (props.totals.expenses / budget.value) * 100;
+});
+const percentPayments = computed(() => {
+    if (!budget.value) return 0;
+    return (props.totals.payments / budget.value) * 100;
+});
+
+const budgetProgress = computed(() => [
+    {
+        label: 'Despesas',
+        value: percentExpenses.value,
+        color: 'bg-blue-500',
+    },
+    {
+        label: 'Pagamentos',
+        value: percentPayments.value,
+        color: 'bg-green-500',
     },
 ]);
 </script>
@@ -185,28 +204,7 @@ const kpis = computed(() => [
             <!-- ================= KPI ================= -->
             <KpiGrid :items="kpis" />
             <!-- ================= PROGRESS ================= -->
-            <div
-                class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-            >
-                <div class="mb-2 flex justify-between">
-                    <span class="text-sm text-gray-500 dark:text-gray-400">
-                        Uso do orçamento
-                    </span>
-                    <span class="text-sm font-medium">
-                        {{ percentUsed.toFixed(1) }}%
-                    </span>
-                </div>
-
-                <div
-                    class="h-3 w-full rounded-full bg-gray-200 dark:bg-gray-700"
-                >
-                    <div
-                        class="h-3 rounded-full bg-blue-500 transition-all"
-                        :style="{ width: percentUsed + '%' }"
-                    />
-                </div>
-            </div>
-            <div class="my-4"></div>
+            <BudgetProgress title="Uso do Orçamento" :items="budgetProgress" />
             <!-- ================= GRIDS ================= -->
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <!-- BAR -->
