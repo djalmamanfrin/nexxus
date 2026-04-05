@@ -7,6 +7,7 @@ import LineChart from '@/components/charts/LineChart.vue';
 import PieChart from '@/components/charts/PieChart.vue';
 import { defaultOptions } from '@/lib/charts/options';
 import { createDataset } from '@/lib/charts/dataset';
+import KpiGrid from '@/components/charts/KpiGrid.vue';
 
 const props = defineProps<{
     filters: any;
@@ -147,6 +148,25 @@ const percentUsed = computed(() => {
     if (!props.totals.budget) return 0;
     return (props.totals.expenses / props.totals.budget) * 100;
 });
+
+const kpis = computed(() => [
+    {
+        title: 'Despesas',
+        value: money(props.totals.expenses),
+    },
+    {
+        title: 'Orçamentos',
+        value: money(props.totals.budget),
+    },
+    {
+        title: 'Burn Rate',
+        value: money(props.totals.burn_rate),
+    },
+    {
+        title: 'Previsão',
+        value: `${props.totals.forecast_months.toFixed(1)} meses`,
+    },
+]);
 </script>
 
 <template>
@@ -163,59 +183,7 @@ const percentUsed = computed(() => {
             </div>
             <div class="my-4"></div>
             <!-- ================= KPI ================= -->
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
-                <div
-                    class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-                >
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Despesas
-                    </p>
-                    <h2
-                        class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white"
-                    >
-                        {{ money(totals.expenses) }}
-                    </h2>
-                </div>
-
-                <div
-                    class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-                >
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Orçamentos
-                    </p>
-                    <h2
-                        class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white"
-                    >
-                        {{ money(totals.budget) }}
-                    </h2>
-                </div>
-
-                <div
-                    class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-                >
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Burn Rate
-                    </p>
-                    <h2
-                        class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white"
-                    >
-                        {{ money(totals.burn_rate) }}
-                    </h2>
-                </div>
-                <div
-                    class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-                >
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Previsão
-                    </p>
-                    <h2
-                        class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white"
-                    >
-                        {{ totals.forecast_months.toFixed(1) }} meses
-                    </h2>
-                </div>
-            </div>
-            <div class="my-4"></div>
+            <KpiGrid :items="kpis" />
             <!-- ================= PROGRESS ================= -->
             <div
                 class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
@@ -260,10 +228,7 @@ const percentUsed = computed(() => {
                     class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
                 >
                     <h3 class="mb-4">Orçado vs Real</h3>
-                    <BarChart
-                        :data="budgetChart"
-                        :options="defaultOptions"
-                    />
+                    <BarChart :data="budgetChart" :options="defaultOptions" />
                 </div>
             </div>
             <div class="my-4"></div>
@@ -296,10 +261,7 @@ const percentUsed = computed(() => {
                     class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
                 >
                     <h3 class="mb-4">Payees</h3>
-                    <PieChart
-                        :data="payeeChart"
-                        :options="defaultOptions"
-                    />
+                    <PieChart :data="payeeChart" :options="defaultOptions" />
                 </div>
             </div>
             <div class="my-4"></div>
