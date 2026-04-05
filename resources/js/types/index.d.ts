@@ -90,6 +90,14 @@ export interface Expense {
         color: string;
     } | null;
 }
+
+export interface CostCenterType {
+    id: number;
+    name: string;
+    code: string;
+    is_active: string;
+    description: string;
+}
 export interface CostCenter {
     id: number;
     code: string;

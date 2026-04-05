@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type BreadcrumbItem, CostCenter } from '@/types';
+import { type BreadcrumbItem, CostCenter, CostCenterType } from '@/types';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFormLayout from '@/components/base/AppFormLayout.vue';
 import Fields from '@/pages/cost_centers/Fields.vue';
@@ -12,10 +12,18 @@ import CrudTable from '@/components/crud/CrudTable.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 import { SelectOption } from '@/types/select';
+import AppLayout from '@/layouts/AppLayout.vue';
+import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
+import AppCreateModal from '@/components/AppCreateModal.vue';
+import TypeFields from '@/pages/cost_centers/TypeFields.vue';
 
 const props = defineProps<{
     cost_centers: {
         data: CostCenter[];
+        links: { url: string | null; label: string; active: boolean }[];
+    };
+    types: {
+        data: CostCenterType[];
         links: { url: string | null; label: string; active: boolean }[];
     };
     search_by?: string;
@@ -69,7 +77,10 @@ const costCenterSchema = {
             description: item.description,
         }),
     },
-    tabs: [{ name: 'form', label: 'Informações' }],
+    tabs: [
+        { name: 'form', label: 'Informações' },
+        { name: 'cost_center_types', label: 'Tipos' },
+    ],
 };
 
 const {
@@ -145,6 +156,37 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <AppFormLayout :item="item">
                         <Fields :form="form" />
                     </AppFormLayout>
+                </template>
+                <template #cost_center_types="{ form, item }">
+                    <AppButtonWithModal
+                        label="Novo tipo de centro de custo"
+                        title="Novo tipo de centro de custo"
+                        description=""
+                    >
+                        <template #default="{ close }">
+                            <AppCreateModal
+                                url="cost-center-types"
+                                @success="close"
+                                :initialData="{
+                                    cost_center_type_id: item.id,
+                                    name: null,
+                                    code: null,
+                                }"
+                            >
+                                <template #fields="{ form }">
+                                    <TypeFields :form="form" />
+                                </template>
+                            </AppCreateModal>
+                        </template>
+                    </AppButtonWithModal>
+                    <div class="my-4"></div>
+                    <CrudTable
+                        :items="props.types"
+                        :columns="[
+                            { key: 'name', label: 'Nome' },
+                            { key: 'code', label: 'Código' },
+                        ]"
+                    />
                 </template>
             </CrudDrawer>
         </div>
