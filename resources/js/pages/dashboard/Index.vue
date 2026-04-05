@@ -191,6 +191,7 @@ const budgetProgress = computed(() => [
 const charts = computed(() => [
     {
         title: 'Despesas por Obra',
+        component: BarChart,
         data: workChart.value,
         options: {
             ...defaultOptions,
@@ -199,8 +200,16 @@ const charts = computed(() => [
     },
     {
         title: 'Orçado vs Real',
+        component: BarChart,
         data: budgetChart.value,
         options: defaultOptions,
+    },
+    {
+        title: 'Evolução Mensal',
+        component: LineChart,
+        data: monthChart.value,
+        options: defaultOptions,
+        cols: 'lg:col-span-2',
     },
 ]);
 </script>
@@ -224,17 +233,6 @@ const charts = computed(() => [
             <BudgetProgress title="Uso do Orçamento" :items="budgetProgress" />
             <!-- ================= GRIDS ================= -->
             <ChartGrid :items="charts" />
-
-            <!-- LINE -->
-            <div class="grid grid-cols-1 gap-6">
-                <div
-                    class="card rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-                >
-                    <h3 class="chart-title">Evolução Mensal</h3>
-                    <LineChart :data="monthChart" :options="defaultOptions" />
-                </div>
-            </div>
-            <div class="my-4"></div>
 
             <!-- ================= PIE ================= -->
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">

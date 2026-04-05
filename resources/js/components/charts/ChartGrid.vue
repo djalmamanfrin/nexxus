@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import ChartCard from './ChartCard.vue';
-import BarChart from '@/components/charts/BarChart.vue';
 
 defineProps<{
     items: {
         title: string;
+        component: any;
         data: any;
         options?: any;
+        cols?: string;
     }[];
 }>();
 </script>
@@ -17,8 +18,13 @@ defineProps<{
             v-for="(item, index) in items"
             :key="index"
             :title="item.title"
+            :class="item.cols"
         >
-            <BarChart :data="item.data" :options="item.options" />
+            <component
+                :is="item.component"
+                :data="item.data"
+                :options="item.options"
+            />
         </ChartCard>
     </div>
     <div class="my-4"></div>
