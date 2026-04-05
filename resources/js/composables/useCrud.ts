@@ -22,7 +22,9 @@ export function useCrud(schema: any) {
 
     const { filters, search, clear } = useFilters(
         {
-            search_by: schema.filters.search_by || '',
+            search_by: schema.filters.search_by || null,
+            status: schema.filters.status || null,
+            is_active: schema.filters.is_active || null,
         },
         baseUrl,
     );
