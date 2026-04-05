@@ -65,8 +65,6 @@ class PayeeController extends Controller
     public function destroy(Payee $payee)
     {
         $payee->delete();
-        return redirect()
-            ->route('payees.index')
-            ->with('success', 'Benefeciário apagado com sucesso!');
+        return back()->with('success', 'Benefeciário apagado com sucesso!');
     }
 }

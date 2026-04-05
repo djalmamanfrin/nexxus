@@ -104,8 +104,6 @@ class ExpenseController extends Controller
     public function destroy(Expense $expense)
     {
         $expense->delete();
-        return redirect()
-            ->route('expenses.index')
-            ->with('success', 'Despesa apagada com sucesso!');
+        return back()->with('success', 'Despesa apagada com sucesso!');
     }
 }

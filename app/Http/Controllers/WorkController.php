@@ -73,8 +73,6 @@ class WorkController extends Controller
     public function destroy(Work $work)
     {
         $work->delete();
-        return redirect()
-            ->route('works.index')
-            ->with('success', 'Obra apagada com sucesso!');
+        return back()->with('success', 'Obra apagada com sucesso!');
     }
 }
