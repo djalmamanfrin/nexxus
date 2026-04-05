@@ -34,7 +34,7 @@ const props = defineProps<{
 const columns = [
     { key: 'work.name', label: 'Obra', align: 'left' },
     { key: 'type.code', label: 'Código', type: 'badge' },
-    { key: 'budget.value', label: 'Orçamento' },
+    { key: 'budget.formatted', label: 'Orçamento' },
     {
         key: 'status.name',
         label: 'Status',
