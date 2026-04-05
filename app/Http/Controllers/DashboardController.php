@@ -27,6 +27,7 @@ class DashboardController extends Controller
             // ========================
             $expenseBase = Expense::query()
                 ->join('cost_centers', 'expenses.cost_center_id', '=', 'cost_centers.id')
+                ->join('cost_center_types', 'cost_centers.cost_center_type_id', '=', 'cost_center_types.id')
                 ->join('works', 'cost_centers.work_id', '=', 'works.id');
 
             if ($workId) {
@@ -78,10 +79,10 @@ class DashboardController extends Controller
             // ========================
             $expensesByCostCenter = (clone $expenseBase)
                 ->select(
-                    'cost_centers.code as name',
+                    'cost_center_types.code as name',
                     DB::raw('SUM(expenses.amount) as total')
                 )
-                ->groupBy('cost_centers.code')
+                ->groupBy('cost_center_types.code')
                 ->get();
 
             // ========================
