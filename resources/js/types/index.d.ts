@@ -130,7 +130,7 @@ export interface Payee {
 export type BreadcrumbItemType = BreadcrumbItem;
 
 // TODO:
-//  1. Removar btn de criar CC e criar fluxo na tab de obra
+//  1. Remover obrigatoriedade do campo Referencia e adicionar nos selects
 //  2. Revisar AppSelectWithModal porque mudei como o método retornar o store
 //  . Criar select com pesquisa para muitas opcoes do cost center
 //  . Criar select com pesquisa para muitas opcoes do payee (talvez)
