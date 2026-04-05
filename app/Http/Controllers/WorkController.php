@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CostCenterResource;
 use App\Http\Resources\WorkResource;
 use App\Models\Work;
 use Illuminate\Http\JsonResponse;
@@ -16,6 +17,7 @@ class WorkController extends Controller
         $works = Work::query()
             ->with([
                 'costCenters.status',
+                'costCenters.type',
             ])
             ->filter($request->all())
             ->latest()
