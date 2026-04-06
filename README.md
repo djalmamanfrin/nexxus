@@ -1,7 +1,3 @@
-- Projeto desenvolvido com Laravel 12 e Vue.js. Como criar o projeto com Laravel e Vue.js?
-
-- Código fonte desenvolvido na aulas: [Acessar as aulas](https://www.youtube.com/watch?v=81_ekTuWS9o&list=PLmY5AEiqDWwDHq8cRYAJyfIyl5jDSVvcX).
-
 ## Requisitos
 
 * PHP 8.2 ou superior - Conferir a versão: php -v
@@ -11,11 +7,6 @@
 * GIT - Conferir se está instalado o GIT: git -v
 
 ## Como rodar o projeto baixado
-
-Baixar os arquivos do GitHub.
-```
-git clone colocar link.
-```
 
 - Duplicar o arquivo ".env.example" e renomear para ".env".
 
