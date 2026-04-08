@@ -52,8 +52,12 @@ const onChange = (value: string) => {
     );
 
     // TODO: BUG - quando a opcao do opction selecionada é selecione o selectedItem é undefined
-
+    // Confirmar se if abaixo resolveu
     emit('update:modelValue', value);
+    if (!selectedItem) {
+        emit('selected', null);
+        return;
+    }
     emit('selected', selectedItem);
 };
 </script>
