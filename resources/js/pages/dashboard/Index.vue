@@ -10,6 +10,9 @@ import { createDataset } from '@/lib/charts/dataset';
 import KpiGrid from '@/components/charts/KpiGrid.vue';
 import BudgetProgress from '@/components/charts/BudgetProgress.vue';
 import ChartGrid from '@/components/charts/ChartGrid.vue';
+import { useFilters } from '@/composables/useFilters';
+import AppFilterBar from '@/components/filters/AppFilterBar.vue';
+import FilterDateRange from '@/components/filters/FilterDateRange.vue';
 
 const props = defineProps<{
     filters: any;
@@ -29,12 +32,14 @@ const money = (v: number) =>
 
 // ================= FILTER =================
 
-const applyFilter = (filters) => {
-    router.get('/dashboard', filters, {
-        preserveState: true,
-        replace: true,
-    });
-};
+const { filters, search, clear } = useFilters(
+    {
+        start_date: props.filters?.start_date || '',
+        end_date: props.filters?.end_date || '',
+        work_id: props.filters?.work_id || null,
+    },
+    '/dashboard',
+);
 
 // ================= CLICK CHART =================
 
@@ -44,10 +49,8 @@ const handleWorkClick = (_, elements) => {
     const index = elements[0].index;
     const work = props.expensesByWork[index];
 
-    applyFilter({
-        ...props.filters,
-        work_id: work.id,
-    });
+    filters.work_id = work.id;
+    search();
 };
 
 // ================= CHARTS =================
@@ -270,12 +273,22 @@ const charts = computed(() => [
     <AppLayout>
         <div class="content-box">
             <!-- ================= FILTER ================= -->
-            <div class="flex gap-3">
-                <input type="date" v-model="filters.start_date" class="input" />
-                <input type="date" v-model="filters.end_date" class="input" />
-                <button @click="applyFilter(filters)" class="btn">
-                    Filtrar
-                </button>
+            <div
+                class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+            >
+                <form @submit.prevent="search">
+                    <AppFilterBar
+                        v-model:filters="filters"
+                        @change="search"
+                        @clear="clear"
+                    >
+                        <FilterDateRange
+                            label="Período"
+                            start-name="start_date"
+                            end-name="end_date"
+                        />
+                    </AppFilterBar>
+                </form>
             </div>
             <div class="my-4"></div>
             <!-- ================= KPI ================= -->
