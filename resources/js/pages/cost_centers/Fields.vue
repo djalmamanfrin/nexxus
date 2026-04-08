@@ -14,12 +14,6 @@ defineProps<{
         :error="form.errors.budget"
         label="Orçamento"
     />
-    <AppSelect
-        v-model="form.cost_center_type_id"
-        url="cost-center-types"
-        label="Tipo de Centro de Custo"
-        name="cost_center_type_id"
-    />
     <AppInputDate
         v-model="form.start_date"
         :error="form.errors.start_date"
