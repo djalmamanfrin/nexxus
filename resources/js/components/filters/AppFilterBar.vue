@@ -1,5 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { provide, watch, computed, reactive } from 'vue';
+import type { FilterMeta } from '@/types/filters';
 import { XIcon } from 'lucide-vue-next';
 import ActiveFilters from './ActiveFilters.vue';
 
@@ -24,21 +25,28 @@ watch(
 
 function clearFilters() {
     Object.keys(filters).forEach((key) => {
-        filters[key] = '';
+        if (Array.isArray(filters[key])) {
+            filters[key] = [];
+        } else {
+            filters[key] = null;
+        }
     });
 
     emit('clear');
 }
 
 const hasActiveFilters = computed(() => {
-    return Object.values(filters).some((value) => {
-        return value !== null && value !== '' && value !== undefined;
-    });
+    return Object.keys(filtersMeta).length > 0;
 });
 
-const filtersMeta = reactive({});
+const filtersMeta = reactive<Record<string, FilterMeta>>({});
 
 function registerFilter(name, config) {
+    if (!config) {
+        delete filtersMeta[name];
+        return;
+    }
+
     filtersMeta[name] = config;
 }
 
