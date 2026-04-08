@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AppMultiSelect from '@/components/base/AppMultiSelect.vue';
 import { SelectOption } from '@/types/select';
 import { inject, onMounted, ref, watch } from 'vue';
+import AppSelect from '@/components/base/AppSelect.vue';
 
 const filters = inject('filters');
 const registerFilter = inject('registerFilter');
@@ -53,11 +53,13 @@ onMounted(() => {
 </script>
 
 <template>
-    <AppMultiSelect
+    <AppSelect
+        :multiple="true"
         :label="label"
         :options="options"
         :model-value="filters[name]"
         @update:modelValue="handleSelected"
         :width="width"
+        :required="false"
     />
 </template>
