@@ -26,11 +26,11 @@ export function useFilters<T extends Record<string, any>>(
     }, delay)
 
     function clear() {
-        Object.keys(filters).forEach(key => {
-            filters[key as keyof T] = '' as T[keyof T]
-        })
+        Object.keys(filters).forEach((key) => {
+            filters[key as keyof T] = initialFilters[key as keyof T];
+        });
 
-        search()
+        search();
     }
 
     return {
