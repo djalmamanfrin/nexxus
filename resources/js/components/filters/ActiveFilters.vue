@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { inject } from 'vue';
+import type { FilterMeta } from '@/types/filters';
 
-const props = defineProps({
+defineProps({
     labels: Object,
     filters: Object,
 });
 
-const filtersMeta = inject('filtersMeta', {});
+const filtersMeta = inject<Record<string, FilterMeta>>('filtersMeta', {});
 
 function getLabel(key) {
     return filtersMeta[key]?.label || key;
@@ -17,53 +18,50 @@ function getValueLabel(key, value) {
 
     if (!meta) return normalize(value);
 
-    // 🔥 prioridade: format
     if (meta.format) {
         return normalize(meta.format(value));
-    }
-
-    // traduz select
-    if (meta.type === 'select' || meta.type === 'tab') {
-        return normalize(meta.display ? meta.display : value);
     }
 
     return normalize(value);
 }
 
 function normalize(value) {
+    if (Array.isArray(value)) {
+        return value.filter(Boolean).join(', ');
+    }
+
     if (typeof value === 'string') {
         return value.toLowerCase();
     }
 
     return value;
 }
+
+function removeFilter(key) {
+    const meta = filtersMeta[key];
+    if (meta?.clear) {
+        meta.clear();
+        return;
+    }
+    filters[key] = null;
+}
 </script>
 
 <template>
     <div class="flex flex-wrap items-center gap-2 text-xs">
-        <!-- Label inicial -->
-        <span
-            class="rounded bg-gray-200 px-2 py-1 text-gray-600 dark:bg-gray-800 dark:text-gray-300"
-        >
+        <span class="rounded bg-gray-200 px-2 py-1 text-gray-600">
             Os resultados:
         </span>
 
-        <!-- Filtros ativos -->
-        <template v-for="(value, key) in filters" :key="key">
+        <template v-for="(meta, key) in filtersMeta" :key="key">
             <span
-                v-if="
-                    value !== '' &&
-                    value !== null &&
-                    value !== undefined
-                "
-                class="inline-flex items-center gap-1 rounded bg-gray-200 px-2 py-1 dark:bg-gray-800"
+                @click="removeFilter(key)"
+                class="inline-flex items-center gap-1 rounded bg-gray-200 px-2 py-1"
             >
-                <span class="text-gray-500 dark:text-gray-400">
-                    {{ getLabel(key) }}:
-                </span>
+                <span class="text-gray-500"> {{ meta.label }}: </span>
 
-                <span class="font-medium text-gray-700 dark:text-gray-200">
-                    {{ getValueLabel(key, value) }}
+                <span class="font-medium text-gray-700">
+                    {{ meta.format ? meta.format() : '' }}
                 </span>
             </span>
         </template>
