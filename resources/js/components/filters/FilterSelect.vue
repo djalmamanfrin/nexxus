@@ -33,8 +33,12 @@ onMounted(() => {
 
 const selectedItem = ref(null);
 const handleSelected = (item) => {
-    selectedItem.value = item;
+    if (!item) {
+        registerFilter?.(props.name, null);
+        return;
+    }
 
+    selectedItem.value = item;
     registerFilter?.(props.name, {
         label: 'com status',
         type: 'select',
