@@ -35,13 +35,14 @@ const props = defineProps<{
 const columns = [
     { key: 'work.name', label: 'Obra', align: 'left' },
     { key: 'type.code', label: 'Código', type: 'badge' },
-    { key: 'budget.formatted', label: 'Orçamento' },
+    { key: 'type.name', label: 'Tipo' },
     {
         key: 'status.name',
         label: 'Status',
         type: 'badge',
         color: 'status.color',
     },
+    { key: 'budget.formatted', label: 'Orçamento' },
     { key: 'start_date.formatted', label: 'Início' },
     { key: 'expected_end_date.formatted', label: 'Término' },
     { key: 'created_at.formatted', label: 'Criado em' },
