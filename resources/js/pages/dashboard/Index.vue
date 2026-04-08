@@ -13,6 +13,7 @@ import ChartGrid from '@/components/charts/ChartGrid.vue';
 import { useFilters } from '@/composables/useFilters';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import FilterDateRange from '@/components/filters/FilterDateRange.vue';
+import FilterMultiSelect from '@/components/filters/FilterMultiSelect.vue';
 
 const props = defineProps<{
     filters: any;
@@ -282,6 +283,12 @@ const charts = computed(() => [
                         @change="search"
                         @clear="clear"
                     >
+                        <FilterMultiSelect
+                            label="Obras"
+                            name="work_ids"
+                            :options="[]"
+                            width="lg:w-96"
+                        />
                         <FilterDateRange
                             label="Período"
                             start-name="start_date"
