@@ -14,8 +14,10 @@ import { useFilters } from '@/composables/useFilters';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import FilterDateRange from '@/components/filters/FilterDateRange.vue';
 import FilterMultiSelect from '@/components/filters/FilterMultiSelect.vue';
+import { SelectOption } from '@/types/select';
 
 const props = defineProps<{
+    works: SelectOption[];
     filters: any;
     expensesByWork: any[];
     budgetVsReal: any[];
@@ -286,7 +288,7 @@ const charts = computed(() => [
                         <FilterMultiSelect
                             label="Obras"
                             name="work_ids"
-                            :options="[]"
+                            :options="works"
                             width="lg:w-96"
                         />
                         <FilterDateRange

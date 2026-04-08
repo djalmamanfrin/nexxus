@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CostCenter;
 use App\Models\Expense;
 use App\Models\Payment;
+use App\Models\Work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -119,6 +120,7 @@ class DashboardController extends Controller
             $monthsToEnd = $burnRate > 0 ? ($remaining / $burnRate) : 0;
 
             return [
+                'works' => Work::select('id as value', 'name as label')->get(),
                 'filters' => [
                     'work_id' => $workId,
                     'start_date' => $start,
