@@ -136,17 +136,3 @@ export interface Payee {
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;
-
-// TODO:
-//  1. Remover obrigatoriedade do campo Referencia e adicionar nos selects
-//  2. Revisar AppSelectWithModal porque mudei como o método retornar o store
-//  . Criar select com pesquisa para muitas opcoes do cost center
-//  . Criar select com pesquisa para muitas opcoes do payee (talvez)
-//  . Criar o filtro Pagamentos para o EditFields das despesas
-//  . Exibir no filtro de pagamento no fluxo de despenas apenas pagamentos sem despesas associadas com status 1
-
-
-// Testes feitos
-// 1. Modais de criação ok exceto CC
-// 2. Todas as telas de Edição OK
-// 3.
