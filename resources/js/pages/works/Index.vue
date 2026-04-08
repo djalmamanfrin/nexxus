@@ -17,6 +17,7 @@ import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import Fields from '@/pages/cost_centers/Fields.vue';
 import { SelectOption } from '@/types/select';
+import { useFilters } from '@/composables/useFilters';
 
 const props = defineProps<{
     works: {
@@ -42,10 +43,6 @@ const columns = [
 
 const workSchema = {
     entity: 'works',
-    filters: {
-        search_by: props.search_by || null,
-        is_active: props.is_active || null,
-    },
     actions: [
         { name: 'edit', title: 'Editar', icon: PencilIcon },
         { name: 'delete', title: 'Excluir', icon: Trash2Icon },
@@ -69,18 +66,16 @@ const workSchema = {
     ],
 };
 
-const {
-    open,
+const { open, baseUrl, selectedItem, tabs, actions, handleAction, handleSave } =
+    useCrud(workSchema);
+
+const { filters, search, clear } = useFilters(
+    {
+        search_by: props.search_by || '',
+        is_active: props.is_active || null,
+    },
     baseUrl,
-    filters,
-    search,
-    clear,
-    selectedItem,
-    tabs,
-    actions,
-    handleAction,
-    handleSave,
-} = useCrud(workSchema);
+);
 
 const emit = defineEmits(['update:filters']);
 const filtersProxy = computed({
