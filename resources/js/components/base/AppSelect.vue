@@ -90,7 +90,8 @@ const onChange = (event: Event) => {
         <select
             :value="modelValue"
             @change="onChange($event)"
-            class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none dark:bg-gray-950"
+            class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none dark:bg-gray-950"
+            :class="width"
         >
             <option value="">Selecione</option>
 
