@@ -1,6 +1,5 @@
 import { router, useForm } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
-import { useFilters } from '@/composables/useFilters';
 
 export function useCrud(schema: any) {
     const open = ref(false);
@@ -18,15 +17,6 @@ export function useCrud(schema: any) {
             }
             return { ...tab, form: dataForm };
         }),
-    );
-
-    const { filters, search, clear } = useFilters(
-        {
-            search_by: schema.filters.search_by || null,
-            status: schema.filters.status || null,
-            is_active: schema.filters.is_active || null,
-        },
-        baseUrl,
     );
 
     function handleAction({ action, item }: any) {
@@ -91,9 +81,6 @@ export function useCrud(schema: any) {
     return {
         open,
         baseUrl,
-        filters,
-        search,
-        clear,
         selectedItem,
         tabs,
         actions: schema.actions,
