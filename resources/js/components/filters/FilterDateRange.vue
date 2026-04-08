@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, watchEffect } from 'vue';
 import { inject } from 'vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
 import AppLabel from '@/components/base/AppLabel.vue';
@@ -59,6 +59,38 @@ const props = defineProps({
 const emit = defineEmits(['change']);
 
 const filters = inject('filters');
+const registerFilter = inject('registerFilter');
+
+function formatDate(date) {
+    return new Date(date).toLocaleDateString('pt-BR');
+}
+
+watchEffect(() => {
+    const start = filters[props.startName];
+    const end = filters[props.endName];
+
+    const metaKey = `${props.startName}_${props.endName}`;
+
+    if (!start && !end) {
+        registerFilter?.(metaKey, null);
+        return;
+    }
+
+    registerFilter?.(metaKey, {
+        label: props.label || 'no período',
+        format: () => {
+            if (start && end) return `${formatDate(start)} até ${formatDate(end)}`;
+            if (start) return `a partir de ${formatDate(start)}`;
+            if (end) return `até ${formatDate(end)}`;
+            return '';
+        },
+        clear: () => {
+            filters[props.startName] = null;
+            filters[props.endName] = null;
+        },
+    });
+});
+
 const startValue = computed(() => filters[props.startName]);
 const endValue = computed(() => filters[props.endName]);
 
@@ -67,11 +99,9 @@ const endError = computed(() => props.errors?.[props.endName]);
 
 function updateStart(value) {
     filters[props.startName] = value;
-    emit('change');
 }
 
 function updateEnd(value) {
     filters[props.endName] = value;
-    emit('change');
 }
 </script>
