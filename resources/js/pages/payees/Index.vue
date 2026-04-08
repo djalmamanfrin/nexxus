@@ -13,6 +13,7 @@ import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import CrudTable from '@/components/crud/CrudTable.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
+import { useFilters } from '@/composables/useFilters';
 
 const props = defineProps<{
     payees: {
@@ -25,16 +26,18 @@ const props = defineProps<{
 const columns = [
     { key: 'name', label: 'Nome Fantasia', align: 'left' },
     { key: 'document.formatted', label: 'CNPJ/CPF' },
-    { key: 'active.label', label: 'Pix documento?', type: 'badge', color: 'active.color' },
+    {
+        key: 'active.label',
+        label: 'Pix documento?',
+        type: 'badge',
+        color: 'active.color',
+    },
     { key: 'pix_key.formatted', label: 'Chave pix' },
     { key: 'created_at.formatted', label: 'Criado em' },
 ];
 
-const workSchema = {
+const payeeSchema = {
     entity: 'payees',
-    filters: {
-        search_by: props.search_by || '',
-    },
     actions: [
         { name: 'edit', title: 'Editar', icon: PencilIcon },
         { name: 'delete', title: 'Excluir', icon: Trash2Icon },
@@ -58,23 +61,18 @@ const workSchema = {
             pix_key_type: item.pix_key_type,
         }),
     },
-    tabs: [
-        { name: 'form', label: 'Informações' }
-    ],
+    tabs: [{ name: 'form', label: 'Informações' }],
 };
 
-const {
-    open,
+const { open, baseUrl, selectedItem, tabs, actions, handleAction, handleSave } =
+    useCrud(payeeSchema);
+
+const { filters, search, clear } = useFilters(
+    {
+        search_by: props.search_by || '',
+    },
     baseUrl,
-    filters,
-    search,
-    clear,
-    selectedItem,
-    tabs,
-    actions,
-    handleAction,
-    handleSave,
-} = useCrud(workSchema);
+);
 
 const emit = defineEmits(['update:filters']);
 const filtersProxy = computed({
