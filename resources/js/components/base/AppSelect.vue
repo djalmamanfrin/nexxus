@@ -6,7 +6,8 @@ import AppLabel from '@/components/base/AppLabel.vue';
 
 interface Props {
     label?: string;
-    modelValue?: string | number;
+    modelValue?: string | number | (string | number)[];
+    multiple?: boolean;
     url?: string;
     options?: SelectOption[];
     width?: string;
@@ -46,19 +47,40 @@ watch(() => props.url, fetchOptions);
 
 const options = computed(() => props.options ?? internalOptions.value);
 
-const onChange = (value: string) => {
-    const selectedItem = options.value.find(
-        (option) => String(option.value) === String(value)
-    );
+const onChange = (event: Event) => {
+    const target = event.target as HTMLSelectElement;
 
-    // TODO: BUG - quando a opcao do opction selecionada é selecione o selectedItem é undefined
-    // Confirmar se if abaixo resolveu
-    emit('update:modelValue', value);
-    if (!selectedItem) {
-        emit('selected', null);
-        return;
+    if (props.multiple) {
+        const selectedValues = Array.from(target.selectedOptions).map(
+            (opt) => opt.value,
+        );
+
+        const selectedItems = options.value.filter((opt) =>
+            selectedValues.includes(String(opt.value)),
+        );
+
+        if (!selectedItems) {
+            emit('update:modelValue', null);
+            emit('selected', null);
+            return;
+        }
+        emit('update:modelValue', selectedValues);
+        emit('selected', selectedItems);
+    } else {
+        const value = target.value;
+        const selectedItem = options.value.find(
+            (option) => String(option.value) === String(value),
+        );
+
+        if (!selectedItem) {
+            emit('update:modelValue', null);
+            emit('selected', null);
+            return;
+        }
+
+        emit('update:modelValue', value);
+        emit('selected', selectedItem);
     }
-    emit('selected', selectedItem);
 };
 </script>
 
@@ -67,8 +89,8 @@ const onChange = (value: string) => {
         <AppLabel v-if="label" :label="label" :required="required" />
         <select
             :value="modelValue"
-            @change="onChange($event.target.value)"
-            class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 dark:bg-gray-950"
+            @change="onChange($event)"
+            class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none dark:bg-gray-950"
         >
             <option value="">Selecione</option>
 
