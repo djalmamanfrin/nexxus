@@ -16,6 +16,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppCreateModal from '@/components/AppCreateModal.vue';
 import TypeFields from '@/pages/cost_centers/TypeFields.vue';
+import { useFilters } from '@/composables/useFilters';
 
 const props = defineProps<{
     cost_centers: {
@@ -48,10 +49,6 @@ const columns = [
 
 const costCenterSchema = {
     entity: 'cost-centers',
-    filters: {
-        search_by: props.search_by || '',
-        status: props.status || '',
-    },
     actions: [
         { name: 'edit', title: 'Editar', icon: PencilIcon },
         { name: 'delete', title: 'Excluir', icon: Trash2Icon },
@@ -83,18 +80,16 @@ const costCenterSchema = {
     ],
 };
 
-const {
-    open,
+const { open, baseUrl, selectedItem, tabs, actions, handleAction, handleSave } =
+    useCrud(costCenterSchema);
+
+const { filters, search, clear } = useFilters(
+    {
+        search_by: props.search_by || '',
+        status: props.status || null,
+    },
     baseUrl,
-    filters,
-    search,
-    clear,
-    selectedItem,
-    tabs,
-    actions,
-    handleAction,
-    handleSave,
-} = useCrud(costCenterSchema);
+);
 
 const emit = defineEmits(['update:filters']);
 const filtersProxy = computed({
