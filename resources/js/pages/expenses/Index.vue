@@ -22,6 +22,7 @@ import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 import Fields from '@/pages/cost_centers/Fields.vue';
 import AppCreateModal from '@/components/AppCreateModal.vue';
+import { useFilters } from '@/composables/useFilters';
 
 const props = defineProps<{
     expenses: {
@@ -48,12 +49,8 @@ const columns = [
     { key: 'created_at.formatted', label: 'Criado em' },
 ];
 
-const workSchema = {
+const expenseSchema = {
     entity: 'expenses',
-    filters: {
-        search_by: props.search_by || '',
-        status: props.status || null,
-    },
     actions: [
         { name: 'edit', title: 'Editar', icon: PencilIcon },
         { name: 'delete', title: 'Excluir', icon: Trash2Icon },
@@ -82,18 +79,16 @@ const workSchema = {
     ],
 };
 
-const {
-    open,
+const { open, baseUrl, selectedItem, tabs, actions, handleAction, handleSave } =
+    useCrud(expenseSchema);
+
+const { filters, search, clear } = useFilters(
+    {
+        search_by: props.search_by || '',
+        status: props.status || null,
+    },
     baseUrl,
-    filters,
-    search,
-    clear,
-    selectedItem,
-    tabs,
-    actions,
-    handleAction,
-    handleSave,
-} = useCrud(workSchema);
+);
 
 const emit = defineEmits(['update:filters']);
 const filtersProxy = computed({
