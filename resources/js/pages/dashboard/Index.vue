@@ -15,6 +15,7 @@ import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import FilterDateRange from '@/components/filters/FilterDateRange.vue';
 import FilterMultiSelect from '@/components/filters/FilterMultiSelect.vue';
 import { SelectOption } from '@/types/select';
+import FilterSelect from '@/components/filters/FilterSelect.vue';
 
 const props = defineProps<{
     works: SelectOption[];
@@ -26,6 +27,8 @@ const props = defineProps<{
     expensesByPayee: any[];
     totals: any;
 }>();
+
+console.log(typeof props.works, props.works);
 
 const money = (v: number) =>
     new Intl.NumberFormat('pt-BR', {
@@ -40,6 +43,7 @@ const { filters, search, clear } = useFilters(
         start_date: props.filters?.start_date || '',
         end_date: props.filters?.end_date || '',
         work_id: props.filters?.work_id || null,
+        work_ids: props.filters?.work_ids || [],
     },
     '/dashboard',
 );
