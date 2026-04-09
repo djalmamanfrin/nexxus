@@ -1,6 +1,6 @@
 <script setup>
 import { debounce } from 'lodash';
-import { inject, ref, watch, onUnmounted, onMounted } from 'vue';
+import { inject, ref, watch, onUnmounted, watchEffect } from 'vue';
 import AppInput from '@/components/base/AppInput.vue';
 
 const filters = inject('filters');
@@ -21,6 +21,7 @@ const props = defineProps({
 
 const localValue = ref(filters[props.name] || '');
 
+// 🔹 debounce → atualiza filtro global
 const updateFilter = debounce((value) => {
     filters[props.name] = value;
 }, props.debounce);
@@ -33,15 +34,25 @@ watch(
     () => filters[props.name],
     (value) => {
         if (value !== localValue.value) {
-            localValue.value = value;
+            localValue.value = value || '';
         }
-    },
+    }
 );
 
-onMounted(() => {
+watchEffect(() => {
+    const value = filters[props.name];
+
+    if (!value) {
+        registerFilter?.(props.name, null);
+        return;
+    }
+
     registerFilter?.(props.name, {
-        label: 'deve conter',
-        type: 'text',
+        label: 'contêm',
+        format: () => value,
+        clear: () => {
+            filters[props.name] = null;
+        },
     });
 });
 
