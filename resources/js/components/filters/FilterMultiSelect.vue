@@ -6,7 +6,7 @@ import { inject, watchEffect } from 'vue';
 const filters = inject('filters');
 const registerFilter = inject('registerFilter');
 
-const props = defineProps<{
+defineProps<{
     label?: string;
     name: string;
     options: SelectOption[];
@@ -14,27 +14,30 @@ const props = defineProps<{
 }>();
 
 watchEffect(() => {
-    const values = filters[props.name];
+    const values = filters[name];
+    console.log(values);
 
     if (!values || !values.length) {
-        registerFilter?.(props.name, null);
+        registerFilter?.(name, null);
         return;
     }
 
-    const selectedItems = props.options.filter((opt) =>
+    const selectedItems = options.filter((opt) =>
         values.includes(opt.value),
     );
 
     if (!selectedItems.length) {
-        registerFilter?.(props.name, null);
+        registerFilter?.(name, null);
         return;
     }
 
-    registerFilter?.(props.name, {
-        label: props.label.toLowerCase() + 'com o nome',
+    console.log(selectedItems);
+
+    registerFilter?.(name, {
+        label: label.toLowerCase() + 'com o nome',
         format: () => selectedItems.map((i) => i.label).join(', '),
         clear: () => {
-            filters[props.name] = [];
+            filters[name] = [];
         },
     });
 });
