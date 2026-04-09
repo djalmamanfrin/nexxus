@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
-import axios from 'axios';
 import { SelectOption } from '@/types/select';
+import axios from 'axios';
+import { computed, onMounted, ref, watch } from 'vue';
 import AppLabel from '@/components/base/AppLabel.vue';
 
-interface Props {
+const props = defineProps<{
     label?: string;
     modelValue?: string | number | (string | number)[];
     multiple?: boolean;
@@ -12,12 +12,7 @@ interface Props {
     options?: SelectOption[];
     width?: string;
     required?: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-    width: 'w-full',
-    required: true,
-});
+}>();
 
 const emit = defineEmits(['update:modelValue', 'selected']);
 
@@ -45,7 +40,23 @@ const fetchOptions = async () => {
 onMounted(fetchOptions);
 watch(() => props.url, fetchOptions);
 
-const options = computed(() => props.options ?? internalOptions.value);
+const options = computed<SelectOption[]>(() => {
+    if (Array.isArray(props.options)) {
+        return props.options;
+    }
+
+    return internalOptions.value;
+});
+
+const isSelected = (value: string | number) => {
+    if (props.multiple) {
+        return Array.isArray(props.modelValue)
+            ? props.modelValue.map(String).includes(String(value))
+            : false;
+    }
+
+    return String(props.modelValue) === String(value);
+};
 
 const onChange = (event: Event) => {
     const target = event.target as HTMLSelectElement;
@@ -59,46 +70,38 @@ const onChange = (event: Event) => {
             selectedValues.includes(String(opt.value)),
         );
 
-        if (!selectedItems) {
-            emit('update:modelValue', null);
-            emit('selected', null);
-            return;
-        }
         emit('update:modelValue', selectedValues);
         emit('selected', selectedItems);
-    } else {
-        const value = target.value;
-        const selectedItem = options.value.find(
-            (option) => String(option.value) === String(value),
-        );
 
-        if (!selectedItem) {
-            emit('update:modelValue', null);
-            emit('selected', null);
-            return;
-        }
-
-        emit('update:modelValue', value);
-        emit('selected', selectedItem);
+        return;
     }
+
+    const value = target.value;
+
+    const selectedItem = options.value.find(
+        (opt) => String(opt.value) === String(value),
+    );
+
+    emit('update:modelValue', value || null);
+    emit('selected', selectedItem || null);
 };
 </script>
-
 <template>
     <div class="flex w-full flex-col gap-1" :class="width">
         <AppLabel v-if="label" :label="label" :required="required" />
+
         <select
-            :value="modelValue"
-            @change="onChange($event)"
+            :multiple="multiple"
+            @change="onChange"
             class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none dark:bg-gray-950"
-            :class="width"
         >
-            <option value="">Selecione</option>
+            <option v-if="!multiple" value="">Selecione</option>
 
             <option
                 v-for="option in options"
                 :key="option.value"
                 :value="option.value"
+                :selected="isSelected(option.value)"
             >
                 {{ option.label }}
             </option>
