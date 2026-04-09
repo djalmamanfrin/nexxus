@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { inject, ref, onMounted } from 'vue';
 import AppSelect from '@/components/base/AppSelect.vue';
 import { SelectOption } from '@/types/select';
+import { inject, watchEffect } from 'vue';
 
 const filters = inject('filters');
 const registerFilter = inject('registerFilter');
@@ -9,51 +9,43 @@ const registerFilter = inject('registerFilter');
 const props = defineProps<{
     label?: string;
     name: string;
-    selectedValue?: string | null;
     options: SelectOption[];
     width?: string;
 }>();
 
-onMounted(() => {
-    if (props.selectedValue == null || !props.options?.length) return;
+// 🔥 REGISTRO REATIVO
+watchEffect(() => {
+    const value = filters[props.name];
 
-    const selected = props.options.find(
-        (option) => option.value === Number(props.selectedValue),
-    );
-
-    if (!selected) return;
-
-    registerFilter?.(props.name, {
-        label: 'com status',
-        type: 'select',
-        value: selected.value,
-        display: selected.label,
-    });
-});
-
-const selectedItem = ref(null);
-const handleSelected = (item) => {
-    if (!item) {
+    if (!value) {
         registerFilter?.(props.name, null);
         return;
     }
 
-    selectedItem.value = item;
+    const selected = props.options?.find(
+        (opt) => String(opt.value) === String(value),
+    );
+
+    if (!selected) {
+        registerFilter?.(props.name, null);
+        return;
+    }
+
     registerFilter?.(props.name, {
-        label: 'com status',
-        type: 'select',
-        value: item.value,
-        display: item.label,
+        label: props.label?.toLowerCase() + ' com',
+        format: () => selected.label,
+        clear: () => {
+            filters[props.name] = null;
+        },
     });
-};
+});
 </script>
 
 <template>
     <AppSelect
         class="min-w-[180px] flex-[1] md:max-w-[250px]"
         v-model="filters[name]"
-        @selected="handleSelected"
-        url="/payment-statuses"
+        :options="options"
         :label="label"
         :width="width"
     />
