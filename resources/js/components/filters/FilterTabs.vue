@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { inject, computed, onMounted } from 'vue';
 import { SelectOption } from '@/types/select';
+import { computed, inject, watchEffect } from 'vue';
 import AppLabel from '@/components/base/AppLabel.vue';
 
 const filters = inject('filters');
@@ -9,10 +9,7 @@ const registerFilter = inject('registerFilter');
 const props = defineProps<{
     label: string;
     name: string;
-    tabs: {
-        type: SelectOption[];
-        default: [];
-    };
+    tabs: SelectOption[];
 }>();
 
 const currentValue = computed(() => filters[props.name] ?? '');
@@ -23,43 +20,43 @@ function isActive(value: string | number) {
 
 const normalizedTabs = computed(() => {
     const hasAll = props.tabs.some((t) => t.value === '');
-
     if (hasAll) return props.tabs;
 
     return [{ value: '', label: 'Todos' }, ...props.tabs];
 });
 
-function selectTab(value: string | number) {
-    filters[props.name] = value;
+watchEffect(() => {
+    const value = filters[props.name];
 
-    const selected = props.tabs.find((t) => t.value === value);
+    if (!value) {
+        registerFilter?.(props.name, null);
+        return;
+    }
 
-    registerFilter?.(props.name, {
-        label: 'com status',
-        type: 'tab',
-        value: selected?.value,
-        display: selected?.label,
-    });
-}
+    const selected = props.tabs.find((t) => String(t.value) === String(value));
 
-onMounted(() => {
-    const selected = props.tabs.find(
-        (item) => item.value === Number(filters[props.name]),
-    );
-    if (!selected) return;
+    if (!selected) {
+        registerFilter?.(props.name, null);
+        return;
+    }
 
     registerFilter?.(props.name, {
         label: 'com status',
-        type: 'tab',
-        value: selected.value,
-        display: selected.label,
+        format: () => selected.label?.toLowerCase(),
+        clear: () => {
+            filters[props.name] = '';
+        },
     });
 });
+
+function selectTab(value: string | number) {
+    filters[props.name] = value;
+}
 </script>
 
 <template>
     <div class="flex flex-col gap-1">
-        <AppLabel :label="label" />
+        <AppLabel v-if="label" :label="label" />
         <div
             class="inline-flex gap-1 rounded-lg bg-neutral-100 dark:bg-neutral-800"
         >
