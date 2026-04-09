@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { SelectOption } from '@/types/select';
-import { inject, onMounted, ref, watch } from 'vue';
 import AppSelect from '@/components/base/AppSelect.vue';
+import { SelectOption } from '@/types/select';
+import { inject, watchEffect } from 'vue';
 
 const filters = inject('filters');
 const registerFilter = inject('registerFilter');
@@ -13,53 +13,41 @@ const props = defineProps<{
     width?: string;
 }>();
 
-const selectedItems = ref<SelectOption[]>([]);
+watchEffect(() => {
+    const values = filters[props.name];
 
-watch(
-    () => filters[props.name],
-    (values) => {
-        if (!values?.length) {
-            selectedItems.value = [];
-            return;
-        }
+    if (!values || !values.length) {
+        registerFilter?.(props.name, null);
+        return;
+    }
 
-        selectedItems.value = props.options.filter((opt) =>
-            values.includes(opt.value),
-        );
-    },
-    { immediate: true },
-);
+    const selectedItems = props.options.filter((opt) =>
+        values.includes(opt.value),
+    );
 
-const handleSelected = (items: SelectOption[]) => {
-    selectedItems.value = items;
-
-    filters[props.name] = items.map((item) => item.value);
+    if (!selectedItems.length) {
+        registerFilter?.(props.name, null);
+        return;
+    }
 
     registerFilter?.(props.name, {
-        label: 'em empresas',
-        type: 'multi-select',
-        value: items.map((i) => i.value),
-        display: items.map((i) => i.label).join(', '),
+        label: props.label.toLowerCase() + 'com o nome',
+        format: () => selectedItems.map((i) => i.label).join(', '),
+        clear: () => {
+            filters[props.name] = [];
+        },
     });
-};
-
-onMounted(() => {
-    if (!filters[props.name]?.length) return;
-
-    handleSelected(
-        props.options.filter((opt) => filters[props.name].includes(opt.value)),
-    );
 });
 </script>
 
 <template>
     <AppSelect
         :multiple="true"
-        :label="label"
+        v-model="filters[name]"
         :options="options"
-        :model-value="filters[name]"
-        @update:modelValue="handleSelected"
+        :label="label"
         :width="width"
         :required="false"
+        class="min-w-[280px] md:max-w-[500px] md:flex-[2]"
     />
 </template>
