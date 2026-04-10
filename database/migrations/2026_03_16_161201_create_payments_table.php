@@ -11,15 +11,9 @@ return new class extends Migration
             $table->id();
             $table->ulid()->unique()->index();
 
-            $table->foreignId('expense_id')
-                ->nullable()
-                ->constrained('expenses')
-                ->nullOnDelete();
-
-            $table->foreignId('bank_account_id')
-                ->nullable()
-                ->constrained('bank_accounts')
-                ->nullOnDelete();
+            $table->foreignId('work_id')
+                ->constrained('works')
+                ->cascadeOnDelete();
 
             $table->foreignId('payment_status_id')
                 ->default(1)
@@ -31,12 +25,20 @@ return new class extends Migration
                 ->constrained('payment_types')
                 ->cascadeOnDelete();
 
+            $table->foreignId('bank_account_id')
+                ->nullable()
+                ->constrained('bank_accounts')
+                ->nullOnDelete();
+
             $table->decimal('amount', 12, 2)->default(0);
             $table->string('transaction_id')->nullable();
-            $table->string('end_to_end_id')->nullable();
-            $table->timestamp('paid_at')->nullable(); // pagamento
+            $table->string('end_to_end_id')->nullable()->unique();
+            $table->timestamp('paid_at')->nullable();
             $table->timestamps();
+
             $table->index('created_at');
+            $table->index(['work_id', 'paid_at']);
+            $table->index(['payment_status_id']);
         });
     }
 
