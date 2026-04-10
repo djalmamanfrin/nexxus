@@ -16,6 +16,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import WorkSelector from '@/components/WorkSelector.vue';
 
 const mainNavItems: NavItem[] = [
     {
@@ -48,6 +49,7 @@ const footerNavItems: NavItem[] = [
                         <Link :href="dashboard()">
                             <AppLogo />
                         </Link>
+                        <WorkSelector model-value="1" />
                     </SidebarMenuButton>
                 </SidebarMenuItem>
             </SidebarMenu>
