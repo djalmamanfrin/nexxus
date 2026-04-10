@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Attachment\AttachFileAction;
+use App\Actions\Expense\SyncExpensePaymentsAction;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
@@ -72,12 +73,25 @@ class ExpenseController extends Controller
         return back()->with(['success' => 'Despesa anexado com sucesso']);
     }
 
-    public function update(UpdateExpenseRequest  $request, Expense $expense)
-    {
-        $validated = $request->validated();
-        $expense->update($validated);
+    /**
+     * @throws Throwable
+     */
+    public function update(
+        UpdateExpenseRequest $request,
+        Expense $expense,
+        SyncExpensePaymentsAction $syncPayments
+    ) {
+        DB::transaction(function () use ($request, $expense, $syncPayments) {
+            $expense->update($request->validated());
+            if ($request->has('payments')) {
+                $syncPayments->execute(
+                    $expense,
+                    $request->input('payments', [])
+                );
+            }
+        });
 
-        return back()->with('success', 'Despesa atualizado com sucesso');
+        return back()->with('success', 'Despesa atualizada com sucesso');
     }
 
     public function uploadAttachment(Request $request, Expense $expense, AttachFileAction $attachFile)
