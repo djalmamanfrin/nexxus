@@ -2,14 +2,14 @@
 
 namespace App\Domain\Payments;
 
-use Illuminate\Support\Collection;
+use App\Domain\VO\CurrencyValue;
 use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 
 readonly class PaymentLink
 {
     public int $paymentId;
-    public float $amount;
+    public CurrencyValue $amount;
 
     public function __construct(int $paymentId, float $amount)
     {
@@ -22,7 +22,7 @@ readonly class PaymentLink
         }
 
         $this->paymentId = $paymentId;
-        $this->amount = $amount;
+        $this->amount = new CurrencyValue($amount);
     }
 
     public static function fromArray(array $data): self
