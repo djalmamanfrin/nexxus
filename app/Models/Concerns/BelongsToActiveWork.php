@@ -2,6 +2,7 @@
 
 namespace App\Models\Concerns;
 
+use App\Models\Scopes\WorkScope;
 use Illuminate\Database\Eloquent\Model;
 
 trait BelongsToActiveWork
@@ -19,5 +20,10 @@ trait BelongsToActiveWork
             }
             $model->work_id = auth()->user()->active_work_id;
         });
+    }
+
+    protected static function bootHasWorkScope(): void
+    {
+        static::addGlobalScope(new WorkScope());
     }
 }
