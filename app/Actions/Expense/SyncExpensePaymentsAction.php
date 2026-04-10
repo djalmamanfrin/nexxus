@@ -18,7 +18,11 @@ class SyncExpensePaymentsAction
 
         $paymentsCollection = PaymentLinkCollection::fromArray($payments);
 
-        if ($paymentsCollection->totalAmount() > $expense->amount) {
+        if ($paymentsCollection->totalAmount()->isZero()) {
+            throw ValidationException::withMessages(['payments' => 'Valor total dos pagamentos deve ser maior que zero']);
+        }
+
+        if ($paymentsCollection->totalAmount()->value() > $expense->amount) {
             throw ValidationException::withMessages(['payments' => 'Pagamentos excedem o valor da despesa']);
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Payments;
 
+use App\Domain\VO\CurrencyValue;
 use Illuminate\Support\Collection;
 
 class PaymentLinkCollection extends Collection
@@ -13,9 +14,10 @@ class PaymentLinkCollection extends Collection
         );
     }
 
-    public function totalAmount(): float
+    public function totalAmount(): CurrencyValue
     {
-        return $this->sum(fn (PaymentLink $p) => $p->amount);
+        $total = $this->sum(fn (PaymentLink $p) => $p->amount->value());
+        return new CurrencyValue($total);
     }
 
     public function paymentIds(): array
