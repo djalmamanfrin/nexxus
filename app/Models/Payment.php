@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\DateValueCast;
+use App\Models\Concerns\BelongsToActiveWork;
 use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -52,7 +53,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  */
 class Payment extends Model
 {
-    use HasUlid;
+    use HasUlid, BelongsToActiveWork;
 
     protected $fillable = [
         'expense_id',

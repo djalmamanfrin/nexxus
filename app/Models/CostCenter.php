@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\DateValueCast;
 use App\Domain\VO\CurrencyValue;
+use App\Models\Concerns\BelongsToActiveWork;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -43,6 +44,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class CostCenter extends Model
 {
+    use BelongsToActiveWork;
+
     protected $fillable = [
         'work_id',
         'cost_center_status_id',
