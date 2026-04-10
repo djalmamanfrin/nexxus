@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('expense_payment', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('expense_id')
+                ->constrained('expenses')
+                ->cascadeOnDelete();
+
+            $table->foreignId('payment_id')
+                ->constrained('payments')
+                ->cascadeOnDelete();
+
+            $table->decimal('amount', 12, 2);
+            $table->timestamp('linked_at')->useCurrent();
+            $table->timestamps();
+
+            $table->unique(['expense_id', 'payment_id']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('expense_payment');
+    }
+};
