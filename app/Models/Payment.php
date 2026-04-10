@@ -77,6 +77,7 @@ class Payment extends Model
     {
         return $this->belongsToMany(Expense::class)
             ->withPivot(['amount', 'linked_at'])
+            ->whereColumn('payments.work_id', 'expenses.work_id')
             ->withTimestamps();
     }
 
