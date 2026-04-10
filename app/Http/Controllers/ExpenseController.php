@@ -59,10 +59,9 @@ class ExpenseController extends Controller
             'attachment' => ['required', 'file', 'image', 'max:5120'],
         ]);
 
-        $attachment = null;
-        $expense = DB::transaction(function () use ($request, $action, &$attachment) {
+        DB::transaction(function () use ($request, $action) {
             $expense = Expense::create();
-            $attachment = $action->execute(
+            $action->execute(
                 $expense,
                 $request->file('attachment'),
                 'attachments/expenses');
