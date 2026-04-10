@@ -14,23 +14,26 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * @property int $id
- * @property string $uuid
- * @property int $payment_status_id
+ * @property string $ulid
  * @property int|null $payee_id
  * @property int|null $cost_center_id
- * @property int|null $expense_category_id
+ * @property int $expense_status_id
+ * @property int $expense_category_id
  * @property string|null $reference
  * @property numeric $amount
- * @property \Illuminate\Support\Carbon|null $due_at
- * @property \Illuminate\Support\Carbon|null $competence_date
+ * @property \App\Domain\VO\DateValue|null $due_at
+ * @property \App\Domain\VO\DateValue|null $competence_date
  * @property string|null $description
- * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \App\Domain\VO\DateValue|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\ExpenseCategory|null $category
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read \App\Models\ExpenseCategory $category
  * @property-read \App\Models\CostCenter|null $costCenter
  * @property-read \App\Models\Payee|null $payee
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
  * @property-read int|null $payments_count
+ * @property-read \App\Models\ExpenseStatus $status
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense filter($filters)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense newQuery()
@@ -42,19 +45,12 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereDueAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereExpenseCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereExpenseStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense wherePayeeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense wherePaymentStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereReference($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereUuid($value)
- * @property string $ulid
- * @property int $expense_status_id
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
- * @property-read int|null $attachments_count
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereExpenseStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereUlid($value)
- * @property-read \App\Models\ExpenseStatus $status
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Expense extends Model

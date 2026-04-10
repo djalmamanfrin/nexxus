@@ -12,22 +12,25 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * @property int $id
- * @property string $uuid
- * @property int $payment_status_id
- * @property int $expense_id
+ * @property string $ulid
+ * @property int|null $expense_id
  * @property int|null $bank_account_id
+ * @property int $payment_status_id
+ * @property int $payment_type_id
  * @property numeric $amount
- * @property string $payment_method
  * @property string|null $transaction_id
  * @property string|null $end_to_end_id
- * @property \Illuminate\Support\Carbon|null $paid_at
- * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \App\Domain\VO\DateValue|null $paid_at
+ * @property \App\Domain\VO\DateValue|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read \App\Models\BankAccount|null $bankAccount
- * @property-read \App\Models\Expense $expense
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expense> $expenses
+ * @property-read int|null $expenses_count
  * @property-read \App\Models\PaymentStatus $status
+ * @property-read \App\Models\PaymentType $type
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment filter($filters)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment query()
@@ -38,17 +41,11 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereExpenseId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaidAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaymentMethod($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaymentStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereTransactionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUuid($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment filter($filters)
- * @property-read \App\Models\PaymentType|null $type
- * @property string $ulid
- * @property int $payment_type_id
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaymentTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereTransactionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUlid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Payment extends Model

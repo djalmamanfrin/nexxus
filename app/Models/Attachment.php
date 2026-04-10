@@ -9,7 +9,7 @@ use Storage;
 
 /**
  * @property int $id
- * @property string $uuid
+ * @property string $ulid
  * @property string $hash
  * @property string $attachable_type
  * @property int $attachable_id
@@ -19,6 +19,7 @@ use Storage;
  * @property int|null $size
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
  * @property-read int|null $payments_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newModelQuery()
@@ -33,11 +34,8 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereMimeType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereOriginalName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereSize($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereUuid($value)
- * @property string $ulid
- * @property-read string $url
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereUlid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Attachment extends Model

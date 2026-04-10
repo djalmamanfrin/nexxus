@@ -12,34 +12,31 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property int $id
  * @property int $work_id
+ * @property int $cost_center_status_id
  * @property int $cost_center_type_id
- * @property string $name
- * @property string|null $description
- * @property \Illuminate\Support\Carbon|null $start_date
- * @property \Illuminate\Support\Carbon|null $expected_end_date
+ * @property \App\Domain\VO\DateValue|null $start_date
+ * @property \App\Domain\VO\DateValue|null $expected_end_date
  * @property numeric|null $budget
- * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \App\Domain\VO\DateValue|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expense> $expenses
  * @property-read int|null $expenses_count
+ * @property-read \App\Models\CostCenterStatus $status
  * @property-read \App\Models\CostCenterType $type
  * @property-read \App\Models\Work $work
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter filter($filters)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereBudget($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereCostCenterStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereCostCenterTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereExpectedEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereWorkId($value)
- * @property string $code
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter filter($filters)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CostCenter whereCode($value)
  * @mixin \Eloquent
  */
 class CostCenter extends Model

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
- * @property string $uuid
+ * @property string $ulid
  * @property int $bank_id
  * @property string $name
  * @property string $agency
@@ -32,10 +32,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereUuid($value)
- * @property string $ulid
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereUlid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BankAccount whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class BankAccount extends Model
