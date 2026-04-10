@@ -49,7 +49,7 @@ const footerNavItems: NavItem[] = [
                         <Link :href="dashboard()">
                             <AppLogo />
                         </Link>
-                        <WorkSelector model-value="1" />
+                        <WorkSelector />
                     </SidebarMenuButton>
                 </SidebarMenuItem>
             </SidebarMenu>

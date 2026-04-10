@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import AppSelect from '@/components/base/AppSelect.vue';
-import { router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 
-const props = defineProps<{
-    modelValue: number | string | null;
-}>();
-
+const page = usePage();
+const activeWorkId = page.props.auth.user.active_work_id;
 const emit = defineEmits(['update:modelValue']);
 
 function handleChange(workId: string | number | null) {
@@ -29,7 +27,7 @@ function handleChange(workId: string | number | null) {
 <template>
     <AppSelect
         url="works/options"
-        :model-value="modelValue"
+        :model-value="activeWorkId"
         @update:modelValue="handleChange"
         width="w-64"
     />
