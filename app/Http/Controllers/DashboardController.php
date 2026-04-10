@@ -15,13 +15,13 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $workId = $request->get('work_id');
+        $workIds = $request->get('work_ids');
         $start = $request->get('start_date');
         $end   = $request->get('end_date');
 
         $cacheKey = 'dashboard:' . md5(json_encode($request->all()));
 
-        $data = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($workId, $start, $end) {
+        $data = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($workIds, $start, $end) {
 
             // ========================
             // EXPENSE BASE QUERY
@@ -31,8 +31,8 @@ class DashboardController extends Controller
                 ->join('cost_center_types', 'cost_centers.cost_center_type_id', '=', 'cost_center_types.id')
                 ->join('works', 'cost_centers.work_id', '=', 'works.id');
 
-            if ($workId) {
-                $expenseBase->where('works.id', $workId);
+            if ($workIds) {
+                $expenseBase->whereIn('works.id', $workIds);
             }
 
             if ($start && $end) {
@@ -122,7 +122,7 @@ class DashboardController extends Controller
             return [
                 'works' => Work::select('id as value', 'name as label')->get(),
                 'filters' => [
-                    'work_id' => $workId,
+                    'work_ids' => $workIds,
                     'start_date' => $start,
                     'end_date' => $end,
                 ],

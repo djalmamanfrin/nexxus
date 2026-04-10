@@ -42,7 +42,6 @@ const { filters, search, clear } = useFilters(
     {
         start_date: props.filters?.start_date || '',
         end_date: props.filters?.end_date || '',
-        work_id: props.filters?.work_id || null,
         work_ids: props.filters?.work_ids || [],
     },
     '/dashboard',
@@ -56,7 +55,7 @@ const handleWorkClick = (_, elements) => {
     const index = elements[0].index;
     const work = props.expensesByWork[index];
 
-    filters.work_id = work.id;
+    filters.work_ids = [work.id];
     search();
 };
 
