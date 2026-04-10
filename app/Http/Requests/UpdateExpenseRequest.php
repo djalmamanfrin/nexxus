@@ -29,6 +29,23 @@ class UpdateExpenseRequest extends FormRequest
             'amount' => ['nullable', 'numeric'],
             'due_at' => ['nullable', 'date'],
             'competence_date' => ['nullable', 'date'],
+            'payments' => ['nullable', 'array'],
+            'payments.*.id' => ['required', 'exists:payments,id'],
+            'payments.*.amount' => ['required', 'numeric', 'min:0.01'],
         ];
+    }
+
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            $payments = collect($this->input('payments', []));
+            $total = $payments->sum('amount');
+            if ($this->amount && $total > $this->amount) {
+                $validator->errors()->add(
+                    'payments',
+                    'Total dos pagamentos excede o valor da despesa.'
+                );
+            }
+        });
     }
 }
