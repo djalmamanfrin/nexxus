@@ -15,6 +15,15 @@ return new class extends Migration
             $table->id();
             $table->ulid()->unique()->index();
 
+            $table->foreignId('work_id')
+                ->constrained('works')
+                ->cascadeOnDelete();
+
+            $table->foreignId('expense_status_id')
+                ->default(1)
+                ->constrained('expense_statuses')
+                ->cascadeOnDelete();
+
             $table->foreignId('payee_id')
                 ->nullable()
                 ->constrained('payees')
@@ -24,11 +33,6 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('cost_centers')
                 ->nullOnDelete();
-
-            $table->foreignId('expense_status_id')
-                ->default(1)
-                ->constrained('expense_statuses')
-                ->cascadeOnDelete();
 
             $table->foreignId('expense_category_id')
                 ->default(1)
@@ -41,7 +45,10 @@ return new class extends Migration
             $table->date('competence_date')->nullable()->index(); // vencimento
             $table->string('description')->nullable();
             $table->timestamps();
+
             $table->index('created_at');
+            $table->index(['work_id', 'due_at']);
+            $table->index(['work_id', 'expense_status_id']);
         });
     }
 
