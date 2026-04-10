@@ -25,8 +25,7 @@ Route::get('/', function () {
 // Grupo de rotas restritas
 Route::group(['middleware' => 'auth', 'verified'], function () {
 
-    Route::post('/user/active-work', UserActiveWorkController::class)
-        ->middleware('auth');
+    Route::post('/user/active-work', UserActiveWorkController::class);
 
     // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
