@@ -12,6 +12,8 @@ use App\Observers\CostCenterTypeObserver;
 use App\Observers\ExpenseObserver;
 use App\Observers\PaymentObserver;
 use App\Observers\WorkObserver;
+use App\Policies\WorkPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Gate::policy(Work::class, WorkPolicy::class);
 
         CostCenter::observe(CostCenterObserver::class);
         CostCenterType::observe(CostCenterTypeObserver::class);
