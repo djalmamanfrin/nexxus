@@ -10,6 +10,7 @@ use App\Http\Controllers\PayeeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentStatusController;
 use App\Http\Controllers\PaymentTypeController;
+use App\Http\Controllers\UserActiveWorkController;
 use App\Http\Controllers\WorkController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,6 +24,9 @@ Route::get('/', function () {
 
 // Grupo de rotas restritas
 Route::group(['middleware' => 'auth', 'verified'], function () {
+
+    Route::post('/user/active-work', UserActiveWorkController::class)
+        ->middleware('auth');
 
     // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
