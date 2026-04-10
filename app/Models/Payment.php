@@ -6,6 +6,7 @@ use App\Casts\DateValueCast;
 use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
@@ -55,6 +56,7 @@ class Payment extends Model
 
     protected $fillable = [
         'expense_id',
+        'work_id',
         'bank_account_id',
         'payment_status_id',
         'amount',
@@ -70,9 +72,11 @@ class Payment extends Model
         'amount' => 'decimal:2'
     ];
 
-    public function expense(): BelongsTo
+    public function expenses(): BelongsToMany
     {
-        return $this->belongsTo(Expense::class);
+        return $this->belongsToMany(Expense::class)
+            ->withPivot(['amount', 'linked_at'])
+            ->withTimestamps();
     }
 
     public function bankAccount(): BelongsTo

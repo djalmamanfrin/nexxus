@@ -7,6 +7,7 @@ use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -62,6 +63,7 @@ class Expense extends Model
     protected $fillable = [
         'reference',
         'amount',
+        'work_id',
         'payee_id',
         'cost_center_id',
         'expense_status_id',
@@ -98,9 +100,11 @@ class Expense extends Model
         return $this->belongsTo(ExpenseCategory::class, 'expense_category_id');
     }
 
-    public function payments(): HasMany
+    public function payments(): BelongsToMany
     {
-        return $this->hasMany(Payment::class);
+        return $this->belongsToMany(Payment::class)
+            ->withPivot(['amount', 'linked_at'])
+            ->withTimestamps();
     }
 
     public function attachments(): MorphMany
