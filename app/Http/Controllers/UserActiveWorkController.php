@@ -14,8 +14,6 @@ class UserActiveWorkController extends Controller
         ]);
 
         $work = Work::findOrFail($data['work_id']);
-
-        $this->authorize('view', $work);
         $request->user()->update([
             'active_work_id' => $work->id,
         ]);
