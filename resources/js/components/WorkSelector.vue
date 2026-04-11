@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import { Link, router, usePage } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import AppButton from '@/components/AppButton.vue';
 import axios from 'axios';
 import { SelectOption } from '@/types/select';
-import { type Component, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Building2Icon } from 'lucide-vue-next';
-import { dashboard } from '@/routes';
-import AppLogo from '@/components/AppLogo.vue';
 import { useSidebar } from '@/components/ui/sidebar';
-import SidebarMenuButtonChild from '@/components/ui/sidebar/SidebarMenuButtonChild.vue';
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
-import Icon from '@/components/Icon.vue';
 
 const page = usePage();
 const activeWorkId = page.props.auth.user.active_work_id;
