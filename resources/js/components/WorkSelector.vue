@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import AppSelect from '@/components/base/AppSelect.vue';
-import { router, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
+import AppButton from '@/components/AppButton.vue';
+import axios from 'axios';
+import { SelectOption } from '@/types/select';
+import { onMounted, ref } from 'vue';
+import { Building2Icon } from 'lucide-vue-next';
+import { dashboard } from '@/routes';
+import AppLogo from '@/components/AppLogo.vue';
 
 const page = usePage();
 const activeWorkId = page.props.auth.user.active_work_id;
@@ -22,13 +28,32 @@ function handleChange(workId: string | number | null) {
         },
     );
 }
+
+const workSelectorOptions = ref<SelectOption[]>([]);
+const workSelectorName = ref<string>();
+const fetchOptions = async () => {
+    try {
+        const { data } = await axios.get<SelectOption[]>('works/options');
+        workSelectorOptions.value = data;
+        workSelectorName.value = data.find(
+            (opt) => opt.value === activeWorkId,
+        )?.label;
+    } catch (e) {
+        console.error(e);
+    } finally {
+    }
+};
+
+onMounted(fetchOptions);
 </script>
 
 <template>
-    <AppSelect
-        url="works/options"
-        :model-value="activeWorkId"
-        @update:modelValue="handleChange"
-        width="w-64"
+    <AppButton
+        type="link"
+        href="/works"
+        variant="secondary"
+        :label="workSelectorName"
+        :icon="Building2Icon"
+        class="w-full"
     />
 </template>
