@@ -169,16 +169,16 @@ watch(
                             name="bank_id"
                         />
 
-                        <AppSelectWithUpload
-                            v-model="form.expense_id"
-                            @created="
-                                ({ field, value }) => (form[field] = value)
-                            "
-                            :url="`/expenses/${item.id}/payment-options`"
-                            label="Despesa com mesmo valor"
-                            name="expense_id"
-                            width="w-56"
-                        />
+<!--                        <AppSelectWithUpload-->
+<!--                            v-model="form.expense_id"-->
+<!--                            @created="-->
+<!--                                ({ field, value }) => (form[field] = value)-->
+<!--                            "-->
+<!--                            :url="`/expenses/${item.id}/payment-options`"-->
+<!--                            label="Despesa com mesmo valor"-->
+<!--                            name="expense_id"-->
+<!--                            width="w-56"-->
+<!--                        />-->
 
                         <!--            <AppSelectWithModal-->
                         <!--                v-model="form.payment_status_id"-->
