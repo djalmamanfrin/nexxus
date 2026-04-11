@@ -18,7 +18,7 @@ import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 import { useFilters } from '@/composables/useFilters';
-import AppTable from '@/components/table/AppTable.vue';
+import AppTable, { Column } from '@/components/table/AppTable.vue';
 
 const props = defineProps<{
     payments: {
@@ -30,7 +30,7 @@ const props = defineProps<{
     status?: string | number | null;
 }>();
 
-const columns = [
+const columns: Column[] = [
     { key: 'attachments', label: 'Imagem', align: 'left', type: 'attachment' },
     { key: 'amount.formatted', label: 'Valor' },
     {

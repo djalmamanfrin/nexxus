@@ -16,7 +16,7 @@ import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppCreateModal from '@/components/AppCreateModal.vue';
 import TypeFields from '@/pages/cost_centers/TypeFields.vue';
 import { useFilters } from '@/composables/useFilters';
-import AppTable from '@/components/table/AppTable.vue';
+import AppTable, { Column } from '@/components/table/AppTable.vue';
 
 const props = defineProps<{
     cost_centers: {
@@ -32,7 +32,7 @@ const props = defineProps<{
     status?: string;
 }>();
 
-const columns = [
+const columns: Column[] = [
     { key: 'work.name', label: 'Obra', align: 'left' },
     { key: 'type.code', label: 'Código', type: 'badge' },
     { key: 'type.name', label: 'Tipo' },

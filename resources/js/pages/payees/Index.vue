@@ -13,7 +13,7 @@ import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 import { useFilters } from '@/composables/useFilters';
-import AppTable from '@/components/table/AppTable.vue';
+import AppTable, { Column } from '@/components/table/AppTable.vue';
 
 const props = defineProps<{
     payees: {
@@ -23,7 +23,7 @@ const props = defineProps<{
     search_by?: string;
 }>();
 
-const columns = [
+const columns: Column[] = [
     { key: 'name', label: 'Nome Fantasia', align: 'left' },
     { key: 'document.formatted', label: 'CNPJ/CPF' },
     {
