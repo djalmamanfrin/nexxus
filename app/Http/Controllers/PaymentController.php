@@ -19,7 +19,7 @@ class PaymentController extends Controller
     public function index(Request $request)
     {
         $payments = Payment::query()
-            ->with('attachments', 'status', 'expense', 'bankAccount')
+            ->with('attachments', 'status', 'bankAccount')
             ->filter($request->all())
             ->latest()
             ->paginate(10)

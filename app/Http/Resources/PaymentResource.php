@@ -27,12 +27,6 @@ class PaymentResource extends JsonResource
                     'code' => $this->bankAccount?->name,
                 ];
             }),
-            'expense' => $this->whenLoaded('expense', function () {
-                return [
-                    'id' => $this->expense?->id,
-                    'name' => $this->expense?->attachments?->first()?->original_name,
-                ];
-            }),
             'status' => $this->whenLoaded('status', function () {
                 return [
                     'id' => $this->payment_status_id,
