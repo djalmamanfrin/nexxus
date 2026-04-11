@@ -10,54 +10,58 @@ import { urlIsActive } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import {
-    Building2,
     CircleDollarSignIcon,
     Contact,
     DollarSign,
     HomeIcon,
     LucideFolderTree,
 } from 'lucide-vue-next';
+import { computed } from 'vue';
+
+const page = usePage();
+const activeWorkId = page.props.auth.user.active_work_id;
 
 const items: NavItem[] = [
     {
         title: 'Dashboard',
         href: '/dashboard',
         icon: HomeIcon,
+        isActive: true,
     },
     {
         title: 'C. de Custos',
         href: '/cost-centers',
         icon: LucideFolderTree,
+        isActive: !!activeWorkId,
     },
     {
         title: 'Pagamentos',
         href: '/payments',
         icon: DollarSign,
+        isActive: !!activeWorkId,
     },
     {
         title: 'Despesas',
         href: '/expenses',
         icon: CircleDollarSignIcon,
+        isActive: !!activeWorkId,
     },
     {
         title: 'Beneficiários',
         href: '/payees',
         icon: Contact,
+        isActive: true,
     },
 ];
 
-defineProps<{
-    items: NavItem[];
-}>();
-
-const page = usePage();
+const reactiveItems = computed(() => items.filter((item) => item.isActive));
 </script>
 
 <template>
     <SidebarGroup class="px-2 py-0">
         <SidebarGroupLabel>Menu</SidebarGroupLabel>
         <SidebarMenu>
-            <SidebarMenuItem v-for="item in items" :key="item.title">
+            <SidebarMenuItem v-for="item in reactiveItems" :key="item.title">
                 <SidebarMenuButton
                     as-child
                     :is-active="urlIsActive(item.href, page.url)"
