@@ -17,12 +17,12 @@ import AppInputDate from '@/components/base/AppInputDate.vue';
 import AppInputMoney from '@/components/base/AppInputMoney.vue';
 import { PencilIcon, Trash2Icon } from 'lucide-vue-next';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
-import CrudTable from '@/components/crud/CrudTable.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 import Fields from '@/pages/cost_centers/Fields.vue';
 import AppCreateModal from '@/components/AppCreateModal.vue';
 import { useFilters } from '@/composables/useFilters';
+import AppTable from '@/components/table/AppTable.vue';
 
 const props = defineProps<{
     expenses: {
@@ -134,7 +134,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
             <div class="my-4"></div>
 
-            <CrudTable
+            <AppTable
                 :items="props.expenses"
                 :columns="columns"
                 :actions="actions"
