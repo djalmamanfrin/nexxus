@@ -8,7 +8,6 @@ import { useCrud } from '@/composables/useCrud';
 import { computed } from 'vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
-import CrudTable from '@/components/crud/CrudTable.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 import { SelectOption } from '@/types/select';
@@ -17,6 +16,7 @@ import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppCreateModal from '@/components/AppCreateModal.vue';
 import TypeFields from '@/pages/cost_centers/TypeFields.vue';
 import { useFilters } from '@/composables/useFilters';
+import AppTable from '@/components/table/AppTable.vue';
 
 const props = defineProps<{
     cost_centers: {
@@ -160,7 +160,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
             <div class="my-4"></div>
 
-            <CrudTable
+            <AppTable
                 :items="props.cost_centers"
                 :columns="columns"
                 :actions="actions"
@@ -180,7 +180,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </AppFormLayout>
                 </template>
                 <template #cost_center_types="{ form, item }">
-                    <CrudTable
+                    <AppTable
                         :items="props.types"
                         :columns="[
                             { key: 'code', label: 'Código', type: 'badge' },
