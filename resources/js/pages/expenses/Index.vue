@@ -9,8 +9,6 @@ import AppFileInput from '@/components/base/AppFileInput.vue';
 import AppFormLayout from '@/components/base/AppFormLayout.vue';
 import AppInput from '@/components/base/AppInput.vue';
 import AppSelect from '@/components/base/AppSelect.vue';
-import CreateCostCenter from '@/pages/cost_centers/CreateCostCenter.vue';
-import AppSelectWithModal from '@/components/base/AppSelectWithModal.vue';
 import AppUploadModal from '@/components/base/AppUploadModal.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AppInputDate from '@/components/base/AppInputDate.vue';
@@ -19,8 +17,6 @@ import { PencilIcon, Trash2Icon } from 'lucide-vue-next';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
-import Fields from '@/pages/cost_centers/Fields.vue';
-import AppCreateModal from '@/components/AppCreateModal.vue';
 import { useFilters } from '@/composables/useFilters';
 import AppTable from '@/components/table/AppTable.vue';
 
@@ -175,39 +171,6 @@ const breadcrumbs: BreadcrumbItem[] = [
                             label="Centro de Custo"
                             name="cost_center_id"
                         />
-
-                        <!--                        <AppSelectWithModal-->
-                        <!--                            v-model="form.cost_center_id"-->
-                        <!--                            showCreate-->
-                        <!--                            @created="-->
-                        <!--                                ({ field, value }) => (form[field] = value)-->
-                        <!--                            "-->
-                        <!--                            url="cost-centers/options"-->
-                        <!--                            label="C. de Custo"-->
-                        <!--                            name="cost_center_id"-->
-                        <!--                            width="w-56"-->
-                        <!--                            title="Novo C. de Custo"-->
-                        <!--                            description="Como deseja nomear?"-->
-                        <!--                        >-->
-                        <!--                            <template #create>-->
-                        <!--                                <AppCreateModal-->
-                        <!--                                    url="cost-centers"-->
-                        <!--                                    @success="close"-->
-                        <!--                                    :initialData="{-->
-                        <!--                                        expense_id: item.id,-->
-                        <!--                                        work_id: null,-->
-                        <!--                                        cost_center_type_id: null,-->
-                        <!--                                        code: '',-->
-                        <!--                                        budget: 0,-->
-                        <!--                                        description: '',-->
-                        <!--                                    }"-->
-                        <!--                                >-->
-                        <!--                                    <template #fields="{ form }">-->
-                        <!--                                        <Fields :form="form" />-->
-                        <!--                                    </template>-->
-                        <!--                                </AppCreateModal>-->
-                        <!--                            </template>-->
-                        <!--                        </AppSelectWithModal>-->
 
                         <AppInputDate
                             v-model="form.due_at"
