@@ -87,7 +87,12 @@ const getHref = (column, item) => {
                 <tr
                     v-for="item in items.data"
                     :key="item.id"
-                    class="table-body"
+                    :class="[
+                        'table-body transition-colors',
+                        item.id === activeWorkId
+                            ? 'bg-indigo-100 dark:bg-indigo-900/40'
+                            : 'hover:bg-gray-50 dark:hover:bg-gray-800',
+                    ]"
                 >
                     <td
                         v-for="column in columns"
@@ -119,7 +124,10 @@ const getHref = (column, item) => {
                             {{ getValue(item, column.key) }}
                         </slot>
                     </td>
-                    <td v-if="actions?.length" class="table-actions table-actions-align">
+                    <td
+                        v-if="actions?.length"
+                        class="table-actions table-actions-align"
+                    >
                         <AppButton
                             v-for="action in actions"
                             :key="action.name"
