@@ -43,9 +43,7 @@ const footerNavItems: NavItem[] = [
         <SidebarHeader>
             <SidebarMenu>
                 <SidebarMenuItem>
-                    <SidebarMenuButton size="lg" as-child>
-                        <WorkSelector />
-                    </SidebarMenuButton>
+                    <WorkSelector />
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarHeader>
