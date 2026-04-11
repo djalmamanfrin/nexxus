@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import AppTable from '@/components/table/AppTable.vue';
+import AppTable, { Column } from '@/components/table/AppTable.vue';
 import AppButton from '@/components/AppButton.vue';
 
 defineProps<{
     items: Object;
     columns: Column[];
-    actions?: Array;
+    actions?: Array<any>;
 }>();
 
 const emit = defineEmits(['action']);
