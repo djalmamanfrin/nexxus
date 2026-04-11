@@ -1,45 +1,16 @@
 <script setup lang="ts">
-import { Link, router, usePage } from '@inertiajs/vue3';
-import AppButton from '@/components/AppButton.vue';
+import { Link, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import { SelectOption } from '@/types/select';
 import { onMounted, ref } from 'vue';
 import { Building2Icon } from 'lucide-vue-next';
-import {
-    SidebarMenuButton,
-    SidebarMenuItem,
-    useSidebar,
-} from '@/components/ui/sidebar';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import Icon from '@/components/Icon.vue';
+import { SidebarMenuButton } from '@/components/ui/sidebar';
 import { urlIsActive } from '@/lib/utils';
 
 const page = usePage();
 const activeWorkId = page.props.auth.user.active_work_id;
 const emit = defineEmits(['update:modelValue']);
-const { isMobile, state } = useSidebar();
 
-function handleChange(workId: string | number | null) {
-    emit('update:modelValue', workId);
-
-    if (!workId) return;
-
-    router.post(
-        'user/active-work',
-        {
-            work_id: workId,
-        },
-        {
-            preserveState: false,
-            preserveScroll: true,
-        },
-    );
-}
 const url = '/works';
 const workSelectorOptions = ref<SelectOption[]>([]);
 const workSelectorName = ref<string>();
