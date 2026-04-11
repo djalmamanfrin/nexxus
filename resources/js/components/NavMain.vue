@@ -25,11 +25,6 @@ const items: NavItem[] = [
         icon: HomeIcon,
     },
     {
-        title: 'Obras',
-        href: '/works',
-        icon: Building2,
-    },
-    {
         title: 'C. de Custos',
         href: '/cost-centers',
         icon: LucideFolderTree,
