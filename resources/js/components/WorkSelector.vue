@@ -20,7 +20,7 @@ const fetchOptions = async () => {
         workSelectorOptions.value = data;
         workSelectorName.value = data.find(
             (opt) => opt.value === activeWorkId,
-        )?.label;
+        )?.label || 'Ver Obras';
     } catch (e) {
         console.error(e);
     } finally {
