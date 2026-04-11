@@ -11,14 +11,13 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { EyeIcon, PencilIcon, Trash2Icon } from 'lucide-vue-next';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppCreateModal from '@/components/AppCreateModal.vue';
-import CrudTable from '@/components/crud/CrudTable.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import CrudDrawer from '@/components/crud/CrudDrawer.vue';
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import Fields from '@/pages/cost_centers/Fields.vue';
 import { SelectOption } from '@/types/select';
 import { useFilters } from '@/composables/useFilters';
-import { Column } from '@/components/table/AppTable.vue';
+import AppTable, { Column } from '@/components/table/AppTable.vue';
 
 const props = defineProps<{
     works: {
@@ -154,7 +153,7 @@ watch(
 
             <div class="my-4"></div>
 
-            <CrudTable
+            <AppTable
                 :items="props.works"
                 :columns="columns"
                 :actions="actions"
@@ -215,7 +214,7 @@ watch(
                         </template>
                     </AppButtonWithModal>
                     <div class="my-4"></div>
-                    <CrudTable
+                    <AppTable
                         :items="item.cost_centers"
                         :columns="[
                             {
