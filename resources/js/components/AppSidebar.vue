@@ -16,14 +16,6 @@ import { type NavItem } from '@/types';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
 import WorkSelector from '@/components/WorkSelector.vue';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
-
 const footerNavItems: NavItem[] = [
     {
         title: 'Github',
@@ -49,7 +41,7 @@ const footerNavItems: NavItem[] = [
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavItems" />
+            <NavMain />
         </SidebarContent>
 
         <SidebarFooter>
