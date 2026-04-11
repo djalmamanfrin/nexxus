@@ -3,6 +3,9 @@ import Pagination from '@/components/Pagination.vue';
 import AppBadge from '@/components/table/AppBadge.vue';
 import AppAttachment from '@/components/table/AppAttachment.vue';
 import TextLink from '@/components/TextLink.vue';
+import { EyeClosed } from 'lucide-vue-next';
+import AppButton from '@/components/AppButton.vue';
+import { usePage } from '@inertiajs/vue3';
 export interface Column {
     key: string;
     label: string;
@@ -12,13 +15,22 @@ export interface Column {
     href?: string | ((item: any) => string);
 }
 
-const props = defineProps<{
+defineProps<{
     columns: Column[];
+    actions?: Array<any>;
     items: {
         data: any[];
         meta?: any;
     };
 }>();
+
+const page = usePage();
+const activeWorkId = page.props.auth.user.active_work_id;
+
+const emit = defineEmits(['action']);
+function handleAction(action, item) {
+    emit('action', { action, item });
+}
 
 // dot notation: status.name
 const getValue = (obj: any, path: string) => {
@@ -64,7 +76,7 @@ const getHref = (column, item) => {
                         {{ column.label }}
                     </th>
                     <th
-                        v-if="$slots.actions"
+                        v-if="actions?.length"
                         class="table-row-header text-center"
                     >
                         Ações
@@ -107,11 +119,20 @@ const getHref = (column, item) => {
                             {{ getValue(item, column.key) }}
                         </slot>
                     </td>
-                    <td
-                        v-if="$slots.actions"
-                        class="table-actions table-actions-align"
-                    >
-                        <slot name="actions" :item="item" />
+                    <td v-if="actions?.length" class="table-actions table-actions-align">
+                        <AppButton
+                            v-for="action in actions"
+                            :key="action.name"
+                            :title="action.title"
+                            :icon="
+                                action.name === 'see' &&
+                                item.id !== activeWorkId
+                                    ? EyeClosed
+                                    : action.icon
+                            "
+                            variant="link"
+                            @click="handleAction(action.name, item)"
+                        />
                     </td>
                 </tr>
                 <tr v-if="!items.data?.length">
