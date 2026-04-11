@@ -6,8 +6,10 @@ import TextLink from '@/components/TextLink.vue';
 export interface Column {
     key: string;
     label: string;
+    color?: string;
     align?: 'left' | 'center' | 'right';
-    type?: 'money' | 'date' | 'datetime' | 'boolean';
+    type?: 'attachment' | 'badge' | 'link';
+    href?: string | ((item: any) => string);
 }
 
 const props = defineProps<{
