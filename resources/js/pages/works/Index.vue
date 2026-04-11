@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import { useCrud } from '@/composables/useCrud';
-import { type BreadcrumbItem, CostCenter, Work } from '@/types';
+import { type BreadcrumbItem, Work } from '@/types';
 import FilterText from '@/components/filters/FilterText.vue';
 import AppFormLayout from '@/components/base/AppFormLayout.vue';
 import AppInput from '@/components/base/AppInput.vue';
 import AppSwitch from '@/components/base/AppSwitch.vue';
 import FilterTabs from '@/components/filters/FilterTabs.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { PencilIcon, Trash2Icon } from 'lucide-vue-next';
+import { EyeIcon, PencilIcon, Trash2Icon } from 'lucide-vue-next';
 import AppButtonWithModal from '@/components/base/AppButtonWithModal.vue';
 import AppCreateModal from '@/components/AppCreateModal.vue';
 import CrudTable from '@/components/crud/CrudTable.vue';
@@ -18,6 +18,7 @@ import AppFilterBar from '@/components/filters/AppFilterBar.vue';
 import Fields from '@/pages/cost_centers/Fields.vue';
 import { SelectOption } from '@/types/select';
 import { useFilters } from '@/composables/useFilters';
+import { Column } from '@/components/table/AppTable.vue';
 
 const props = defineProps<{
     works: {
@@ -29,7 +30,7 @@ const props = defineProps<{
     search_by?: string;
 }>();
 
-const columns = [
+const columns: Column[] = [
     { key: 'name', label: 'Obra', align: 'left' },
     { key: 'code', label: 'Código', type: 'badge' },
     {
@@ -44,6 +45,7 @@ const columns = [
 const workSchema = {
     entity: 'works',
     actions: [
+        { name: 'see', title: 'Ver Obra', icon: EyeIcon },
         { name: 'edit', title: 'Editar', icon: PencilIcon },
         { name: 'delete', title: 'Excluir', icon: Trash2Icon },
     ],
