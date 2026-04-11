@@ -21,11 +21,25 @@ export function useCrud(schema: any) {
 
     function handleAction({ action, item }: any) {
         const map: any = {
+            see: handleSee,
             edit: handleEdit,
             delete: handleDelete,
         };
 
         map[action]?.(item);
+    }
+
+    function handleSee(item: any) {
+        router.post(
+            'user/active-work',
+            {
+                work_id: item.id,
+            },
+            {
+                preserveState: false,
+                preserveScroll: true,
+            },
+        );
     }
 
     function handleEdit(item: any) {
