@@ -9,6 +9,7 @@ import { type BreadcrumbItem, Expense, Payment } from '@/types';
 import { computed, ref } from 'vue';
 import ExpenseCard from '@/components/reconciliation/ExpenseCard.vue';
 import ColumnSection from '@/components/reconciliation/ColumnSection.vue';
+import PaymentCard from '@/components/reconciliation/PaymentCard.vue';
 
 const props = defineProps<{
     payments: {
@@ -24,7 +25,7 @@ const props = defineProps<{
 
 const selectedExpense = ref<Expense | null>(null);
 
-const linkedPayments = ref<{ payment: Payment; amount: number }[]>([]);
+const linkedPayments = ref<Payment[]>([]);
 
 function selectExpense(expense: Expense) {
     selectedExpense.value = expense;
@@ -34,37 +35,38 @@ function selectExpense(expense: Expense) {
 function addPayment(payment: Payment) {
     if (!selectedExpense.value) return;
 
-    // 🚫 evita duplicidade
-    if (linkedPayments.value.some((p) => p.payment.id === payment.id)) {
+    const index = linkedPayments.value.findIndex((p) => p.id === payment.id);
+
+    if (index !== -1) {
+        linkedPayments.value.splice(index, 1);
         return;
     }
 
-    linkedPayments.value.push({
-        payment,
-        amount: payment.amount,
-    });
+    linkedPayments.value.push(payment);
 }
 
 const totalLinked = computed(() =>
-    linkedPayments.value.reduce((acc, p) => acc + Number(p.amount), 0),
+    linkedPayments.value.reduce((acc, p) => acc + Number(p?.amount?.value), 0),
+);
+
+const selectedExpenseAmount = computed(
+    () => Number(selectedExpense.value?.amount?.value) ?? 0,
 );
 
 const isOverflow = computed(() => {
-    return totalLinked.value > (selectedExpense.value?.amount || 0);
+    if (!selectedExpenseAmount) return false;
+
+    return totalLinked.value > selectedExpenseAmount.value;
 });
 
 const status = computed(() => {
-    if (!selectedExpense.value) return '';
+    if (!selectedExpenseAmount) return '';
 
     if (totalLinked.value === 0) return 'Pendente';
-    if (totalLinked.value < selectedExpense.value.amount) return 'Parcial';
-    if (totalLinked.value === selectedExpense.value.amount) return 'Conciliado';
+    if (totalLinked.value < selectedExpenseAmount.value) return 'Parcial';
+    if (totalLinked.value === selectedExpenseAmount.value) return 'Conciliado';
     return 'Excedente';
 });
-
-function removePayment(index: number) {
-    linkedPayments.value.splice(index, 1);
-}
 
 const { filters, search, clear } = useFilters(
     {
@@ -126,9 +128,15 @@ const breadcrumbs: BreadcrumbItem[] = [
                         @select="selectExpense"
                     />
                 </ColumnSection>
-                <ColumnSection title="Conciliação">
-                </ColumnSection>
+                <ColumnSection title="Conciliação"> </ColumnSection>
                 <ColumnSection title="Pagamentos">
+                    <PaymentCard
+                        v-for="pay in payments.data"
+                        :key="pay.id"
+                        :payment="pay"
+                        :selected="linkedPayments?.some((p) => p.id === pay.id)"
+                        @select="addPayment"
+                    />
                 </ColumnSection>
             </div>
         </div>
