@@ -21,12 +21,7 @@ class PaymentResource extends JsonResource
             'end_to_end_id' => $this->end_to_end_id,
             'paid_at' => $this->paid_at,
             'created_at' => $this->created_at,
-            'bank_account' => $this->whenLoaded('bankAccount', function () {
-                return [
-                    'id' => $this->bank_account_id,
-                    'code' => $this->bankAccount?->name,
-                ];
-            }),
+            'bank_account' => $this->whenLoaded('bankAccount'),
             'status' => $this->whenLoaded('status', function () {
                 return [
                     'id' => $this->payment_status_id,
