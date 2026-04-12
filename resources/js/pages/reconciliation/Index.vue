@@ -105,12 +105,6 @@ const breadcrumbs: BreadcrumbItem[] = [
                         name="search_by"
                         placeholder="CPF, CNPJ ou texto"
                     />
-                    <FilterTabs
-                        v-if="statuses?.length"
-                        label="Status"
-                        name="status"
-                        :tabs="statuses"
-                    />
                 </AppFilterBar>
             </form>
 
