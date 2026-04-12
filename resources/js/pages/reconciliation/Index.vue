@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppFilterBar from '@/components/filters/AppFilterBar.vue';
-import FilterTabs from '@/components/filters/FilterTabs.vue';
 import FilterText from '@/components/filters/FilterText.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import { useFilters } from '@/composables/useFilters';
