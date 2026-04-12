@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-    amount: string;
+    amount?: string;
 }>();
 </script>
 
@@ -11,7 +11,7 @@ defineProps<{
         </span>
 
         <span class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">
-            {{ amount }}
+            {{ amount ?? '---' }}
         </span>
     </div>
 </template>
