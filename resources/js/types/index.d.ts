@@ -45,11 +45,16 @@ export interface Attachment {
     mime_type: string;
 }
 
+export interface ValueObject {
+    value: number;
+    formatted: string;
+}
+
 export interface Payment {
     id: number;
-    amount: string;
-    paid_at: string;
-    created_at: string;
+    amount: ValueObject | null;
+    paid_at: ValueObject | null;
+    created_at: ValueObject;
     attachments: Attachment[];
     expense?: {
         id: number;
@@ -73,13 +78,14 @@ export interface Payment {
 export interface Expense {
     id: number;
     reference: string;
-    amount: string;
-    due_at: string | null;
-    competence_date: string | null;
+    amount: ValueObject | null;
+    due_at: ValueObject | null;
+    competence_date: ValueObject | null;
     attachments: Attachment[];
     payee?: {
         id: number;
         name: string;
+        document: string;
     } | null;
     cost_center?: {
         id: number;
