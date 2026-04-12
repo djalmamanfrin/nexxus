@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('expense_payment', function (Blueprint $table) {
+        Schema::create('reconciliation', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('expense_id')
@@ -19,7 +19,8 @@ return new class extends Migration
                 ->constrained('payments')
                 ->cascadeOnDelete();
 
-            $table->decimal('amount', 12, 2);
+
+            $table->integer('amount')->default(0);
             $table->timestamp('linked_at')->useCurrent();
             $table->timestamps();
 
@@ -29,6 +30,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('expense_payment');
+        Schema::dropIfExists('reconciliation');
     }
 };

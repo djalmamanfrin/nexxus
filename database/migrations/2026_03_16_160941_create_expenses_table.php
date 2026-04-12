@@ -40,7 +40,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->string('reference')->nullable();
-            $table->decimal('amount', 12, 2)->default(0);
+            $table->integer('amount')->default(0);
             $table->date('due_at')->nullable()->index(); // vencimento
             $table->date('competence_date')->nullable()->index(); // vencimento
             $table->string('description')->nullable();
