@@ -35,6 +35,7 @@ class ExpenseResource extends JsonResource
                 return [
                     'id' => $this->payee_id,
                     'name' => $this->payee?->name,
+                    'document' => $this->payee?->document?->formatted(),
                 ];
             }),
             'status' => $this->whenLoaded('status', function () {
