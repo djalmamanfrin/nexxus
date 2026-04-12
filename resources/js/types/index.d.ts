@@ -50,6 +50,15 @@ export interface ValueObject {
     formatted: string;
 }
 
+export interface BankAccount {
+    id: number;
+    name: string;
+    agency: string;
+    account_number: string;
+    type: string;
+    document: string;
+}
+
 export interface Payment {
     id: number;
     amount: ValueObject | null;
@@ -60,10 +69,7 @@ export interface Payment {
         id: number;
         name: string;
     } | null;
-    bank_account?: {
-        id: number;
-        name: string;
-    } | null;
+    bank_account?: BankAccount | null;
     status?: {
         id: number;
         name: string;
