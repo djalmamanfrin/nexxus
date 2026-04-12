@@ -15,7 +15,7 @@ class UpdatePaymentRequest extends FormRequest
     {
         return [
             'bank_account_id' => ['nullable', 'integer'],
-            'amount' => ['nullable', 'numeric'],
+            'amount' => ['nullable', 'integer'],
             'paid_at' => ['nullable', 'date'],
         ];
     }

@@ -26,7 +26,7 @@ class UpdateExpenseRequest extends FormRequest
             'reference' => ['nullable', 'string'],
             'payee_id' => ['nullable', 'integer'],
             'cost_center_id' => ['nullable', 'integer'],
-            'amount' => ['nullable', 'numeric'],
+            'amount' => ['nullable', 'integer'],
             'due_at' => ['nullable', 'date'],
             'competence_date' => ['nullable', 'date'],
             'payments' => ['nullable', 'array'],
