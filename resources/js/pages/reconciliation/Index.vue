@@ -53,21 +53,6 @@ const selectedExpenseAmount = computed(
     () => Number(selectedExpense.value?.amount?.value) ?? 0,
 );
 
-const isOverflow = computed(() => {
-    if (!selectedExpenseAmount) return false;
-
-    return totalLinked.value > selectedExpenseAmount.value;
-});
-
-const status = computed(() => {
-    if (!selectedExpenseAmount) return '';
-
-    if (totalLinked.value === 0) return 'Pendente';
-    if (totalLinked.value < selectedExpenseAmount.value) return 'Parcial';
-    if (totalLinked.value === selectedExpenseAmount.value) return 'Conciliado';
-    return 'Excedente';
-});
-
 const { filters, search, clear } = useFilters(
     {
         search_by: props.search_by || '',
