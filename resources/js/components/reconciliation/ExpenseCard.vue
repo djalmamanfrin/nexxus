@@ -28,7 +28,7 @@ function handleClick() {
                 selected,
         }"
     >
-        <Amount :amount="expense.amount.formatted" />
+        <Amount :amount="expense.amount?.formatted" />
 
         <Divider />
         <Section title="Sobre a transação">
