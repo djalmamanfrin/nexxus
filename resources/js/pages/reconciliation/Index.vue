@@ -10,6 +10,7 @@ import { computed, ref } from 'vue';
 import ExpenseCard from '@/components/reconciliation/ExpenseCard.vue';
 import ColumnSection from '@/components/reconciliation/ColumnSection.vue';
 import PaymentCard from '@/components/reconciliation/PaymentCard.vue';
+import ReconciliationSummary from '@/components/reconciliation/ReconciliationSummary.vue';
 
 const props = defineProps<{
     payments: {
@@ -122,7 +123,12 @@ const breadcrumbs: BreadcrumbItem[] = [
                         @select="selectExpense"
                     />
                 </ColumnSection>
-                <ColumnSection title="Conciliação"> </ColumnSection>
+                <ColumnSection title="Conciliação">
+                    <ReconciliationSummary
+                        :expense="selectedExpense"
+                        :payments="linkedPayments"
+                    />
+                </ColumnSection>
                 <ColumnSection title="Pagamentos">
                     <PaymentCard
                         v-for="pay in payments.data"
