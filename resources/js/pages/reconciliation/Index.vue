@@ -8,6 +8,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem, Expense, Payment } from '@/types';
 import { computed, ref } from 'vue';
 import ExpenseCard from '@/components/reconciliation/ExpenseCard.vue';
+import ColumnSection from '@/components/reconciliation/ColumnSection.vue';
 
 const props = defineProps<{
     payments: {
@@ -113,8 +114,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 
             <div class="my-4"></div>
 
-            <div class="grid grid-cols-3 gap-4 p-4">
-                <div class="flex flex-col">
+            <div
+                class="grid grid-cols-1 gap-8 p-4 md:grid-cols-2 xl:grid-cols-3"
+            >
+                <ColumnSection title="Despesas">
                     <ExpenseCard
                         v-for="exp in expenses.data"
                         :key="exp.id"
@@ -122,16 +125,11 @@ const breadcrumbs: BreadcrumbItem[] = [
                         :selected="selectedExpense?.id === exp.id"
                         @select="selectExpense"
                     />
-                    <div
-                        v-for="pay in payments.data"
-                        :key="pay.id"
-                        class="mb-2 rounded border p-2 hover:bg-gray-100"
-                    >
-                        {{ pay.bank_account?.name }} -
-                        {{ pay.amount.formatted }}
-                    </div>
-                    <div class="rounded border p-3"></div>
-                </div>
+                </ColumnSection>
+                <ColumnSection title="Conciliação">
+                </ColumnSection>
+                <ColumnSection title="Pagamentos">
+                </ColumnSection>
             </div>
         </div>
     </AppLayout>
