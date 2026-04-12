@@ -10,6 +10,7 @@ use App\Http\Controllers\PayeeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentStatusController;
 use App\Http\Controllers\PaymentTypeController;
+use App\Http\Controllers\ReconciliationController;
 use App\Http\Controllers\UserActiveWorkController;
 use App\Http\Controllers\WorkController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,9 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('bank-accounts', BankAccountController::class)
+        ->only(['index']);
+
+    Route::resource('reconciliation', ReconciliationController::class)
         ->only(['index']);
 
     Route::resource('payments', PaymentController::class)
