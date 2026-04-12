@@ -14,9 +14,7 @@ class UpdatePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'expense_id' => ['nullable', 'integer'],
             'bank_account_id' => ['nullable', 'integer'],
-            'payment_type_id' => ['nullable', 'integer'],
             'amount' => ['nullable', 'numeric'],
             'paid_at' => ['nullable', 'date'],
         ];

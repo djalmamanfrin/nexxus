@@ -17,7 +17,6 @@ class PaymentObserver
     {
         return
             $payment->payment_status_id !== PaymentStatus::DONE &&
-            !empty($payment->expense_id) &&
             !empty($payment->bank_account_id) &&
             !empty($payment->amount) &&
             !empty($payment->paid_at?->value());
