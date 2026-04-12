@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\DateValueCast;
+use App\Domain\VO\CurrencyValue;
 use App\Models\Concerns\BelongsToActiveWork;
 use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -71,7 +72,7 @@ class Expense extends Model
     ];
 
     protected $casts = [
-        'amount' => 'decimal:2',
+        'amount' => CurrencyValue::class,
         'due_at' => DateValueCast::class,
         'competence_date' => DateValueCast::class,
         'created_at' => DateValueCast::class,

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\DateValueCast;
+use App\Domain\VO\CurrencyValue;
 use App\Models\Concerns\BelongsToActiveWork;
 use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Model;
@@ -67,7 +68,7 @@ class Payment extends Model
     protected $casts = [
         'paid_at' => DateValueCast::class,
         'created_at' => DateValueCast::class,
-        'amount' => 'decimal:2'
+        'amount' => CurrencyValue::class
     ];
 
     public function expenses(): BelongsToMany
