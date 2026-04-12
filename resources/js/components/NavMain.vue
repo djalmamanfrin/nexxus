@@ -15,6 +15,7 @@ import {
     DollarSign,
     HomeIcon,
     LucideFolderTree,
+    UnplugIcon,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 
@@ -44,6 +45,12 @@ const items: NavItem[] = [
         title: 'Despesas',
         href: '/expenses',
         icon: CircleDollarSignIcon,
+        isActive: !!activeWorkId,
+    },
+    {
+        title: 'Consiliação',
+        href: '/reconciliation',
+        icon: UnplugIcon,
         isActive: !!activeWorkId,
     },
     {
