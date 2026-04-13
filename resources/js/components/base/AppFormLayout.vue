@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppLabel from '@/components/base/AppLabel.vue';
-import { formatDate } from '@/lib/date';
 
 defineProps<{
     item: any;
@@ -12,7 +11,7 @@ defineProps<{
         <div class="flex items-center justify-between pt-2">
             <AppLabel label="Criado em:" />
             <p class="text-sm text-gray-500">
-                {{ formatDate(item.created_at.formatted) }}
+                {{ item.created_at.formatted }}
             </p>
         </div>
         <div class="grid grid-cols-1 gap-4">
