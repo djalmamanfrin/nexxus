@@ -55,10 +55,10 @@ class CostCenter extends Model
     ];
 
     protected $casts = [
+        'budget' => CurrencyValue::class,
         'start_date' => DateValueCast::class,
         'expected_end_date' => DateValueCast::class,
         'created_at' => DateValueCast::class,
-        'budget' => 'decimal:2' // Laravel n lida bem com cast decimal
     ];
 
     public function work(): BelongsTo
