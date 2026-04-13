@@ -16,7 +16,6 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->foreignId('payment_status_id')
-                ->default(1)
                 ->constrained('payment_statuses')
                 ->cascadeOnDelete();
 

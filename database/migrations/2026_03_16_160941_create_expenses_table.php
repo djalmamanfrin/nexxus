@@ -20,7 +20,6 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->foreignId('expense_status_id')
-                ->default(1)
                 ->constrained('expense_statuses')
                 ->cascadeOnDelete();
 
