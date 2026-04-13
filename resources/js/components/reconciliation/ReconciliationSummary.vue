@@ -3,6 +3,9 @@ import { computed } from 'vue';
 import type { Expense, Payment } from '@/types';
 import AppButton from '@/components/AppButton.vue';
 import { useForm } from '@inertiajs/vue3';
+import FieldRow from '@/components/reconciliation/FieldRow.vue';
+import Divider from '@/components/reconciliation/Divider.vue';
+import Section from '@/components/reconciliation/Section.vue';
 
 const props = defineProps<{
     expense: Expense | null;
@@ -31,16 +34,12 @@ const status = computed(() => {
     return 'Excedente';
 });
 
-const statusColorClass = computed(() => {
-    if (!props.expense)
-        return 'bg-gray-100 text-gray-700 dark:bg-gray-900/40 dark:text-gray-300';
-    if (totalPayments.value === 0)
-        return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300';
-    if (totalPayments.value < expenseAmount.value)
-        return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300';
-    if (totalPayments.value === expenseAmount.value)
-        return 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300';
-    return 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300';
+const statusColor = computed(() => {
+    if (!props.expense) return 'gray';
+    if (totalPayments.value === 0) return 'yellow';
+    if (totalPayments.value < expenseAmount.value) return 'yellow';
+    if (totalPayments.value === expenseAmount.value) return 'green';
+    return 'red';
 });
 </script>
 
@@ -50,55 +49,43 @@ const statusColorClass = computed(() => {
     >
         <div v-if="expense" class="space-y-3">
             <div class="flex flex-col items-center text-center">
-                <h3 class="text-lg font-semibold uppercase">
-                    {{ expense.reference ?? 'Sem referência' }}
-                </h3>
+                <h3 class="text-lg font-semibold uppercase"></h3>
             </div>
-            <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-500">Valor da despesa</span>
-                <span class="font-medium">
-                    {{ expense.amount?.formatted ?? '---' }}
-                </span>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-500">Total dos pagamentos</span>
-                <span class="font-medium">
-                    {{
+            <Section>
+                <FieldRow label="Status" :value="status" :color="statusColor" />
+            </Section>
+            <Divider />
+            <Section>
+                <FieldRow label="Valor da despesa" :value="expense.amount?.formatted" />
+                <FieldRow
+                    label="Referência"
+                    :value="expense.reference ?? 'Sem referência'"
+                />
+            </Section>
+            <Divider />
+            <Section>
+                <FieldRow
+                    label="Total dos pagamentos"
+                    :value="
                         totalPayments.toLocaleString('pt-BR', {
                             style: 'currency',
                             currency: 'BRL',
                         })
-                    }}
-                </span>
-            </div>
+                    "
+                    :color="statusColor"
+                />
 
-            <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-500">Diferença</span>
-                <span
-                    class="rounded-full px-3 py-1 text-sm font-medium"
-                    :class="statusColorClass"
-                >
-                    {{
+                <FieldRow
+                    label="Diferença"
+                    :value="
                         difference.toLocaleString('pt-BR', {
                             style: 'currency',
                             currency: 'BRL',
                         })
-                    }}
-                </span>
-            </div>
-
-            <div
-                class="flex items-center justify-between border-t pt-3 dark:border-neutral-800"
-            >
-                <span class="text-sm text-gray-500">Status</span>
-                <span
-                    class="rounded-full px-3 py-1 text-sm font-medium"
-                    :class="statusColorClass"
-                >
-                    {{ status }}
-                </span>
-            </div>
+                    "
+                    :color="statusColor"
+                />
+            </Section>
 
             <div v-if="payments.length" class="mt-4">
                 <h4 class="mb-2 text-sm font-semibold text-gray-600">
