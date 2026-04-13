@@ -13,12 +13,19 @@ class PaymentObserver
             ? PaymentStatus::UNRECONCILED
             : PaymentStatus::PENDING;
     }
+
+    public function saving(Payment $payment): void
+    {
+        if ($this->shouldMarkAsUnreconciled($payment)) {
+            $payment->payment_status_id = PaymentStatus::UNRECONCILED;
+        }
+    }
     private function shouldMarkAsUnreconciled(Payment $payment): bool
     {
         return
             $payment->payment_status_id !== PaymentStatus::UNRECONCILED &&
             !empty($payment->bank_account_id) &&
-            !empty($payment->amount) &&
-            !empty($payment->paid_at?->value());
+            $payment->amount->isPositive() &&
+            $payment->paid_at->hasValue();
     }
 }
