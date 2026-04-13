@@ -13,16 +13,16 @@ class CurrencyValue implements JsonSerializable
         $this->value = $this->normalize($value);
     }
 
-    protected function normalize($value): float
+    protected function normalize($value): int
     {
         if (empty($value)) {
-            return 0.0;
+            return 0;
         }
 
-        return (float) $value;
+        return (int) $value;
     }
 
-    public function value(): float
+    public function value(): int
     {
         return $this->value;
     }
@@ -39,7 +39,7 @@ class CurrencyValue implements JsonSerializable
 
     public function isZero(): bool
     {
-        return $this->value == 0.0;
+        return $this->value == 0;
     }
 
     public function add(self $other): self
