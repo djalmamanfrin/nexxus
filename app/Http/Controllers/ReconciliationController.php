@@ -42,6 +42,9 @@ class ReconciliationController extends Controller
         ]);
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function store(ReconciliationRequest $request): RedirectResponse
     {
         $data = $request->validated();
