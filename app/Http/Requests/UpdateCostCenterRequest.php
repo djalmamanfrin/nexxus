@@ -14,7 +14,7 @@ class UpdateCostCenterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'budget' => ['nullable', 'numeric'],
+            'budget' => ['nullable', 'int'],
             'start_date' => ['nullable', 'date'],
             'expected_end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
         ];

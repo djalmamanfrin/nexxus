@@ -17,7 +17,7 @@ class StoreCostCenterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'budget' => ['required', 'numeric', 'min:0.01', 'max:99999.99'],
+            'budget' => ['required', 'integer', 'min:1', 'max:9999999'],
             'start_date' => ['nullable', 'date'],
             'expected_end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
         ];
