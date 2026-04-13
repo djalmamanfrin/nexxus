@@ -6,7 +6,7 @@ use JsonSerializable;
 
 class CurrencyValue implements JsonSerializable
 {
-    protected float $value;
+    protected int $value;
 
     public function __construct(float|int|string|null $value = null)
     {
