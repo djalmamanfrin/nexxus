@@ -27,7 +27,7 @@ return new class extends Migration
 
             $table->date('start_date')->nullable();
             $table->date('expected_end_date')->nullable();
-            $table->decimal('budget', 14, 2)->nullable();
+            $table->integer('budget')->nullable();
             $table->timestamps();
 
             $table->unique(['work_id', 'cost_center_type_id']);
