@@ -70,6 +70,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+const isDisabled = computed(
+    () => !selectedExpense.value || !linkedPayments.value.length,
+);
+
 const form = useForm({
     expense_id: null as number | null,
     payments: [] as { id: number; amount: number }[],
@@ -94,7 +98,8 @@ function submit() {
                     type="submit"
                     label="Salvar conciliação"
                     variant="success"
-                    :disabled="!selectedExpense || !linkedPayments.length"
+                    :disabled="isDisabled"
+                    :class="isDisabled ? 'opacity-50 cursor-not-allowed' : ''"
                 />
             </form>
         </template>
