@@ -10,6 +10,8 @@ import ExpenseCard from '@/components/reconciliation/ExpenseCard.vue';
 import ColumnSection from '@/components/reconciliation/ColumnSection.vue';
 import PaymentCard from '@/components/reconciliation/PaymentCard.vue';
 import ReconciliationSummary from '@/components/reconciliation/ReconciliationSummary.vue';
+import AppButton from '@/components/AppButton.vue';
+import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps<{
     payments: {
@@ -30,6 +32,8 @@ const linkedPayments = ref<Payment[]>([]);
 function selectExpense(expense: Expense) {
     selectedExpense.value = expense;
     linkedPayments.value = [];
+    form.expense_id = expense.id;
+    form.payments = [];
 }
 
 function addPayment(payment: Payment) {
@@ -43,6 +47,7 @@ function addPayment(payment: Payment) {
     }
 
     linkedPayments.value.push(payment);
+    form.payments.push({ id: payment.id, amount: payment.amount?.value ?? 0 });
 }
 
 const totalLinked = computed(() =>
@@ -72,10 +77,33 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '',
     },
 ];
+
+const form = useForm({
+    expense_id: null as number | null,
+    payments: [] as { id: number; amount: number }[],
+});
+
+function submit() {
+    form.post('/reconciliations', {
+        onSuccess: () => {
+            form.reset();
+        },
+    });
+}
 </script>
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
+        <template #header-actions>
+            <form @submit.prevent="submit">
+                <AppButton
+                    type="submit"
+                    label="Salvar conciliação"
+                    variant="success"
+                    :disabled="!selectedExpense || !linkedPayments.length"
+                />
+            </form>
+        </template>
         <div class="content-box">
             <FlashMessage />
 
