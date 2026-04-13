@@ -104,8 +104,8 @@ class DashboardController extends Controller
             $totalBudget = CostCenter::query()->sum('budget');
             $totalExpenses = (clone $expenseBase)->sum('expenses.amount');
             $totalPayments = (clone $expenseBase)
-                ->join('expense_payment', 'expense_payment.expense_id', '=', 'expenses.id')
-                ->sum('expense_payment.amount');
+                ->join('reconciliation', 'reconciliation.expense_id', '=', 'expenses.id')
+                ->sum('reconciliation.amount');
 
             // ========================
             // BURN RATE
