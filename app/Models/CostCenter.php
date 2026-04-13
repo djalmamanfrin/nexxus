@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\AmountCast;
 use App\Casts\DateValueCast;
 use App\Domain\VO\CurrencyValue;
 use App\Models\Concerns\BelongsToActiveWork;
@@ -55,7 +56,7 @@ class CostCenter extends Model
     ];
 
     protected $casts = [
-        'budget' => CurrencyValue::class,
+        'budget' => AmountCast::class,
         'start_date' => DateValueCast::class,
         'expected_end_date' => DateValueCast::class,
         'created_at' => DateValueCast::class,

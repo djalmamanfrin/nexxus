@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\AmountCast;
 use App\Casts\DateValueCast;
 use App\Domain\VO\CurrencyValue;
 use App\Models\Concerns\BelongsToActiveWork;
@@ -66,9 +67,9 @@ class Payment extends Model
     ];
 
     protected $casts = [
+        'amount' => AmountCast::class,
         'paid_at' => DateValueCast::class,
-        'created_at' => DateValueCast::class,
-        'amount' => CurrencyValue::class
+        'created_at' => DateValueCast::class
     ];
 
     public function expenses(): BelongsToMany

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\AmountCast;
 use App\Casts\DateValueCast;
 use App\Domain\VO\CurrencyValue;
 use App\Models\Concerns\BelongsToActiveWork;
@@ -72,7 +73,7 @@ class Expense extends Model
     ];
 
     protected $casts = [
-        'amount' => CurrencyValue::class,
+        'amount' => AmountCast::class,
         'due_at' => DateValueCast::class,
         'competence_date' => DateValueCast::class,
         'created_at' => DateValueCast::class,
