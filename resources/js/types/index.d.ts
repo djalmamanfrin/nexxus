@@ -4,20 +4,17 @@ import type { LucideIcon } from 'lucide-vue-next';
 export interface Auth {
     user: User;
 }
-
 export interface BreadcrumbItem {
     title: string;
     href: string;
     btn?: Object
 }
-
 export interface NavItem {
     title: string;
     href: NonNullable<InertiaLinkProps['href']>;
     icon?: LucideIcon;
     isActive?: boolean;
 }
-
 export type AppPageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
@@ -26,7 +23,6 @@ export type AppPageProps<
     auth: Auth;
     sidebarOpen: boolean;
 };
-
 export interface User {
     id: number;
     name: string;
@@ -37,19 +33,16 @@ export interface User {
     created_at: string;
     updated_at: string;
 }
-
 export interface Attachment {
     id: number;
     original_name: string;
     url: string;
     mime_type: string;
 }
-
 export interface ValueObject {
     value: number;
     formatted: string;
 }
-
 export interface BankAccount {
     id: number;
     name: string;
@@ -58,7 +51,6 @@ export interface BankAccount {
     type: string;
     document: string;
 }
-
 export interface Payment {
     id: number;
     amount: ValueObject | null;
@@ -80,7 +72,6 @@ export interface Payment {
         name: string;
     } | null;
 }
-
 export interface Expense {
     id: number;
     reference: string;
@@ -103,7 +94,6 @@ export interface Expense {
         color: string;
     } | null;
 }
-
 export interface CostCenterType {
     id: number;
     name: string;
@@ -128,7 +118,6 @@ export interface CostCenter {
         name: string;
     } | null;
 }
-
 export interface Work {
     id: number;
     name: string;
@@ -137,7 +126,6 @@ export interface Work {
     description: string;
     created_at: string;
 }
-
 export interface Payee {
     id: number;
     name: string;
@@ -147,5 +135,4 @@ export interface Payee {
     pix_key: string;
     pix_key_type: string;
 }
-
 export type BreadcrumbItemType = BreadcrumbItem;
