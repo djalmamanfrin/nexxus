@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
     Route::resource('bank-accounts', BankAccountController::class)
         ->only(['index']);
 
-    Route::resource('reconciliation', ReconciliationController::class)
+    Route::resource('reconciliations', ReconciliationController::class)
         ->only(['index', 'store']);
 
     Route::resource('payments', PaymentController::class)

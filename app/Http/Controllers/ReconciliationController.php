@@ -35,7 +35,7 @@ class ReconciliationController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return Inertia::render('reconciliation/Index', [
+        return Inertia::render('reconciliations/Index', [
             'payments' => PaymentResource::collection($payments),
             'expenses' => ExpenseResource::collection($expenses),
             'search_by' => $request->search_by,

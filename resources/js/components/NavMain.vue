@@ -49,7 +49,7 @@ const items: NavItem[] = [
     },
     {
         title: 'Consiliação',
-        href: '/reconciliation',
+        href: '/reconciliations',
         icon: UnplugIcon,
         isActive: !!activeWorkId,
     },
