@@ -57,30 +57,18 @@ function submit() {
     <div
         class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
     >
-        <div class="mb-4 flex items-center justify-between">
-            <h3 class="text-lg font-semibold">Conciliação</h3>
-
-            <form @submit.prevent="submit">
-                <AppButton
-                    type="submit"
-                    label="Salvar conciliação"
-                    variant="success"
-                    :disabled="!expense || !payments.length"
-                />
-            </form>
+        <div class="flex flex-col items-center text-center">
+            <h3 class="text-lg font-semibold uppercase">
+                {{ expense.reference ?? 'Sem referência' }}
+            </h3>
         </div>
 
         <div v-if="expense" class="space-y-3">
             <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-500">Despesa</span>
-                <span class="font-medium">{{ expense.reference }}</span>
-            </div>
-
-            <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-500">Valor da despesa</span>
-                <span class="font-medium">{{
-                    expense.amount?.formatted ?? '---'
-                }}</span>
+                <span class="font-medium">
+                    {{ expense.amount?.formatted ?? '---' }}
+                </span>
             </div>
 
             <div class="flex items-center justify-between">
@@ -131,9 +119,7 @@ function submit() {
                         <span>{{
                             payment.bank_account?.name ?? 'Sem conta'
                         }}</span>
-                        <span>{{
-                            payment.amount?.formatted ?? '---'
-                        }}</span>
+                        <span>{{ payment.amount?.formatted ?? '---' }}</span>
                     </li>
                 </ul>
             </div>
