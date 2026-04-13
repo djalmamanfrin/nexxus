@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $cost_center_type_id
  * @property \App\Domain\VO\DateValue|null $start_date
  * @property \App\Domain\VO\DateValue|null $expected_end_date
- * @property numeric|null $budget
+ * @property CurrencyValue|null $budget
  * @property \App\Domain\VO\DateValue|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expense> $expenses

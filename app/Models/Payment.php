@@ -15,11 +15,11 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 /**
  * @property int $id
  * @property string $ulid
- * @property int|null $expense_id
- * @property int|null $bank_account_id
+ * @property int $work_id
  * @property int $payment_status_id
  * @property int $payment_type_id
- * @property numeric $amount
+ * @property int|null $bank_account_id
+ * @property CurrencyValue $amount
  * @property string|null $transaction_id
  * @property string|null $end_to_end_id
  * @property \App\Domain\VO\DateValue|null $paid_at
@@ -40,7 +40,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereBankAccountId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereEndToEndId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereExpenseId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaidAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaymentStatusId($value)
@@ -48,6 +47,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereTransactionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUlid($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereWorkId($value)
  * @mixin \Eloquent
  */
 class Payment extends Model

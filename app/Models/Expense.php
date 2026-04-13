@@ -17,12 +17,13 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 /**
  * @property int $id
  * @property string $ulid
+ * @property int $work_id
+ * @property int $expense_status_id
  * @property int|null $payee_id
  * @property int|null $cost_center_id
- * @property int $expense_status_id
  * @property int $expense_category_id
  * @property string|null $reference
- * @property numeric $amount
+ * @property CurrencyValue $amount
  * @property \App\Domain\VO\DateValue|null $due_at
  * @property \App\Domain\VO\DateValue|null $competence_date
  * @property string|null $description
@@ -53,6 +54,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereReference($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereUlid($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense whereWorkId($value)
  * @mixin \Eloquent
  */
 class Expense extends Model
