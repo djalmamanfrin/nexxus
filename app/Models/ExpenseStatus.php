@@ -29,11 +29,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class ExpenseStatus extends Model
 {
-    public const PENDING = 1;
-    public const PARTIAL = 2;
-    public const RECONCILED = 3;
-    public const EXCESS = 4;
-    public const CANCELED = 5;
+    public const PENDENTE = 1;
+    public const NAO_CONCILIADO = 2;
+    public const PARCIAL = 3;
+    public const CONCILIADO = 4;
+    public const EXCEDENTE = 5;
+    public const CANCELADO = 6;
 
     protected $fillable = [
         'name',
