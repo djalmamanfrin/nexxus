@@ -10,6 +10,7 @@ use App\Models\Concerns\HasUlid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
@@ -72,12 +73,9 @@ class Payment extends Model
         'created_at' => DateValueCast::class
     ];
 
-    public function expenses(): BelongsToMany
+    public function reconciliation(): HasMany
     {
-        return $this->belongsToMany(Expense::class)
-            ->withPivot(['amount', 'linked_at'])
-            ->whereColumn('payments.work_id', 'expenses.work_id')
-            ->withTimestamps();
+        return $this->hasMany(Reconciliation::class);
     }
 
     public function bankAccount(): BelongsTo

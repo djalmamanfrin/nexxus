@@ -101,12 +101,9 @@ class Expense extends Model
         return $this->belongsTo(ExpenseCategory::class, 'expense_category_id');
     }
 
-    public function payments(): BelongsToMany
+    public function reconciliation(): HasMany
     {
-        return $this->belongsToMany(Payment::class)
-            ->withPivot(['amount', 'linked_at'])
-            ->whereColumn('payments.work_id', 'expenses.work_id')
-            ->withTimestamps();
+        return $this->hasMany(Reconciliation::class);
     }
 
     public function attachments(): MorphMany
