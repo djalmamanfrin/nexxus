@@ -31,11 +31,17 @@ function handleClick() {
         <Amount :amount="expense.amount?.formatted" />
 
         <Divider />
+
         <Section title="Sobre a transação">
             <FieldRow label="Vencimento" :value="expense.due_at?.formatted" />
             <FieldRow
                 label="Competência"
                 :value="expense.competence_date?.formatted"
+            />
+            <FieldRow
+                label="Status"
+                :value="expense.status?.name"
+                :color="expense.status?.color"
             />
         </Section>
         <Divider />

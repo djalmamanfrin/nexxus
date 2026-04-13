@@ -32,14 +32,33 @@ function handleClick() {
 
         <Divider />
         <Section title="Sobre a transação">
-            <FieldRow label="Data do pagamento" :value="payment.paid_at?.formatted" />
+            <FieldRow
+                label="Data do pagamento"
+                :value="payment.paid_at?.formatted"
+            />
+            <FieldRow
+                label="Status"
+                :value="payment.status?.name"
+                :color="payment.status?.color"
+            />
         </Section>
         <Divider />
         <Section title="Quem pagou">
             <FieldRow label="Nome" :value="payment.bank_account?.name" />
-            <FieldRow label="CNPJ/CPF" :value="payment.bank_account?.document" mono />
-            <FieldRow label="Agencia" :value="payment.bank_account?.agency" mono />
-            <FieldRow label="Conta" :value="payment.bank_account?.account_number" />
+            <FieldRow
+                label="CNPJ/CPF"
+                :value="payment.bank_account?.document"
+                mono
+            />
+            <FieldRow
+                label="Agencia"
+                :value="payment.bank_account?.agency"
+                mono
+            />
+            <FieldRow
+                label="Conta"
+                :value="payment.bank_account?.account_number"
+            />
         </Section>
     </div>
 </template>
