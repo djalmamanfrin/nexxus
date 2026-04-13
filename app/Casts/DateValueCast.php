@@ -10,7 +10,11 @@ class DateValueCast implements CastsAttributes
 {
     public function get($model, string $key, $value, array $attributes): DateValue
     {
-        $date = $value ? Carbon::parse($value) : null;
+        try {
+            $date = Carbon::parse($value);
+        } catch (\Throwable) {
+            $date = null;
+        }
         return new DateValue($date);
     }
 

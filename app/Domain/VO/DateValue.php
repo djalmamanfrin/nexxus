@@ -21,6 +21,11 @@ class DateValue implements JsonSerializable
         return $this->date?->format($format);
     }
 
+    public function hasValue(): bool
+    {
+        return $this->date !== null;
+    }
+
     public function toArray(): array
     {
         return [
