@@ -79,7 +79,7 @@ function submit() {
             <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-500">Valor da despesa</span>
                 <span class="font-medium">{{
-                    expense.amount?.formatted ?? 'R$ 0,00'
+                    expense.amount?.formatted ?? '---'
                 }}</span>
             </div>
 
@@ -132,7 +132,7 @@ function submit() {
                             payment.bank_account?.name ?? 'Sem conta'
                         }}</span>
                         <span>{{
-                            payment.amount?.formatted ?? 'R$ 0,00'
+                            payment.amount?.formatted ?? '---'
                         }}</span>
                     </li>
                 </ul>
