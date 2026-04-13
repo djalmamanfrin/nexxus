@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\ExpenseStatus;
 use App\Models\PaymentStatus;
 use App\Models\Reconciliation;
+use App\Support\Logger;
 
 class ReconciliationObserver
 {
@@ -17,15 +18,16 @@ class ReconciliationObserver
             return;
         }
 
-        $expenseTotal = $expense->payments()->sum('reconciliation.amount');
-        $expenseAmount = $expense->amount->value();
-        $paymentTotal = $payment->expenses()->sum('reconciliation.amount');
+        $reconciliationTotal = $payment->reconciliation()->sum('amount');
         $paymentAmount = $payment->amount->value();
+        $expenseAmount = $expense->amount->value();
 
-        $expense->expense_status_id = $this->resolveExpenseStatus($expenseTotal, $expenseAmount);
+        $expenseStatus = $this->resolveExpenseStatus($reconciliationTotal, $expenseAmount);
+        $expense->expense_status_id = $expenseStatus;
         $expense->saveQuietly();
 
-        $payment->payment_status_id = $this->resolvePaymentStatus($paymentTotal, $paymentAmount);
+        $paymentStatus = $this->resolvePaymentStatus($reconciliationTotal, $paymentAmount);
+        $payment->payment_status_id = $paymentStatus;
         $payment->saveQuietly();
     }
 
