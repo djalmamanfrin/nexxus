@@ -7,16 +7,16 @@ use App\Models\ExpenseStatus;
 
 class ExpenseObserver
 {
-    public function saving(Expense $expense): void
+    public function creating(Expense $expense): void
     {
-        if ($this->shouldMarkAsPaid($expense)) {
-            $expense->expense_status_id = ExpenseStatus::DONE;
-        }
+        $expense->expense_status_id = $this->shouldMarkAsUnreconciled($expense)
+            ? ExpenseStatus::UNRECONCILED
+            : ExpenseStatus::PENDING;
     }
-    private function shouldMarkAsPaid(Expense $expense): bool
+    private function shouldMarkAsUnreconciled(Expense $expense): bool
     {
         return
-            $expense->expense_status_id !== ExpenseStatus::DONE &&
+            $expense->expense_status_id !== ExpenseStatus::UNRECONCILED &&
             !empty($expense->payee_id) &&
             !empty($expense->cost_center_id) &&
             !empty($expense->amount) &&

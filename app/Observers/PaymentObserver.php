@@ -7,16 +7,16 @@ use App\Models\PaymentStatus;
 
 class PaymentObserver
 {
-    public function saving(Payment $payment): void
+    public function creating(Payment $payment): void
     {
-        if ($this->shouldMarkAsPaid($payment)) {
-            $payment->payment_status_id = PaymentStatus::DONE;
-        }
+        $payment->payment_status_id = $this->shouldMarkAsUnreconciled($payment)
+            ? PaymentStatus::UNRECONCILED
+            : PaymentStatus::PENDING;
     }
-    private function shouldMarkAsPaid(Payment $payment): bool
+    private function shouldMarkAsUnreconciled(Payment $payment): bool
     {
         return
-            $payment->payment_status_id !== PaymentStatus::DONE &&
+            $payment->payment_status_id !== PaymentStatus::UNRECONCILED &&
             !empty($payment->bank_account_id) &&
             !empty($payment->amount) &&
             !empty($payment->paid_at?->value());
