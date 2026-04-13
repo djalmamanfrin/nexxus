@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\AmountCast;
 use App\Casts\DateValueCast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,7 @@ class Reconciliation extends Model
     ];
 
     protected $casts = [
+        'amount' => AmountCast::class,
         'linked_at' => DateValueCast::class,
     ];
 
