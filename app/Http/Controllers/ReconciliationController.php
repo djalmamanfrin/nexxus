@@ -51,7 +51,7 @@ class ReconciliationController extends Controller
 
         DB::transaction(function () use ($data) {
             foreach ($data['payments'] as $payment) {
-                Reconciliation::updateOrInsert(
+                Reconciliation::updateOrCreate(
                     [
                         'expense_id' => $data['expense_id'],
                         'payment_id' => $payment['id'],
