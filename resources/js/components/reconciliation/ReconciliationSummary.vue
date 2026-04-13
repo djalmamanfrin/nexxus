@@ -31,6 +31,18 @@ const status = computed(() => {
     return 'Excedente';
 });
 
+const statusColorClass = computed(() => {
+    if (!props.expense)
+        return 'bg-gray-100 text-gray-700 dark:bg-gray-900/40 dark:text-gray-300';
+    if (totalPayments.value === 0)
+        return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300';
+    if (totalPayments.value < expenseAmount.value)
+        return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300';
+    if (totalPayments.value === expenseAmount.value)
+        return 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300';
+    return 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300';
+});
+
 const form = useForm({
     expense_id: null as number | null,
     payments: [] as { id: number; amount: number }[],
@@ -57,13 +69,12 @@ function submit() {
     <div
         class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
     >
-        <div class="flex flex-col items-center text-center">
-            <h3 class="text-lg font-semibold uppercase">
-                {{ expense.reference ?? 'Sem referência' }}
-            </h3>
-        </div>
-
         <div v-if="expense" class="space-y-3">
+            <div class="flex flex-col items-center text-center">
+                <h3 class="text-lg font-semibold uppercase">
+                    {{ expense.reference ?? 'Sem referência' }}
+                </h3>
+            </div>
             <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-500">Valor da despesa</span>
                 <span class="font-medium">
@@ -85,7 +96,10 @@ function submit() {
 
             <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-500">Diferença</span>
-                <span class="font-medium">
+                <span
+                    class="rounded-full px-3 py-1 text-sm font-medium"
+                    :class="statusColorClass"
+                >
                     {{
                         difference.toLocaleString('pt-BR', {
                             style: 'currency',
@@ -100,7 +114,8 @@ function submit() {
             >
                 <span class="text-sm text-gray-500">Status</span>
                 <span
-                    class="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
+                    class="rounded-full px-3 py-1 text-sm font-medium"
+                    :class="statusColorClass"
                 >
                     {{ status }}
                 </span>
@@ -125,7 +140,7 @@ function submit() {
             </div>
         </div>
 
-        <div v-else class="text-sm text-gray-500">
+        <div v-else class="flex flex-col items-center text-sm text-gray-500">
             Selecione uma despesa para iniciar a conciliação.
         </div>
     </div>
