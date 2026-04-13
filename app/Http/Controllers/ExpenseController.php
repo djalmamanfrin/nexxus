@@ -39,7 +39,7 @@ class ExpenseController extends Controller
     public function paymentOptions(Payment $payment): JsonResponse
     {
         $expensesEligible = Expense::query()
-            ->where('expense_status_id', '=', ExpenseStatus::DONE)
+            ->where('expense_status_id', '=', ExpenseStatus::UNRECONCILED)
             ->where('amount', '=', $payment->amount)
             ->whereDoesntHave('payments')
             ->get()

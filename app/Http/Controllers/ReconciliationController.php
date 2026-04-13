@@ -24,7 +24,7 @@ class ReconciliationController extends Controller
             ->withQueryString();
 
         $expenses = Expense::query()
-            ->where('expense_status_id', ExpenseStatus::DONE)
+            ->where('expense_status_id', ExpenseStatus::UNRECONCILED)
             ->with(['attachments', 'costCenter', 'payee', 'status', 'category'])
             ->filter($request->all())
             ->latest()
