@@ -42,10 +42,9 @@ class PaymentController extends Controller
             'attachment' => ['required', 'file', 'image', 'max:5120'],
         ]);
 
-        $attachment = null;
-        $payment = DB::transaction(function () use ($request, $action, &$attachment) {
+        DB::transaction(function () use ($request, $action) {
             $payment = Payment::create();
-            $attachment = $action->execute(
+            $action->execute(
                 $payment,
                 $request->file('attachment'),
                 'attachments/payments');
