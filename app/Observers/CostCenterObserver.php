@@ -17,7 +17,7 @@ class CostCenterObserver
     {
         return
             $costCenter->cost_center_status_id !== CostCenterStatus::DONE
-            && $costCenter->budget > 0
+            && $costCenter->budget?->value() > 0
             && $costCenter->start_date?->value() !== null
             && $costCenter->expected_end_date?->value() !== null;
     }
