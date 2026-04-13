@@ -50,14 +50,6 @@ function addPayment(payment: Payment) {
     form.payments.push({ id: payment.id, amount: payment.amount?.value ?? 0 });
 }
 
-const totalLinked = computed(() =>
-    linkedPayments.value.reduce((acc, p) => acc + Number(p?.amount?.value), 0),
-);
-
-const selectedExpenseAmount = computed(
-    () => Number(selectedExpense.value?.amount?.value) ?? 0,
-);
-
 const { filters, search, clear } = useFilters(
     {
         search_by: props.search_by || '',
@@ -87,6 +79,8 @@ function submit() {
     form.post('/reconciliations', {
         onSuccess: () => {
             form.reset();
+            selectedExpense.value = null;
+            linkedPayments.value = [];
         },
     });
 }
