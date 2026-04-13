@@ -16,7 +16,7 @@ class ReconciliationController extends Controller
     public function index(Request $request)
     {
         $payments = Payment::query()
-            ->where('payment_status_id', PaymentStatus::DONE)
+            ->where('payment_status_id', PaymentStatus::UNRECONCILED)
             ->with('attachments', 'status', 'bankAccount')
             ->filter($request->all())
             ->latest()
