@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Support\Format;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -13,10 +12,7 @@ class ExpenseResource extends JsonResource
         return [
             'id' => $this->id,
             'reference' => $this->reference,
-            'amount' => [
-                'value' => $this->amount,
-                'formatted' => Format::money($this->amount),
-            ],
+            'amount' => $this->amount,
             'description' => $this->description,
             'due_at' => $this->due_at,
             'competence_date' => [

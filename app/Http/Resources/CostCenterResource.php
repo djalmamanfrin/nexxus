@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Domain\VO\CurrencyValue;
-use App\Support\Format;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,7 +21,7 @@ class CostCenterResource extends JsonResource
                     'color' => $this->status?->color,
                 ];
             }),
-            'budget' => new CurrencyValue($this->budget),
+            'budget' => $this->budget,
             'work' => $this->whenLoaded('work', function () {
                 return [
                     'id' => $this->work_id,
