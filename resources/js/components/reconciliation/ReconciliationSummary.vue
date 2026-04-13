@@ -42,27 +42,6 @@ const statusColorClass = computed(() => {
         return 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300';
     return 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300';
 });
-
-const form = useForm({
-    expense_id: null as number | null,
-    payments: [] as { id: number; amount: number }[],
-});
-
-function submit() {
-    if (!props.expense || !props.payments.length) return;
-
-    form.expense_id = props.expense.id;
-    form.payments = props.payments.map((payment) => ({
-        id: payment.id,
-        amount: payment.amount?.value ?? 0,
-    }));
-
-    form.post('/reconciliations', {
-        onSuccess: () => {
-            form.reset();
-        },
-    });
-}
 </script>
 
 <template>
