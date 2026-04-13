@@ -115,7 +115,7 @@ export interface CostCenter {
     id: number;
     code: string;
     description: string;
-    budget: string;
+    budget: ValueObject | null;
     start_date: string | null;
     expected_end_date: string | null;
     created_at: string | null;
