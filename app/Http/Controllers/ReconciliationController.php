@@ -20,7 +20,7 @@ class ReconciliationController extends Controller
     public function index(Request $request)
     {
         $payments = Payment::query()
-            ->where('payment_status_id', PaymentStatus::UNRECONCILED)
+            ->whereIn('payment_status_id', [PaymentStatus::UNRECONCILED, PaymentStatus::PARTIAL, PaymentStatus::EXCESS])
             ->with('attachments', 'status', 'bankAccount')
             ->filter($request->all())
             ->latest()
@@ -28,7 +28,7 @@ class ReconciliationController extends Controller
             ->withQueryString();
 
         $expenses = Expense::query()
-            ->where('expense_status_id', ExpenseStatus::UNRECONCILED)
+            ->whereIn('expense_status_id', [ExpenseStatus::UNRECONCILED, ExpenseStatus::PARTIAL, ExpenseStatus::EXCESS])
             ->with(['attachments', 'costCenter', 'payee', 'status', 'category'])
             ->filter($request->all())
             ->latest()
