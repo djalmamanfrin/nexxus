@@ -35,7 +35,7 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
         ->only(['index']);
 
     Route::resource('reconciliation', ReconciliationController::class)
-        ->only(['index']);
+        ->only(['index', 'store']);
 
     Route::resource('payments', PaymentController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
