@@ -4,7 +4,7 @@ import FilterText from '@/components/filters/FilterText.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
 import { useFilters } from '@/composables/useFilters';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem, Expense, Payment } from '@/types';
+import { type BreadcrumbItem, Expense, Payment, Reconciliation } from '@/types';
 import { computed, ref } from 'vue';
 import ExpenseCard from '@/components/reconciliation/ExpenseCard.vue';
 import ColumnSection from '@/components/reconciliation/ColumnSection.vue';
@@ -12,6 +12,7 @@ import PaymentCard from '@/components/reconciliation/PaymentCard.vue';
 import ReconciliationSummary from '@/components/reconciliation/ReconciliationSummary.vue';
 import AppButton from '@/components/AppButton.vue';
 import { useForm } from '@inertiajs/vue3';
+import axios from 'axios';
 
 const props = defineProps<{
     payments: {
@@ -32,8 +33,22 @@ const linkedPayments = ref<Payment[]>([]);
 function selectExpense(expense: Expense) {
     selectedExpense.value = expense;
     linkedPayments.value = [];
+    getExpensePartials(expense.id);
     form.expense_id = expense.id;
     form.payments = [];
+}
+
+const expensePartials = ref<Reconciliation[]>([]);
+async function getExpensePartials(expenseId: number) {
+    try {
+        let response = await axios.get<Reconciliation[]>(
+            `/reconciliations/${expenseId}/partials`,
+        );
+        expensePartials.value = response.data;
+    } catch (e) {
+        console.error(e);
+    } finally {
+    }
 }
 
 function addPayment(payment: Payment) {
@@ -99,7 +114,7 @@ function submit() {
                     label="Salvar conciliação"
                     variant="success"
                     :disabled="isDisabled"
-                    :class="isDisabled ? 'opacity-50 cursor-not-allowed' : ''"
+                    :class="isDisabled ? 'cursor-not-allowed opacity-50' : ''"
                 />
             </form>
         </template>
@@ -137,6 +152,7 @@ function submit() {
                 <ColumnSection title="Conciliação">
                     <ReconciliationSummary
                         :expense="selectedExpense"
+                        :expensePartials="expensePartials"
                         :payments="linkedPayments"
                     />
                 </ColumnSection>
