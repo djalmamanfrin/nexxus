@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { Expense, Payment } from '@/types';
+import type { Expense, Payment, Reconciliation } from '@/types';
 import AppButton from '@/components/AppButton.vue';
 import { useForm } from '@inertiajs/vue3';
 import FieldRow from '@/components/reconciliation/FieldRow.vue';
 import Divider from '@/components/reconciliation/Divider.vue';
 import Section from '@/components/reconciliation/Section.vue';
+import reconciliations from '@/routes/reconciliations';
 
 const props = defineProps<{
-    expense: Expense | null;
+    expense: Expense;
+    expensePartials: Reconciliation[];
     payments: Payment[];
 }>();
 
@@ -16,10 +18,17 @@ const expenseAmount = computed(() => {
     return props.expense?.amount?.value ?? 0;
 });
 
+const totalExpensePartials = computed(() => {
+    return props.expensePartials.reduce((total, reconciliation) => {
+        return total + (reconciliation.amount?.value ?? 0);
+    }, 0);
+});
+
 const totalPayments = computed(() => {
-    return props.payments.reduce((total, payment) => {
+    let totalPayments = props.payments.reduce((total, payment) => {
         return total + (payment.amount?.value ?? 0);
     }, 0);
+    return totalPayments + totalExpensePartials.value;
 });
 
 const difference = computed(() => {
@@ -56,7 +65,10 @@ const statusColor = computed(() => {
             </Section>
             <Divider />
             <Section>
-                <FieldRow label="Valor da despesa" :value="expense.amount?.formatted" />
+                <FieldRow
+                    label="Valor da despesa"
+                    :value="expense.amount?.formatted"
+                />
                 <FieldRow
                     label="Referência"
                     :value="expense.reference ?? 'Sem referência'"
@@ -100,6 +112,22 @@ const statusColor = computed(() => {
                         <span>{{
                             payment.bank_account?.name ?? 'Sem conta'
                         }}</span>
+                        <span>{{ payment.amount?.formatted ?? '---' }}</span>
+                    </li>
+                </ul>
+            </div>
+            <Divider/>
+            <div v-if="expensePartials.length" class="mt-4">
+                <h4 class="mb-2 text-sm font-semibold text-gray-600">
+                    Pagamentos já conciliados
+                </h4>
+                <ul class="space-y-2">
+                    <li
+                        v-for="payment in expensePartials"
+                        :key="payment.id"
+                        class="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm dark:bg-neutral-800"
+                    >
+                        <span> Valor </span>
                         <span>{{ payment.amount?.formatted ?? '---' }}</span>
                     </li>
                 </ul>
