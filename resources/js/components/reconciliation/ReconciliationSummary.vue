@@ -38,18 +38,18 @@ const difference = computed(
 );
 
 const status = computed(() => {
-    if (!props.expense) return 'Nenhuma despesa selecionada';
+    if (!props.expenses.length) return 'Nenhuma despesa selecionada';
     if (totalPayments.value === 0) return 'Pendente';
-    if (totalPayments.value < expenseAmount.value) return 'Parcial';
-    if (totalPayments.value === expenseAmount.value) return 'Conciliado';
+    if (totalPayments.value < totalExpenseAmount.value) return 'Parcial';
+    if (totalPayments.value === totalExpenseAmount.value) return 'Conciliado';
     return 'Excedente';
 });
 
 const statusColor = computed(() => {
-    if (!props.expense) return 'gray';
+    if (!props.expenses.length) return 'gray';
     if (totalPayments.value === 0) return 'yellow';
-    if (totalPayments.value < expenseAmount.value) return 'yellow';
-    if (totalPayments.value === expenseAmount.value) return 'green';
+    if (totalPayments.value < totalExpenseAmount.value) return 'yellow';
+    if (totalPayments.value === totalExpenseAmount.value) return 'green';
     return 'red';
 });
 </script>
@@ -130,9 +130,12 @@ const statusColor = computed(() => {
                         :key="payment.id"
                         class="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm dark:bg-neutral-800"
                     >
-                        <span>{{
-                            payment.bank_account?.name ?? 'Sem conta'
-                        }}</span>
+                        <span>
+                            {{`ID #${payment.id}`}}
+                        </span>
+                        <span>
+                            {{payment.bank_account?.name ?? 'Sem conta' }}
+                        </span>
                         <span>{{ payment.amount?.formatted ?? '---' }}</span>
                     </li>
                 </ul>
