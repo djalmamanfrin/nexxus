@@ -26,50 +26,77 @@ const props = defineProps<{
     search_by?: string;
 }>();
 
-const selectedExpense = ref<Expense | null>(null);
-
+const selectedExpenses = ref<Expense[]>([]);
 const linkedPayments = ref<Payment[]>([]);
-
-function selectExpense(expense: Expense) {
-    selectedExpense.value = expense;
-    linkedPayments.value = [];
-    getExpensePartials(expense.id);
-    form.expense_id = expense.id;
-    form.payments = [];
-}
-
 const expensePartials = ref<Reconciliation[]>([]);
-async function getExpensePartials(expenseId: number) {
-    try {
-        let response = await axios.get<Reconciliation[]>(
-            `/reconciliations/${expenseId}/partials`,
-        );
-        expensePartials.value = response.data;
-    } catch (e) {
-        console.error(e);
-    } finally {
+
+function toggleExpense(expense: Expense) {
+    const index = selectedExpenses.value.findIndex(
+        (item) => item.id === expense.id,
+    );
+    if (index !== -1) {
+        selectedExpenses.value.splice(index, 1);
+        return;
     }
+    selectedExpenses.value.push(expense);
 }
 
-function addPayment(payment: Payment) {
-    if (!selectedExpense.value) return;
-
-    const index = linkedPayments.value.findIndex((p) => p.id === payment.id);
-
+function togglePayment(payment: Payment) {
+    const index = linkedPayments.value.findIndex(
+        (item) => item.id === payment.id,
+    );
     if (index !== -1) {
         linkedPayments.value.splice(index, 1);
         return;
     }
-
     linkedPayments.value.push(payment);
-    form.payments.push({ id: payment.id, amount: payment.amount?.value ?? 0 });
 }
+
+const totalExpenseAmount = computed(() =>
+    selectedExpenses.value.reduce((total, expense) => {
+        return total + (expense.amount?.value ?? 0);
+    }, 0),
+);
+
+const totalPayments = computed(() =>
+    linkedPayments.value.reduce((total, payment) => {
+        return total + (payment.amount?.value ?? 0);
+    }, 0),
+);
+
+const difference = computed(
+    () => totalPayments.value - totalExpenseAmount.value,
+);
+
+const status = computed(() => {
+    if (!selectedExpenses.value.length) return 'Nenhuma despesa selecionada';
+    if (totalPayments.value === 0) return 'Pendente';
+    if (totalPayments.value < totalExpenseAmount.value) return 'Parcial';
+    if (totalPayments.value === totalExpenseAmount.value) return 'Conciliado';
+    return 'Excedente';
+});
+
+const statusColor = computed(() => {
+    if (!selectedExpenses.value.length) return 'gray';
+    if (totalPayments.value === 0) return 'yellow';
+    if (totalPayments.value < totalExpenseAmount.value) return 'yellow';
+    if (totalPayments.value === totalExpenseAmount.value) return 'green';
+    return 'red';
+});
+
+const canSave = computed(() => {
+    return (
+        selectedExpenses.value.length > 0 &&
+        linkedPayments.value.length > 0 &&
+        difference.value <= 0
+    );
+});
 
 const { filters, search, clear } = useFilters(
     {
         search_by: props.search_by || '',
     },
-    '/consiliation',
+    '/reconciliations',
 );
 
 const emit = defineEmits(['update:filters']);
@@ -86,7 +113,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const isDisabled = computed(
-    () => !selectedExpense.value || !linkedPayments.value.length,
+    () => !selectedExpenses.value.length || !linkedPayments.value.length,
 );
 
 const form = useForm({
@@ -98,7 +125,7 @@ function submit() {
     form.post('/reconciliations', {
         onSuccess: () => {
             form.reset();
-            selectedExpense.value = null;
+            selectedExpenses.value = [];
             linkedPayments.value = [];
         },
     });
@@ -145,24 +172,31 @@ function submit() {
                         v-for="exp in expenses.data"
                         :key="exp.id"
                         :expense="exp"
-                        :selected="selectedExpense?.id === exp.id"
-                        @select="selectExpense"
+                        :selected="
+                            selectedExpenses.some((item) => item.id === exp.id)
+                        "
+                        @select="toggleExpense"
                     />
                 </ColumnSection>
+
                 <ColumnSection title="Conciliação">
                     <ReconciliationSummary
-                        :expense="selectedExpense"
+                        :expenses="selectedExpenses"
                         :expensePartials="expensePartials"
                         :payments="linkedPayments"
+                        :can-save="canSave"
                     />
                 </ColumnSection>
+
                 <ColumnSection title="Pagamentos">
                     <PaymentCard
                         v-for="pay in payments.data"
                         :key="pay.id"
                         :payment="pay"
-                        :selected="linkedPayments?.some((p) => p.id === pay.id)"
-                        @select="addPayment"
+                        :selected="
+                            linkedPayments.some((item) => item.id === pay.id)
+                        "
+                        @select="togglePayment"
                     />
                 </ColumnSection>
             </div>
