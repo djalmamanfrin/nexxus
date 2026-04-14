@@ -101,7 +101,7 @@ const statusColor = computed(() => {
     return 'red';
 });
 
-const isDisabled = computed(() => {
+const canSave = computed(() => {
     return (
         selectedExpenses.value.length > 0 &&
         linkedPayments.value.length > 0 &&
@@ -153,8 +153,8 @@ function submit() {
                     type="submit"
                     label="Salvar conciliação"
                     variant="success"
-                    :disabled="isDisabled"
-                    :class="isDisabled ? 'cursor-not-allowed opacity-50' : ''"
+                    :disabled="!canSave"
+                    :class="canSave ? '' : 'cursor-not-allowed opacity-50'"
                 />
             </form>
         </template>
