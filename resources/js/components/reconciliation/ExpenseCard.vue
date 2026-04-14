@@ -33,6 +33,7 @@ function handleClick() {
         <Divider />
 
         <Section title="Sobre a transação">
+            <FieldRow label="ID" :value="`#${expense.id}`" />
             <FieldRow label="Vencimento" :value="expense.due_at?.formatted" />
             <FieldRow
                 label="Competência"
