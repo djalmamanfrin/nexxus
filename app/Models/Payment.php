@@ -73,7 +73,7 @@ class Payment extends Model
         'created_at' => DateValueCast::class
     ];
 
-    public function reconciliation(): HasMany
+    public function reconciliations(): HasMany
     {
         return $this->hasMany(Reconciliation::class);
     }
