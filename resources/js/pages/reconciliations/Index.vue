@@ -48,10 +48,12 @@ function toggleExpense(expense: Expense) {
     );
     if (index !== -1) {
         selectedExpenses.value.splice(index, 1);
+        form.expenses.splice(index, 1);
         return;
     }
     getExpensePartials(expense.id);
     selectedExpenses.value.push(expense);
+    form.expenses.push(expense);
 }
 
 function togglePayment(payment: Payment) {
@@ -60,9 +62,11 @@ function togglePayment(payment: Payment) {
     );
     if (index !== -1) {
         linkedPayments.value.splice(index, 1);
+        form.payments.splice(index, 1);
         return;
     }
     linkedPayments.value.push(payment);
+    form.payments.push(payment);
 }
 
 const totalExpenseAmount = computed(() =>
@@ -97,7 +101,7 @@ const statusColor = computed(() => {
     return 'red';
 });
 
-const canSave = computed(() => {
+const isDisabled = computed(() => {
     return (
         selectedExpenses.value.length > 0 &&
         linkedPayments.value.length > 0 &&
@@ -125,12 +129,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const isDisabled = computed(
-    () => !selectedExpenses.value.length || !linkedPayments.value.length,
-);
-
 const form = useForm({
-    expense_id: null as number | null,
+    expenses: [] as { id: number; amount: number }[],
     payments: [] as { id: number; amount: number }[],
 });
 
@@ -197,7 +197,6 @@ function submit() {
                         :expenses="selectedExpenses"
                         :expensePartials="expensePartials"
                         :payments="linkedPayments"
-                        :can-save="canSave"
                     />
                 </ColumnSection>
 
