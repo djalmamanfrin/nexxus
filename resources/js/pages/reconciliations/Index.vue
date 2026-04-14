@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import AppFilterBar from '@/components/filters/AppFilterBar.vue';
-import FilterText from '@/components/filters/FilterText.vue';
 import FlashMessage from '@/components/FlashMessage.vue';
-import { useFilters } from '@/composables/useFilters';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem, Expense, Payment, Reconciliation } from '@/types';
 import { computed, ref } from 'vue';
@@ -93,19 +90,6 @@ const canSave = computed(() => {
     );
 });
 
-const { filters, search, clear } = useFilters(
-    {
-        search_by: props.search_by || '',
-    },
-    '/reconciliations',
-);
-
-const emit = defineEmits(['update:filters']);
-const filtersProxy = computed({
-    get: () => filters,
-    set: (value) => emit('update:filters', value),
-});
-
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Despesas',
@@ -144,23 +128,7 @@ function submit() {
         </template>
         <div class="content-box">
             <FlashMessage />
-
-            <form @submit.prevent="search">
-                <AppFilterBar
-                    v-model:filters="filtersProxy"
-                    @change="search"
-                    @clear="clear"
-                >
-                    <FilterText
-                        label="Buscar despesa"
-                        name="search_by"
-                        placeholder="CPF, CNPJ ou texto"
-                    />
-                </AppFilterBar>
-            </form>
-
             <div class="my-4"></div>
-
             <div
                 class="grid grid-cols-1 gap-8 p-4 md:grid-cols-2 xl:grid-cols-3"
             >
