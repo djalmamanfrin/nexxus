@@ -51,6 +51,12 @@ export interface BankAccount {
     type: string;
     document: string;
 }
+
+export interface Reconciliation {
+    id: number;
+    amount: ValueObject;
+    created_at: ValueObject;
+}
 export interface Payment {
     id: number;
     amount: ValueObject | null;
