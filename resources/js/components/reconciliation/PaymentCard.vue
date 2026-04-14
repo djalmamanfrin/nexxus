@@ -32,6 +32,7 @@ function handleClick() {
 
         <Divider />
         <Section title="Sobre a transação">
+            <FieldRow label="ID" :value="`#${payment.id}`" />
             <FieldRow
                 label="Data do pagamento"
                 :value="payment.paid_at?.formatted"
