@@ -53,7 +53,7 @@ function toggleExpense(expense: Expense) {
     }
     getExpensePartials(expense.id);
     selectedExpenses.value.push(expense);
-    form.expenses.push(expense);
+    form.expenses.push({ id: expense.id, amount: expense.amount?.value ?? 0 });
 }
 
 function togglePayment(payment: Payment) {
@@ -66,7 +66,7 @@ function togglePayment(payment: Payment) {
         return;
     }
     linkedPayments.value.push(payment);
-    form.payments.push(payment);
+    form.payments.push({ id: payment.id, amount: payment.amount?.value ?? 0 });
 }
 
 const totalExpenseAmount = computed(() =>
