@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Reconciliation\StoreReconciliationAction;
 use App\Http\Requests\Reconciliation\ReconciliationRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Http\Resources\PaymentResource;
@@ -52,23 +53,15 @@ class ReconciliationController extends Controller
     /**
      * @throws \Throwable
      */
-    public function store(ReconciliationRequest $request): RedirectResponse
+    public function store(ReconciliationRequest $request, StoreReconciliationAction $action): RedirectResponse
     {
         $data = $request->validated();
 
-        DB::transaction(function () use ($data) {
-            foreach ($data['payments'] as $payment) {
-                Reconciliation::updateOrCreate(
-                    [
-                        'expense_id' => $data['expense_id'],
-                        'payment_id' => $payment['id'],
-                    ],
-                    [
-                        'amount' => $payment['amount'],
-                        'linked_at' => now(),
-                    ]
-                );
-            }
+        DB::transaction(function () use ($data, $action) {
+            $action->execute(
+                $data['expenses'],
+                $data['payments']
+            );
         });
 
         return back()->with(['success' => 'Conciliação realziada com sucesso']);
