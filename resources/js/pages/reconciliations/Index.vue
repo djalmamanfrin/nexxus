@@ -11,7 +11,7 @@ import AppButton from '@/components/AppButton.vue';
 import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
 
-const props = defineProps<{
+defineProps<{
     payments: {
         data: Payment[];
         links: { url: string | null; label: string; active: boolean }[];
