@@ -85,22 +85,6 @@ const difference = computed(
     () => totalPayments.value - totalExpenseAmount.value,
 );
 
-const status = computed(() => {
-    if (!selectedExpenses.value.length) return 'Nenhuma despesa selecionada';
-    if (totalPayments.value === 0) return 'Pendente';
-    if (totalPayments.value < totalExpenseAmount.value) return 'Parcial';
-    if (totalPayments.value === totalExpenseAmount.value) return 'Conciliado';
-    return 'Excedente';
-});
-
-const statusColor = computed(() => {
-    if (!selectedExpenses.value.length) return 'gray';
-    if (totalPayments.value === 0) return 'yellow';
-    if (totalPayments.value < totalExpenseAmount.value) return 'yellow';
-    if (totalPayments.value === totalExpenseAmount.value) return 'green';
-    return 'red';
-});
-
 const canSave = computed(() => {
     return (
         selectedExpenses.value.length > 0 &&
