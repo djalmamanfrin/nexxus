@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
     <div class="flex flex-col gap-2 text-sm">
-        <span v-if="title" class="text-xs font-medium tracking-wide text-gray-400 uppercase">
+        <span v-if="title" class="text-xs font-medium tracking-wide text-gray-900 uppercase">
             {{ title }}
         </span>
 
