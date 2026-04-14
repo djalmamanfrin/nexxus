@@ -36,6 +36,8 @@ Route::group(['middleware' => 'auth', 'verified'], function () {
 
     Route::resource('reconciliations', ReconciliationController::class)
         ->only(['index', 'store']);
+    Route::get('/reconciliations/{expense}/partials', [ReconciliationController::class, 'expensePartials'])
+        ->name('reconciliations.expense-partials');
 
     Route::resource('payments', PaymentController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
