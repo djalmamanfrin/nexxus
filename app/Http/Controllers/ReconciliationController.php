@@ -10,6 +10,7 @@ use App\Models\ExpenseStatus;
 use App\Models\Payment;
 use App\Models\PaymentStatus;
 use App\Models\Reconciliation;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +41,12 @@ class ReconciliationController extends Controller
             'expenses' => ExpenseResource::collection($expenses),
             'search_by' => $request->search_by,
         ]);
+    }
+
+    public function expensePartials(Expense $expense): JsonResponse
+    {
+        $partials = $expense->reconciliations()->get();
+        return response()->json($partials);
     }
 
     /**
