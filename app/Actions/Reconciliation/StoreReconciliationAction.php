@@ -5,22 +5,18 @@ namespace App\Actions\Reconciliation;
 use App\Models\Expense;
 use App\Models\Payment;
 use App\Models\Reconciliation;
-use Illuminate\Validation\ValidationException;
+use InvalidArgumentException;
 
 class StoreReconciliationAction
 {
     public function execute(array $expenses, array $payments): void
     {
         if (empty($expenses)) {
-            throw ValidationException::withMessages([
-                'expense_ids' => 'Selecione ao menos uma despesa.',
-            ]);
+            throw new InvalidArgumentException('Selecione ao menos uma despesa');
         }
 
         if (empty($payments)) {
-            throw ValidationException::withMessages([
-                'payments' => 'Selecione ao menos um pagamento.',
-            ]);
+            throw new InvalidArgumentException('Selecione ao menos um pagamento');
         }
 
         $expenseIds = collect($expenses)->pluck('id')->all();
@@ -35,24 +31,18 @@ class StoreReconciliationAction
             ->get();
 
         if ($expenseModels->count() !== count($expenseIds)) {
-            throw ValidationException::withMessages([
-                'expenses' => 'Uma ou mais despesas informadas não foram encontradas.',
-            ]);
+            throw new InvalidArgumentException('Uma ou mais despesas informadas não foram encontradas');
         }
 
         if ($paymentModels->count() !== count($paymentIds)) {
-            throw ValidationException::withMessages([
-                'payments' => 'Um ou mais pagamentos informados não foram encontrados.',
-            ]);
+            throw new InvalidArgumentException('Uma ou mais pagamentos informados não foram encontrados');
         }
 
         $totalExpenses = collect($expenses)->sum(fn (array $expense) => (int) $expense['amount']);
         $totalPayments = collect($payments)->sum(fn (array $payment) => (int) $payment['amount']);
 
         if (($totalExpenses - $totalPayments) !== 0) {
-            throw ValidationException::withMessages([
-                'payments' => 'A conciliação só pode ser salva quando a soma das despesas e dos pagamentos for igual a zero.',
-            ]);
+            throw new InvalidArgumentException('A conciliação só pode ser salva quando a soma das despesas e dos pagamentos for igual a zero');
         }
 
         foreach ($expenses as $expense) {
