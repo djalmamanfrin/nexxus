@@ -9,14 +9,16 @@ import Section from '@/components/reconciliation/Section.vue';
 import reconciliations from '@/routes/reconciliations';
 
 const props = defineProps<{
-    expense: Expense;
+    expenses: Expense[];
     expensePartials: Reconciliation[];
     payments: Payment[];
 }>();
 
-const expenseAmount = computed(() => {
-    return props.expense?.amount?.value ?? 0;
-});
+const totalExpenseAmount = computed(() =>
+    props.expenses.reduce((total, expense) => {
+        return total + (expense.amount?.value ?? 0);
+    }, 0),
+);
 
 const totalExpensePartials = computed(() => {
     return props.expensePartials.reduce((total, reconciliation) => {
@@ -31,9 +33,9 @@ const totalPayments = computed(() => {
     return totalPayments + totalExpensePartials.value;
 });
 
-const difference = computed(() => {
-    return totalPayments.value - expenseAmount.value;
-});
+const difference = computed(
+    () => totalPayments.value - totalExpenseAmount.value,
+);
 
 const status = computed(() => {
     if (!props.expense) return 'Nenhuma despesa selecionada';
@@ -56,7 +58,7 @@ const statusColor = computed(() => {
     <div
         class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
     >
-        <div v-if="expense" class="space-y-3">
+        <div v-if="expenses.length" class="space-y-3">
             <div class="flex flex-col items-center text-center">
                 <h3 class="text-lg font-semibold uppercase"></h3>
             </div>
@@ -66,12 +68,13 @@ const statusColor = computed(() => {
             <Divider />
             <Section>
                 <FieldRow
-                    label="Valor da despesa"
-                    :value="expense.amount?.formatted"
-                />
-                <FieldRow
-                    label="Referência"
-                    :value="expense.reference ?? 'Sem referência'"
+                    label="Total de despesas"
+                    :value="
+                        totalExpenseAmount.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                        })
+                    "
                 />
             </Section>
             <Divider />
@@ -99,6 +102,24 @@ const statusColor = computed(() => {
                 />
             </Section>
 
+            <div v-if="expenses.length" class="mt-4">
+                <h4 class="mb-2 text-sm font-semibold text-gray-600">
+                    Despesas selecionadas
+                </h4>
+                <ul class="space-y-2">
+                    <li
+                        v-for="expense in expenses"
+                        :key="expense.id"
+                        class="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm dark:bg-neutral-800"
+                    >
+                        <span>
+                            {{`ID #${expense.id}`}}
+                        </span>
+                        <span>{{ expense.amount?.formatted ?? '---' }}</span>
+                    </li>
+                </ul>
+            </div>
+
             <div v-if="payments.length" class="mt-4">
                 <h4 class="mb-2 text-sm font-semibold text-gray-600">
                     Pagamentos selecionados
@@ -116,7 +137,7 @@ const statusColor = computed(() => {
                     </li>
                 </ul>
             </div>
-            <Divider/>
+            <Divider />
             <div v-if="expensePartials.length" class="mt-4">
                 <h4 class="mb-2 text-sm font-semibold text-gray-600">
                     Pagamentos já conciliados
