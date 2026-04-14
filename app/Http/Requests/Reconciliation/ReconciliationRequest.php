@@ -16,7 +16,9 @@ class ReconciliationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'expense_id' => ['required', 'integer', 'exists:expenses,id'],
+            'expenses' => ['required', 'array', 'min:1'],
+            'expenses.*.id' => ['required', 'integer', 'exists:expenses,id'],
+            'expenses.*.amount' => ['required', 'integer', 'min:1', 'max:9999999'],
             'payments' => ['required', 'array', 'min:1'],
             'payments.*.id' => ['required', 'integer', 'exists:payments,id'],
             'payments.*.amount' => ['required', 'integer', 'min:1', 'max:9999999'],
