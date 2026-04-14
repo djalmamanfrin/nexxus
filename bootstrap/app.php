@@ -45,6 +45,16 @@ return Application::configure(basePath: dirname(__DIR__))
             return back()->withErrors($e->errors());
         });
 
+        $exceptions->render(function (InvalidArgumentException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 422);
+            }
+
+            return back()->with('error', $e->getMessage());
+        });
+
         $exceptions->render(function (AuthenticationException $e) {
             return redirect()->guest(route('login'));
         });
