@@ -30,6 +30,18 @@ const selectedExpenses = ref<Expense[]>([]);
 const linkedPayments = ref<Payment[]>([]);
 const expensePartials = ref<Reconciliation[]>([]);
 
+async function getExpensePartials(expenseId: number) {
+    try {
+        let response = await axios.get<Reconciliation[]>(
+            `/reconciliations/${expenseId}/partials`,
+        );
+        expensePartials.value = response.data;
+    } catch (e) {
+        console.error(e);
+    } finally {
+    }
+}
+
 function toggleExpense(expense: Expense) {
     const index = selectedExpenses.value.findIndex(
         (item) => item.id === expense.id,
@@ -38,6 +50,7 @@ function toggleExpense(expense: Expense) {
         selectedExpenses.value.splice(index, 1);
         return;
     }
+    getExpensePartials(expense.id);
     selectedExpenses.value.push(expense);
 }
 
