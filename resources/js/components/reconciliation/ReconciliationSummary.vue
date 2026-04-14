@@ -60,7 +60,7 @@ const statusColor = computed(() => {
     >
         <div v-if="expenses.length" class="space-y-3">
             <div class="flex flex-col items-center text-center">
-                <h3 class="text-lg font-semibold uppercase"></h3>
+                <h3 class="text-lg font-semibold uppercase">Resumo</h3>
             </div>
             <Section>
                 <FieldRow label="Status" :value="status" :color="statusColor" />
@@ -101,61 +101,48 @@ const statusColor = computed(() => {
                     :color="statusColor"
                 />
             </Section>
-
-            <div v-if="expenses.length" class="mt-4">
-                <h4 class="mb-2 text-sm font-semibold text-gray-600">
-                    Despesas selecionadas
-                </h4>
-                <ul class="space-y-2">
-                    <li
-                        v-for="expense in expenses"
-                        :key="expense.id"
-                        class="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm dark:bg-neutral-800"
-                    >
-                        <span>
-                            {{`ID #${expense.id}`}}
-                        </span>
-                        <span>{{ expense.amount?.formatted ?? '---' }}</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div v-if="payments.length" class="mt-4">
-                <h4 class="mb-2 text-sm font-semibold text-gray-600">
-                    Pagamentos selecionados
-                </h4>
-                <ul class="space-y-2">
-                    <li
-                        v-for="payment in payments"
-                        :key="payment.id"
-                        class="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm dark:bg-neutral-800"
-                    >
-                        <span>
-                            {{`ID #${payment.id}`}}
-                        </span>
-                        <span>
-                            {{payment.bank_account?.name ?? 'Sem conta' }}
-                        </span>
-                        <span>{{ payment.amount?.formatted ?? '---' }}</span>
-                    </li>
-                </ul>
-            </div>
             <Divider />
-            <div v-if="expensePartials.length" class="mt-4">
-                <h4 class="mb-2 text-sm font-semibold text-gray-600">
-                    Pagamentos já conciliados
-                </h4>
-                <ul class="space-y-2">
-                    <li
-                        v-for="payment in expensePartials"
-                        :key="payment.id"
-                        class="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm dark:bg-neutral-800"
-                    >
-                        <span> Valor </span>
-                        <span>{{ payment.amount?.formatted ?? '---' }}</span>
-                    </li>
-                </ul>
-            </div>
+            <Section v-if="expenses.length" title="Despesas selecionadas">
+                <div
+                    v-for="expense in expenses"
+                    :key="expense.id"
+                    class="rounded-lg bg-gray-100 px-3 py-2 text-sm dark:bg-neutral-800"
+                >
+                    <FieldRow
+                        :label="`ID #${expense.id}`"
+                        :value="expense.amount?.formatted"
+                    />
+                </div>
+            </Section>
+            <Divider />
+            <Section v-if="payments.length" title="Pagamentos selecionados">
+                <div
+                    v-for="payment in payments"
+                    :key="payment.id"
+                    class="rounded-lg bg-gray-100 px-3 py-2 text-sm dark:bg-neutral-800"
+                >
+                    <FieldRow
+                        :label="`ID #${payment.id}`"
+                        :value="payment.amount?.formatted"
+                    />
+                </div>
+            </Section>
+            <Divider />
+            <Section
+                v-if="expensePartials.length"
+                title="Pagamentos já conciliados"
+            >
+                <div
+                    v-for="payment in expensePartials"
+                    :key="payment.id"
+                    class="rounded-lg bg-gray-100 px-3 py-2 text-sm dark:bg-neutral-800"
+                >
+                    <FieldRow
+                        :label="`ID #${payment.id}`"
+                        :value="payment.amount?.formatted"
+                    />
+                </div>
+            </Section>
         </div>
 
         <div v-else class="flex flex-col items-center text-sm text-gray-500">
