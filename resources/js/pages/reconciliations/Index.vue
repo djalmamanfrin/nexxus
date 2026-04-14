@@ -24,7 +24,7 @@ defineProps<{
 }>();
 
 const selectedExpenses = ref<Expense[]>([]);
-const linkedPayments = ref<Payment[]>([]);
+const selectedPayments = ref<Payment[]>([]);
 const expensePartials = ref<Reconciliation[]>([]);
 
 async function getExpensePartials(expenseId: number) {
@@ -54,15 +54,15 @@ function toggleExpense(expense: Expense) {
 }
 
 function togglePayment(payment: Payment) {
-    const index = linkedPayments.value.findIndex(
+    const index = selectedPayments.value.findIndex(
         (item) => item.id === payment.id,
     );
     if (index !== -1) {
-        linkedPayments.value.splice(index, 1);
+        selectedPayments.value.splice(index, 1);
         form.payments.splice(index, 1);
         return;
     }
-    linkedPayments.value.push(payment);
+    selectedPayments.value.push(payment);
     form.payments.push({ id: payment.id, amount: payment.amount?.value ?? 0 });
 }
 
@@ -73,7 +73,7 @@ const totalExpenseAmount = computed(() =>
 );
 
 const totalPayments = computed(() =>
-    linkedPayments.value.reduce((total, payment) => {
+    selectedPayments.value.reduce((total, payment) => {
         return total + (payment.amount?.value ?? 0);
     }, 0),
 );
@@ -85,7 +85,7 @@ const difference = computed(
 const canSave = computed(() => {
     return (
         selectedExpenses.value.length > 0 &&
-        linkedPayments.value.length > 0 &&
+        selectedPayments.value.length > 0 &&
         difference.value <= 0
     );
 });
@@ -107,7 +107,7 @@ function submit() {
         onSuccess: () => {
             form.reset();
             selectedExpenses.value = [];
-            linkedPayments.value = [];
+            selectedPayments.value = [];
         },
     });
 }
@@ -148,7 +148,7 @@ function submit() {
                     <ReconciliationSummary
                         :expenses="selectedExpenses"
                         :expensePartials="expensePartials"
-                        :payments="linkedPayments"
+                        :payments="selectedPayments"
                     />
                 </ColumnSection>
 
@@ -158,7 +158,7 @@ function submit() {
                         :key="pay.id"
                         :payment="pay"
                         :selected="
-                            linkedPayments.some((item) => item.id === pay.id)
+                            selectedPayments.some((item) => item.id === pay.id)
                         "
                         @select="togglePayment"
                     />
